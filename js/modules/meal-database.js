@@ -1,8 +1,11 @@
-// public/js/modules/meal-database.js - исправленная версия
-
 class MealDatabase {
     constructor() {
-        this.meals = null;
+        this.meals = {
+            breakfast: [],
+            lunch: [],
+            dinner: [],
+            snack: []
+        };
         this.categories = null;
         this.isLoaded = false;
         this.loadingPromise = null;
@@ -23,7 +26,7 @@ class MealDatabase {
             if (cached) {
                 const data = JSON.parse(cached);
                 if (data.version === '1.0.0') {
-                    this.meals = data.meals;
+                    this.meals = this.normalizeMealsData(data.meals);
                     this.categories = data.categories;
                     this.isLoaded = true;
                     console.log('База меню загружена из кэша');
@@ -31,28 +34,35 @@ class MealDatabase {
                 }
             }
 
-            // Загружаем JSON файлы
+            // Загружаем JSON файл
             const mealsResponse = await fetch('data/meals.json');
             if (!mealsResponse.ok) throw new Error('Не удалось загрузить meals.json');
             const mealsData = await mealsResponse.json();
             
-            // Проверяем структуру - если данные обернуты в объект с полями breakfast/lunch и т.д.
-            if (mealsData.breakfast || mealsData.lunch || mealsData.dinner || mealsData.snack) {
-                this.meals = mealsData;
-            } else {
-                // Если структура другая, создаем правильную
-                console.warn('Неожиданная структура JSON, создаем стандартную');
-                this.meals = {
-                    breakfast: mealsData.breakfast || [],
-                    lunch: mealsData.lunch || [],
-                    dinner: mealsData.dinner || [],
-                    snack: mealsData.snack || []
-                };
+            // Нормализуем данные - преобразуем в правильную структуру
+            this.meals = this.normalizeMealsData(mealsData);
+
+            // Загружаем категории
+            try {
+                const categoriesResponse = await fetch('data/categories.json');
+                if (categoriesResponse.ok) {
+                    this.categories = await categoriesResponse.json();
+                }
+            } catch (e) {
+                console.warn('Не удалось загрузить categories.json, используем стандартные');
             }
 
-            const categoriesResponse = await fetch('data/categories.json');
-            if (!categoriesResponse.ok) throw new Error('Не удалось загрузить categories.json');
-            this.categories = await categoriesResponse.json();
+            // Создаем стандартные категории если не загрузились
+            if (!this.categories) {
+                this.categories = {
+                    categories: {
+                        breakfast: { name: '🌅 Завтрак', caloriePercent: 30, icon: '🌅' },
+                        lunch: { name: '🌞 Обед', caloriePercent: 35, icon: '🌞' },
+                        dinner: { name: '🌙 Ужин', caloriePercent: 25, icon: '🌙' },
+                        snack: { name: '🍎 Перекус', caloriePercent: 10, icon: '🍎' }
+                    }
+                };
+            }
 
             // Сохраняем в кэш
             localStorage.setItem('mealDatabase', JSON.stringify({
@@ -63,7 +73,7 @@ class MealDatabase {
             }));
 
             this.isLoaded = true;
-            console.log('База меню успешно загружена');
+            console.log('База меню успешно загружена', this.meals);
             return true;
         } catch (error) {
             console.error('Ошибка загрузки базы меню:', error);
@@ -71,94 +81,165 @@ class MealDatabase {
         }
     }
 
+    /**
+     * Нормализует данные из JSON в стандартную структуру
+     * Принимает разные форматы и преобразует в { breakfast: [], lunch: [], dinner: [], snack: [] }
+     */
+    normalizeMealsData(data) {
+        // Создаем пустую структуру
+        const normalized = {
+            breakfast: [],
+            lunch: [],
+            dinner: [],
+            snack: []
+        };
+
+        // Если данные уже имеют правильную структуру
+        if (data.breakfast && Array.isArray(data.breakfast)) {
+            normalized.breakfast = data.breakfast;
+        }
+        if (data.lunch && Array.isArray(data.lunch)) {
+            normalized.lunch = data.lunch;
+        }
+        if (data.dinner && Array.isArray(data.dinner)) {
+            normalized.dinner = data.dinner;
+        }
+        if (data.snack && Array.isArray(data.snack)) {
+            normalized.snack = data.snack;
+        }
+
+        // Если данные в другом формате (например, массив с id категорий)
+        // Пытаемся определить по наличию поля category
+        if (Array.isArray(data)) {
+            data.forEach(item => {
+                if (item.category === 'breakfast') normalized.breakfast.push(item);
+                else if (item.category === 'lunch') normalized.lunch.push(item);
+                else if (item.category === 'dinner') normalized.dinner.push(item);
+                else if (item.category === 'snack') normalized.snack.push(item);
+            });
+        }
+
+        // Если какие-то категории пустые, добавляем тестовые данные
+        if (normalized.breakfast.length === 0) {
+            normalized.breakfast = this.getDefaultBreakfast();
+        }
+        if (normalized.lunch.length === 0) {
+            normalized.lunch = this.getDefaultLunch();
+        }
+        if (normalized.dinner.length === 0) {
+            normalized.dinner = this.getDefaultDinner();
+        }
+        if (normalized.snack.length === 0) {
+            normalized.snack = this.getDefaultSnack();
+        }
+
+        return normalized;
+    }
+
+    getDefaultBreakfast() {
+        return [
+            {
+                "id": "breakfast_001",
+                "name": "Овсянка с ягодами",
+                "image": "img/meals/breakfast/oatmeal-berries.jpg",
+                "calories": 350,
+                "protein": 12,
+                "fat": 8,
+                "carbs": 58,
+                "fiber": 6,
+                "ingredients": ["овсяные хлопья 50г", "ягоды 100г", "мед 10г"],
+                "preparationTime": 10,
+                "difficulty": "Легко",
+                "healthProfiles": {
+                    "obesity": { "recommended": true, "portionMultiplier": 0.8 },
+                    "overweight": { "recommended": true, "portionMultiplier": 0.9 },
+                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
+                    "underweight": { "recommended": true, "portionMultiplier": 1.2 }
+                }
+            }
+        ];
+    }
+
+    getDefaultLunch() {
+        return [
+            {
+                "id": "lunch_001",
+                "name": "Куриная грудка с рисом",
+                "image": "img/meals/lunch/chicken-rice.jpg",
+                "calories": 500,
+                "protein": 38,
+                "fat": 12,
+                "carbs": 58,
+                "fiber": 4,
+                "ingredients": ["куриная грудка 150г", "рис 80г", "овощи 150г"],
+                "preparationTime": 30,
+                "difficulty": "Средне",
+                "healthProfiles": {
+                    "obesity": { "recommended": true, "portionMultiplier": 0.8 },
+                    "overweight": { "recommended": true, "portionMultiplier": 0.9 },
+                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
+                    "underweight": { "recommended": true, "portionMultiplier": 1.2 }
+                }
+            }
+        ];
+    }
+
+    getDefaultDinner() {
+        return [
+            {
+                "id": "dinner_001",
+                "name": "Рыба с овощами",
+                "image": "img/meals/dinner/fish-veggies.jpg",
+                "calories": 400,
+                "protein": 35,
+                "fat": 18,
+                "carbs": 22,
+                "fiber": 5,
+                "ingredients": ["филе рыбы 150г", "овощи 200г", "оливковое масло 10г"],
+                "preparationTime": 25,
+                "difficulty": "Средне",
+                "healthProfiles": {
+                    "obesity": { "recommended": true, "portionMultiplier": 0.8 },
+                    "overweight": { "recommended": true, "portionMultiplier": 0.9 },
+                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
+                    "underweight": { "recommended": true, "portionMultiplier": 1.2 }
+                }
+            }
+        ];
+    }
+
+    getDefaultSnack() {
+        return [
+            {
+                "id": "snack_001",
+                "name": "Яблоко с орехами",
+                "image": "img/meals/snacks/apple-nuts.jpg",
+                "calories": 150,
+                "protein": 3,
+                "fat": 8,
+                "carbs": 20,
+                "fiber": 4,
+                "ingredients": ["яблоко 1 шт", "миндаль 15г"],
+                "preparationTime": 2,
+                "difficulty": "Легко",
+                "healthProfiles": {
+                    "obesity": { "recommended": true, "portionMultiplier": 0.8 },
+                    "overweight": { "recommended": true, "portionMultiplier": 0.9 },
+                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
+                    "underweight": { "recommended": true, "portionMultiplier": 1.2 }
+                }
+            }
+        ];
+    }
+
     async loadFallbackDatabase() {
         try {
-            // Встроенные данные на случай ошибки
+            // Используем встроенные данные
             this.meals = {
-                breakfast: [
-                    {
-                        "id": "breakfast_fallback_001",
-                        "name": "Овсяная каша с фруктами",
-                        "image": "img/meals/breakfast/oatmeal-berries.jpg",
-                        "calories": 350,
-                        "protein": 12,
-                        "fat": 10,
-                        "carbs": 52,
-                        "fiber": 6,
-                        "ingredients": ["овсянка 50г", "молоко 150мл", "банан 1/2 шт", "мед 5г"],
-                        "preparationTime": 10,
-                        "difficulty": "Легко",
-                        "healthProfiles": {
-                            "obesity": { "recommended": true, "portionMultiplier": 0.8 },
-                            "overweight": { "recommended": true, "portionMultiplier": 0.9 },
-                            "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                            "underweight": { "recommended": true, "portionMultiplier": 1.2 }
-                        }
-                    }
-                ],
-                lunch: [
-                    {
-                        "id": "lunch_fallback_001",
-                        "name": "Куриная грудка с рисом",
-                        "image": "img/meals/lunch/chicken-rice.jpg",
-                        "calories": 500,
-                        "protein": 38,
-                        "fat": 12,
-                        "carbs": 58,
-                        "fiber": 4,
-                        "ingredients": ["куриная грудка 150г", "рис 80г", "овощи 150г", "масло 5г"],
-                        "preparationTime": 30,
-                        "difficulty": "Средне",
-                        "healthProfiles": {
-                            "obesity": { "recommended": true, "portionMultiplier": 0.8 },
-                            "overweight": { "recommended": true, "portionMultiplier": 0.9 },
-                            "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                            "underweight": { "recommended": true, "portionMultiplier": 1.2 }
-                        }
-                    }
-                ],
-                dinner: [
-                    {
-                        "id": "dinner_fallback_001",
-                        "name": "Рыба с овощами",
-                        "image": "img/meals/dinner/fish-veggies.jpg",
-                        "calories": 400,
-                        "protein": 35,
-                        "fat": 18,
-                        "carbs": 22,
-                        "fiber": 5,
-                        "ingredients": ["филе рыбы 150г", "овощи 200г", "оливковое масло 10г"],
-                        "preparationTime": 25,
-                        "difficulty": "Средне",
-                        "healthProfiles": {
-                            "obesity": { "recommended": true, "portionMultiplier": 0.8 },
-                            "overweight": { "recommended": true, "portionMultiplier": 0.9 },
-                            "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                            "underweight": { "recommended": true, "portionMultiplier": 1.2 }
-                        }
-                    }
-                ],
-                snack: [
-                    {
-                        "id": "snack_fallback_001",
-                        "name": "Фруктовый перекус",
-                        "image": "img/meals/snacks/fruits.jpg",
-                        "calories": 120,
-                        "protein": 1,
-                        "fat": 0.5,
-                        "carbs": 28,
-                        "fiber": 3,
-                        "ingredients": ["яблоко 1 шт", "банан 1/2 шт"],
-                        "preparationTime": 2,
-                        "difficulty": "Легко",
-                        "healthProfiles": {
-                            "obesity": { "recommended": true, "portionMultiplier": 0.8 },
-                            "overweight": { "recommended": true, "portionMultiplier": 0.9 },
-                            "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                            "underweight": { "recommended": true, "portionMultiplier": 1.2 }
-                        }
-                    }
-                ]
+                breakfast: this.getDefaultBreakfast(),
+                lunch: this.getDefaultLunch(),
+                dinner: this.getDefaultDinner(),
+                snack: this.getDefaultSnack()
             };
             
             this.categories = {
@@ -180,19 +261,27 @@ class MealDatabase {
     }
 
     getMealsByCategory(category, healthProfile = null) {
-        if (!this.isLoaded || !this.meals) return [];
+        // Защита от ошибок
+        if (!this.isLoaded || !this.meals) {
+            console.warn('База данных не загружена');
+            return [];
+        }
         
-        // Проверяем, что meals[category] существует и является массивом
+        // Получаем массив блюд для категории
         const meals = this.meals[category];
+        
+        // Проверяем, что meals существует и является массивом
         if (!meals || !Array.isArray(meals)) {
-            console.warn(`Категория ${category} не найдена или не является массивом`);
+            console.warn(`Категория "${category}" не найдена или не является массивом`, meals);
             return [];
         }
         
         if (!healthProfile) return meals;
         
+        // Фильтруем по профилю здоровья
         return meals.filter(meal => {
-            const profile = meal.healthProfiles?.[healthProfile];
+            if (!meal.healthProfiles) return false;
+            const profile = meal.healthProfiles[healthProfile];
             return profile && profile.recommended !== false;
         });
     }
@@ -201,7 +290,9 @@ class MealDatabase {
         if (!this.isLoaded || !this.meals) return {};
         
         const result = {};
-        for (const category of Object.keys(this.meals)) {
+        const categories = ['breakfast', 'lunch', 'dinner', 'snack'];
+        
+        for (const category of categories) {
             result[category] = this.getMealsByCategory(category, healthProfile);
         }
         return result;
@@ -210,9 +301,11 @@ class MealDatabase {
     getMealById(id) {
         if (!this.isLoaded || !this.meals) return null;
         
-        for (const category of Object.keys(this.meals)) {
+        const categories = ['breakfast', 'lunch', 'dinner', 'snack'];
+        
+        for (const category of categories) {
             const mealsArray = this.meals[category];
-            if (Array.isArray(mealsArray)) {
+            if (mealsArray && Array.isArray(mealsArray)) {
                 const meal = mealsArray.find(m => m.id === id);
                 if (meal) return { ...meal, category };
             }
@@ -222,15 +315,44 @@ class MealDatabase {
 
     getCategoryInfo(category) {
         return this.categories?.categories?.[category] || {
-            name: category,
-            caloriePercent: 25,
-            icon: '🍽️'
+            name: this.getCategoryName(category),
+            caloriePercent: this.getCategoryPercent(category),
+            icon: this.getCategoryIcon(category)
         };
     }
 
+    getCategoryName(category) {
+        const names = {
+            breakfast: '🌅 Завтрак',
+            lunch: '🌞 Обед',
+            dinner: '🌙 Ужин',
+            snack: '🍎 Перекус'
+        };
+        return names[category] || category;
+    }
+
+    getCategoryPercent(category) {
+        const percents = {
+            breakfast: 30,
+            lunch: 35,
+            dinner: 25,
+            snack: 10
+        };
+        return percents[category] || 25;
+    }
+
+    getCategoryIcon(category) {
+        const icons = {
+            breakfast: '🌅',
+            lunch: '🌞',
+            dinner: '🌙',
+            snack: '🍎'
+        };
+        return icons[category] || '🍽️';
+    }
+
     getAllCategories() {
-        if (!this.meals) return ['breakfast', 'lunch', 'dinner', 'snack'];
-        return Object.keys(this.meals).filter(key => Array.isArray(this.meals[key]));
+        return ['breakfast', 'lunch', 'dinner', 'snack'];
     }
 
     isReady() {
