@@ -1,4 +1,4 @@
-// js/modules/meal-planner.js
+// js/modules/meal-planner.js - ИСПРАВЛЕННАЯ ВЕРСИЯ
 
 class MealPlanner {
     constructor(database) {
@@ -43,65 +43,92 @@ class MealPlanner {
         });
     }
     
-   // public/js/modules/meal-planner.js - добавьте проверки в generateDailyMenu
-
-generateDailyMenu(calories, bmi, goal) {
-    if (!this.database.isReady()) {
-        console.error('База данных не готова');
-        return null;
-    }
-    
-    const healthProfile = this.getHealthProfile(bmi);
-    const categories = this.database.getAllCategories();
-    const menu = {
-        healthProfile,
-        bmi,
-        goal,
-        totalCalories: calories,
-        generatedAt: new Date().toISOString(),
-        meals: {}
-    };
-    
-    let totalGeneratedCalories = 0;
-    
-    for (const category of categories) {
-        const categoryInfo = this.database.getCategoryInfo(category);
-        const targetCategoryCalories = calories * (categoryInfo.caloriePercent / 100);
+    /**
+     * Генерация дневного меню
+     */
+    generateDailyMenu(calories, bmi, goal) {
+        if (!this.database.isReady()) {
+            console.error('База данных не готова');
+            return null;
+        }
         
-        // Получаем блюда для категории - ЭТО ВОЗВРАЩАЕТ МАССИВ
-        const meals = this.database.getMealsByCategory(category, healthProfile);
+        const healthProfile = this.getHealthProfile(bmi);
+        const categories = this.database.getAllCategories();
+        const menu = {
+            healthProfile,
+            bmi,
+            goal,
+            totalCalories: calories,
+            generatedAt: new Date().toISOString(),
+            meals: {}
+        };
         
-        // Проверяем, что meals - это массив
-        if (meals && Array.isArray(meals) && meals.length > 0) {
-            const selectedMeal = this.selectBestMeal(meals, targetCategoryCalories, healthProfile);
+        let totalGeneratedCalories = 0;
+        
+        for (const category of categories) {
+            const categoryInfo = this.database.getCategoryInfo(category);
+            const targetCategoryCalories = calories * (categoryInfo.caloriePercent / 100);
             
-            if (selectedMeal) {
-                const multiplier = selectedMeal.healthProfiles?.[healthProfile]?.portionMultiplier || 1;
-                const adjustedCalories = Math.round(selectedMeal.calories * multiplier);
+            const meals = this.database.getMealsByCategory(category, healthProfile);
+            
+            if (meals && Array.isArray(meals) && meals.length > 0) {
+                const selectedMeal = this.selectBestMeal(meals, targetCategoryCalories, healthProfile);
                 
-                menu.meals[category] = {
-                    ...selectedMeal,
-                    originalCalories: selectedMeal.calories,
-                    adjustedCalories,
-                    multiplier,
-                    note: selectedMeal.healthProfiles?.[healthProfile]?.note || null
-                };
-                
-                totalGeneratedCalories += adjustedCalories;
+                if (selectedMeal) {
+                    const multiplier = selectedMeal.healthProfiles?.[healthProfile]?.portionMultiplier || 1;
+                    const adjustedCalories = Math.round(selectedMeal.calories * multiplier);
+                    
+                    menu.meals[category] = {
+                        ...selectedMeal,
+                        originalCalories: selectedMeal.calories,
+                        adjustedCalories,
+                        multiplier,
+                        note: selectedMeal.healthProfiles?.[healthProfile]?.note || null
+                    };
+                    
+                    totalGeneratedCalories += adjustedCalories;
+                } else {
+                    menu.meals[category] = null;
+                }
             } else {
+                console.warn(`Нет блюд для категории ${category}`);
                 menu.meals[category] = null;
             }
-        } else {
-            console.warn(`Нет блюд для категории ${category}`);
-            menu.meals[category] = null;
         }
+        
+        menu.generatedCalories = Math.round(totalGeneratedCalories);
+        menu.calorieDifference = Math.round(menu.generatedCalories - calories);
+        
+        return menu;
     }
-    
-    menu.generatedCalories = Math.round(totalGeneratedCalories);
-    menu.calorieDifference = Math.round(menu.generatedCalories - calories);
-    
-    return menu;
-}
+
+    /**
+     * Генерация альтернативного блюда для категории
+     */
+    generateAlternative(category, currentMealId, calories, bmi, goal) {
+        const healthProfile = this.getHealthProfile(bmi);
+        const meals = this.database.getMealsByCategory(category, healthProfile);
+        const categoryInfo = this.database.getCategoryInfo(category);
+        const targetCalories = calories * (categoryInfo.caloriePercent / 100);
+        
+        // Исключаем текущее блюдо
+        const alternativeMeals = meals.filter(meal => meal.id !== currentMealId);
+        
+        if (alternativeMeals.length === 0) return null;
+        
+        const selectedMeal = this.selectBestMeal(alternativeMeals, targetCalories, healthProfile);
+        if (!selectedMeal) return null;
+        
+        const multiplier = selectedMeal.healthProfiles?.[healthProfile]?.portionMultiplier || 1;
+        
+        return {
+            ...selectedMeal,
+            originalCalories: selectedMeal.calories,
+            adjustedCalories: Math.round(selectedMeal.calories * multiplier),
+            multiplier,
+            note: selectedMeal.healthProfiles?.[healthProfile]?.note || null
+        };
+    }
 
     /**
      * Получение рекомендации по питанию
@@ -119,45 +146,38 @@ generateDailyMenu(calories, bmi, goal) {
                     '✅ Пейте воду за 20 минут до еды'
                 ],
                 maintain: [
-                    '⚠️ Для поддержания веса необходим строгий контроль калорий',
-                    '⚠️ Рекомендуется консультация диетолога'
+                    '⚠️ Для поддержания веса необходим строгий контроль калорий'
                 ],
                 gain: [
-                    '❌ Набор массы при ожирении не рекомендуется без консультации врача'
+                    '❌ Набор массы при ожирении не рекомендуется'
                 ]
             },
             overweight: {
                 lose: [
                     '✅ Создайте дефицит калорий 300-500 ккал/день',
                     '✅ Увеличьте физическую активность',
-                    '✅ Контролируйте размер порций',
-                    '✅ Исключите калорийные напитки'
+                    '✅ Контролируйте размер порций'
                 ],
                 maintain: [
                     '✅ Поддерживайте текущий уровень активности',
-                    '✅ Контролируйте калорийность рациона',
-                    '✅ Регулярно взвешивайтесь'
+                    '✅ Контролируйте калорийность рациона'
                 ],
                 gain: [
-                    '⚠️ Набор массы требует увеличения физической активности',
-                    '✅ Увеличьте порции белковых продуктов'
+                    '⚠️ Набор массы требует увеличения физической активности'
                 ]
             },
             normal: {
                 lose: [
                     '✅ Небольшой дефицит 200-300 ккал',
-                    '✅ Увеличьте белковую составляющую',
-                    '✅ Добавьте кардио-тренировки'
+                    '✅ Увеличьте белковую составляющую'
                 ],
                 maintain: [
                     '✅ Соблюдайте баланс БЖУ',
-                    '✅ Контролируйте калорийность',
-                    '✅ Регулярно корректируйте рацион'
+                    '✅ Контролируйте калорийность'
                 ],
                 gain: [
                     '✅ Профицит 300-400 ккал',
-                    '✅ Увеличьте порции сложных углеводов',
-                    '✅ Добавьте силовые тренировки'
+                    '✅ Увеличьте порции сложных углеводов'
                 ]
             },
             underweight: {
@@ -170,8 +190,7 @@ generateDailyMenu(calories, bmi, goal) {
                 gain: [
                     '✅ Увеличьте калорийность на 500-700 ккал',
                     '✅ Ешьте чаще (5-6 раз в день)',
-                    '✅ Добавьте полезные жиры (орехи, авокадо)',
-                    '✅ Включите протеиновые коктейли'
+                    '✅ Добавьте полезные жиры (орехи, авокадо)'
                 ]
             }
         };
@@ -180,6 +199,4 @@ generateDailyMenu(calories, bmi, goal) {
     }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = MealPlanner;
-}
+window.MealPlanner = MealPlanner;
