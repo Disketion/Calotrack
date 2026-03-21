@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Белки - строительный материал для мышц">
+  <meta name="theme-color" content="#4caf50">
+  <title>Белки | CaloTrack</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/meal-planner.css" />
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <h2>CaloTrack</h2>
+      <ul>
+        <li><a href="index.html">🏠 Главная</a></li>
+        <li><a href="calculator.html">🧮 Калькулятор</a></li>
+        <li><a href="proteins.html" class="active">🥩 Белки</a></li>
+        <li><a href="fats.html">🥑 Жиры</a></li>
+        <li><a href="carbs.html">🍚 Углеводы</a></li>
+        <li><a href="history.html">📊 История</a></li>
+      </ul>
+    </nav>
+    
+    <main class="content">
+      <h1>Белки</h1>
+      <p>Белки — это строительный материал для мышц, органов и тканей. Они необходимы для восстановления и роста.</p>
+      
+      <div class="recommendation-box">
+        <h3 style="margin-top: 0;">💡 Рекомендации</h3>
+        <ul style="margin-bottom: 0;">
+          <li><strong>Рекомендуемая норма:</strong> 1.6–2.2 г на 1 кг массы тела</li>
+          <li><strong>Для похудения:</strong> 2.0–2.4 г/кг</li>
+          <li><strong>Для набора массы:</strong> 1.8–2.2 г/кг</li>
+        </ul>
+      </div>
+
+      <h2>Лучшие источники белка</h2>
+      <section class="product-grid">
+        <button class="product-button" data-product="chicken">
+          <img src="img/chicken.png" alt="Курица" />
+          <span>Курица</span>
+          <div class="product-tooltip">25г белка на 100г</div>
+        </button>
+
+        <button class="product-button" data-product="eggs">
+          <img src="img/eggs.png" alt="Яйца" />
+          <span>Яйца</span>
+          <div class="product-tooltip">13г белка на 100г</div>
+        </button>
+
+        <button class="product-button" data-product="fish">
+          <img src="img/fish.png" alt="Рыба" />
+          <span>Рыба</span>
+          <div class="product-tooltip">20г белка на 100г</div>
+        </button>
+
+        <button class="product-button" data-product="beef">
+          <img src="img/beef.png" alt="Говядина" />
+          <span>Говядина</span>
+          <div class="product-tooltip">26г белка на 100г</div>
+        </button>
+
+        <button class="product-button" data-product="cottage_cheese">
+          <img src="img/cottage_cheese.png" alt="Творог" />
+          <span>Творог</span>
+          <div class="product-tooltip">18г белка на 100г</div>
+        </button>
+      </section>
+
+      <div class="info-box">
+        <h3 style="margin-top: 0;">📚 Интересные факты о белках</h3>
+        <p>Белки состоят из аминокислот, 9 из которых являются незаменимыми - организм не может их синтезировать самостоятельно и должен получать с пищей.</p>
+      </div>
+
+      <div class="feature-card blue" style="margin-top: 30px;">
+        <h3 style="margin-top: 0;">💪 Зачем нужны белки?</h3>
+        <p>Белки участвуют в построении всех тканей организма, производстве ферментов и гормонов, поддерживают иммунитет и обеспечивают транспорт питательных веществ.</p>
+      </div>
+    </main>
+  </div>
+  
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>📧 <a href="mailto:Disketion-partner@yandex.ru">Disketion-partner@yandex.ru</a></p>
+      <p>
+        🔗 <a href="https://t.me/Reshapiz" target="_blank" rel="noopener">Telegram</a> |
+        <a href="https://github.com/Disketion" target="_blank" rel="noopener">GitHub</a>
+      </p>
+      <p>© 2026 CaloTrack. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <script src="js/theme-manager.js"></script>
+  <script>
+    // Добавляем тултипы для продуктов
+    document.querySelectorAll('.product-button').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const tooltip = this.querySelector('.product-tooltip');
+        if (tooltip) {
+          tooltip.style.opacity = '1';
+          tooltip.style.visibility = 'visible';
+          setTimeout(() => {
+            tooltip.style.opacity = '0';
+            tooltip.style.visibility = 'hidden';
+          }, 2000);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

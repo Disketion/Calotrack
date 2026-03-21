@@ -1,0 +1,88 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-03-21",
+  "breakfast": [
+    {
+      "id": "breakfast_fallback_001",
+      "name": "Овсяная каша",
+      "image": "img/meals/breakfast/oatmeal-berries.jpg",
+      "calories": 350,
+      "protein": 12,
+      "fat": 10,
+      "carbs": 50,
+      "fiber": 6,
+      "ingredients": ["овсянка 50г", "молоко 150мл", "мед 10г"],
+      "preparationTime": 10,
+      "difficulty": "Легко",
+      "healthProfiles": {
+        "obesity": { "recommended": true, "portionMultiplier": 0.8 },
+        "overweight": { "recommended": true, "portionMultiplier": 0.9 },
+        "normal": { "recommended": true, "portionMultiplier": 1.0 },
+        "underweight": { "recommended": true, "portionMultiplier": 1.2 }
+      }
+    }
+  ],
+  "lunch": [
+    {
+      "id": "lunch_fallback_001",
+      "name": "Курица с рисом",
+      "image": "img/meals/lunch/chicken-rice.jpg",
+      "calories": 500,
+      "protein": 35,
+      "fat": 15,
+      "carbs": 55,
+      "fiber": 3,
+      "ingredients": ["курица 150г", "рис 80г", "овощи 100г"],
+      "preparationTime": 30,
+      "difficulty": "Средне",
+      "healthProfiles": {
+        "obesity": { "recommended": true, "portionMultiplier": 0.8 },
+        "overweight": { "recommended": true, "portionMultiplier": 0.9 },
+        "normal": { "recommended": true, "portionMultiplier": 1.0 },
+        "underweight": { "recommended": true, "portionMultiplier": 1.2 }
+      }
+    }
+  ],
+  "dinner": [
+    {
+      "id": "dinner_fallback_001",
+      "name": "Рыба с овощами",
+      "image": "img/meals/dinner/fish-veggies.jpg",
+      "calories": 400,
+      "protein": 35,
+      "fat": 18,
+      "carbs": 20,
+      "fiber": 4,
+      "ingredients": ["рыба 150г", "овощи 200г", "масло 10г"],
+      "preparationTime": 25,
+      "difficulty": "Средне",
+      "healthProfiles": {
+        "obesity": { "recommended": true, "portionMultiplier": 0.8 },
+        "overweight": { "recommended": true, "portionMultiplier": 0.9 },
+        "normal": { "recommended": true, "portionMultiplier": 1.0 },
+        "underweight": { "recommended": true, "portionMultiplier": 1.2 }
+      }
+    }
+  ],
+  "snack": [
+    {
+      "id": "snack_fallback_001",
+      "name": "Фрукты",
+      "image": "img/meals/snacks/fruits.jpg",
+      "calories": 120,
+      "protein": 1,
+      "fat": 0,
+      "carbs": 28,
+      "fiber": 3,
+      "ingredients": ["яблоко 1 шт", "банан 1/2 шт"],
+      "preparationTime": 2,
+      "difficulty": "Легко",
+      "healthProfiles": {
+        "obesity": { "recommended": true, "portionMultiplier": 0.8 },
+        "overweight": { "recommended": true, "portionMultiplier": 0.9 },
+        "normal": { "recommended": true, "portionMultiplier": 1.0 },
+        "underweight": { "recommended": true, "portionMultiplier": 1.2 }
+      }
+    }
+  ]
+}

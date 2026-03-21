@@ -1,0 +1,159 @@
+/* Модальное окно */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-container {
+  background: var(--card-bg);
+  border-radius: 24px;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+}
+
+.modal-overlay.active .modal-container {
+  transform: scale(1);
+}
+
+.modal-header {
+  position: sticky;
+  top: 0;
+  background: var(--card-bg);
+  padding: 20px 25px;
+  border-bottom: 2px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--text-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  margin: 0;
+  padding: 0;
+}
+
+.close-modal:hover {
+  background: rgba(255, 0, 0, 0.1);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 25px;
+}
+
+/* Health Badge */
+.health-badge {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  color: white;
+}
+
+.health-badge h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+}
+
+.health-badge p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+.special-diet {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+
+/* Loading state */
+.modal-loading {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.modal-loading .skeleton {
+  width: 80%;
+  height: 200px;
+  margin: 20px auto;
+  border-radius: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-container {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.4rem;
+  }
+  
+  .modal-body {
+    padding: 15px;
+  }
+  
+  .health-badge {
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header {
+    padding: 15px;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.2rem;
+  }
+}

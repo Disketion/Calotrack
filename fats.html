@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Полезные жиры для здоровья">
+  <meta name="theme-color" content="#4caf50">
+  <title>Жиры | CaloTrack</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/meal-planner.css" />
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <h2>CaloTrack</h2>
+      <ul>
+        <li><a href="index.html">🏠 Главная</a></li>
+        <li><a href="calculator.html">🧮 Калькулятор</a></li>
+        <li><a href="proteins.html">🥩 Белки</a></li>
+        <li><a href="fats.html" class="active">🥑 Жиры</a></li>
+        <li><a href="carbs.html">🍚 Углеводы</a></li>
+        <li><a href="history.html">📊 История</a></li>
+      </ul>
+    </nav>
+    
+    <main class="content">
+      <h1>Жиры</h1>
+      <p>Жиры важны для гормонов, мозга, усвоения витаминов и защиты органов. Главное — не бояться их, а выбирать полезные источники.</p>
+      
+      <div class="recommendation-box orange">
+        <h3 style="margin-top: 0;">💡 Рекомендации</h3>
+        <ul style="margin-bottom: 0;">
+          <li><strong>Рекомендуемая норма:</strong> 0.8–1.2 г на 1 кг массы тела</li>
+          <li><strong>Насыщенные жиры:</strong> до 10% от общего калоража</li>
+          <li><strong>Ненасыщенные жиры:</strong> основа здорового рациона</li>
+        </ul>
+      </div>
+
+      <h2>Полезные источники жиров</h2>
+      <section class="product-grid">
+        <button class="product-button" data-product="avocado">
+          <img src="img/avocado.png" alt="Авокадо" />
+          <span>Авокадо</span>
+          <div class="product-tooltip">15г жиров на 100г, из них 10г ненасыщенных</div>
+        </button>
+
+        <button class="product-button" data-product="nuts">
+          <img src="img/nuts.png" alt="Орехи" />
+          <span>Орехи</span>
+          <div class="product-tooltip">50-60г жиров на 100г, богаты Омега-3</div>
+        </button>
+
+        <button class="product-button" data-product="olive_oil">
+          <img src="img/olive_oil.png" alt="Оливковое масло" />
+          <span>Оливковое масло</span>
+          <div class="product-tooltip">100г жиров на 100г, источник витамина E</div>
+        </button>
+
+        <button class="product-button" data-product="fish">
+          <img src="img/fish.png" alt="Жирная рыба" />
+          <span>Жирная рыба</span>
+          <div class="product-tooltip">10-15г жиров на 100г, Омега-3 жирные кислоты</div>
+        </button>
+
+        <button class="product-button" data-product="cheese">
+          <img src="img/cheese.png" alt="Сыр" />
+          <span>Сыр</span>
+          <div class="product-tooltip">20-30г жиров на 100г, источник кальция</div>
+        </button>
+      </section>
+
+      <div class="info-box">
+        <h3 style="margin-top: 0;">📚 Интересные факты о жирах</h3>
+        <p>Жиры помогают усваивать жирорастворимые витамины A, D, E и K. Без достаточного количества жиров в рационе эти витамины не смогут полноценно усвоиться организмом.</p>
+      </div>
+
+      <div class="feature-card blue" style="margin-top: 30px;">
+        <h3 style="margin-top: 0;">🥑 Почему жиры важны?</h3>
+        <p>Жиры являются концентрированным источником энергии, обеспечивают теплоизоляцию, защищают внутренние органы и необходимы для производства гормонов.</p>
+      </div>
+    </main>
+  </div>
+  
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>📧 <a href="mailto:Disketion-partner@yandex.ru">Disketion-partner@yandex.ru</a></p>
+      <p>
+        🔗 <a href="https://t.me/Reshapiz" target="_blank" rel="noopener">Telegram</a> |
+        <a href="https://github.com/Disketion" target="_blank" rel="noopener">GitHub</a>
+      </p>
+      <p>© 2026 CaloTrack. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <script src="js/theme-manager.js"></script>
+  <script>
+    document.querySelectorAll('.product-button').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const tooltip = this.querySelector('.product-tooltip');
+        if (tooltip) {
+          tooltip.style.opacity = '1';
+          tooltip.style.visibility = 'visible';
+          setTimeout(() => {
+            tooltip.style.opacity = '0';
+            tooltip.style.visibility = 'hidden';
+          }, 2000);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

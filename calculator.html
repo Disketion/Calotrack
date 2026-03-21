@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Калькулятор калорий и БЖУ">
+  <meta name="theme-color" content="#4caf50">
+  <title>Калькулятор калорий | CaloTrack</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/meal-planner.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <h2>CaloTrack</h2>
+      <ul>
+        <li><a href="index.html">🏠 Главная</a></li>
+        <li><a href="calculator.html" class="active">🧮 Калькулятор</a></li>
+        <li><a href="proteins.html">🥩 Белки</a></li>
+        <li><a href="fats.html">🥑 Жиры</a></li>
+        <li><a href="carbs.html">🍚 Углеводы</a></li>
+        <li><a href="history.html">📊 История</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <h1>Калькулятор калорий</h1>
+      <p>Рассчитайте вашу суточную норму калорий и оптимальное соотношение БЖУ для достижения ваших целей.</p>
+
+      <div class="feature-card blue" style="margin-bottom: 25px;">
+        <h3 style="margin-top: 0;">🎯 Персонализированный расчет</h3>
+        <p>Калькулятор учитывает ваш пол, возраст, рост, вес, уровень активности и цель для точного расчета.</p>
+      </div>
+
+      <form id="calorie-form">
+        <div class="calc-group">
+          <label>Пол</label>
+          <div class="gender-select">
+            <input type="radio" id="gender-male" name="gender" value="male" checked hidden />
+            <label for="gender-male" class="gender-button">
+              <img src="img/male.png" alt="Мужской" />
+              <span>Мужской</span>
+            </label>
+
+            <input type="radio" id="gender-female" name="gender" value="female" hidden />
+            <label for="gender-female" class="gender-button">
+              <img src="img/female.png" alt="Женский" />
+              <span>Женский</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="calc-group">
+          <label for="age">Возраст (лет)</label>
+          <input type="number" id="age" name="age" min="10" max="120" required placeholder="Введите ваш возраст" />
+        </div>
+
+        <div class="calc-group">
+          <label for="height">Рост (см)</label>
+          <input type="number" id="height" name="height" min="50" max="250" required placeholder="Введите ваш рост" />
+        </div>
+
+        <div class="calc-group">
+          <label for="weight">Вес (кг)</label>
+          <input type="number" id="weight" name="weight" min="20" max="300" required placeholder="Введите ваш вес" />
+        </div>
+
+        <div class="calc-group">
+          <label for="activity">Физическая активность</label>
+          <input type="range" id="activity" name="activity" min="1.2" max="1.9" step="0.025" value="1.2" />
+          <div class="activity-labels">
+            <span>Минимальная</span>
+            <span>Низкая</span>
+            <span>Средняя</span>
+            <span>Высокая</span>
+            <span>Очень высокая</span>
+          </div>
+        </div>
+
+        <div class="calc-group">
+          <label for="goal">Цель</label>
+          <select id="goal" name="goal">
+            <option value="maintain">Поддержание веса</option>
+            <option value="lose">Похудение</option>
+            <option value="gain">Набор массы</option>
+          </select>
+        </div>
+
+        <button type="submit">Рассчитать</button>
+      </form>
+
+      <div class="result" id="result">
+        <div style="text-align: center; padding: 20px; color: var(--text-color); opacity: 0.7;">
+          <p>Здесь появится результат расчета...</p>
+          <p>Заполните форму и нажмите "Рассчитать"</p>
+        </div>
+      </div>
+      
+      <!-- КНОПКА ДЛЯ ГЕНЕРАЦИИ МЕНЮ -->
+      <button id="show-menu-btn" class="menu-btn" style="display: none; margin-top: 20px; background: linear-gradient(135deg, #ff9800, #f57c00);">
+        🍽️ Сгенерировать персональное меню
+      </button>
+      
+      <div id="chart-container">
+        <canvas id="bjuChart" width="300" height="300"></canvas>
+        <div id="weight-chart-container">
+          <h2>Прогноз изменения веса</h2>
+          <canvas id="weightChart" width="400" height="250"></canvas>
+        </div>
+      </div>
+
+      <div class="info-box" style="margin-top: 30px;">
+        <h3 style="margin-top: 0;">💡 Как использовать результаты?</h3>
+        <p>Используйте рассчитанные значения как ориентир для планирования вашего питания. Помните, что это приблизительные значения, и индивидуальные потребности могут отличаться.</p>
+      </div>
+    </main>
+  </div>
+  
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>📧 <a href="mailto:Disketion-partner@yandex.ru">Disketion-partner@yandex.ru</a></p>
+      <p>
+        🔗 <a href="https://t.me/Reshapiz" target="_blank" rel="noopener">Telegram</a> |
+        <a href="https://github.com/Disketion" target="_blank" rel="noopener">GitHub</a>
+      </p>
+      <p>© 2026 CaloTrack. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <script src="js/theme-manager.js"></script>
+  <script src="js/utils/validators.js"></script>
+  <script src="js/utils/formatters.js"></script>
+  <script src="js/utils/animations.js"></script>
+  <script src="js/modules/meal-database.js"></script>
+  <script src="js/modules/meal-planner.js"></script>
+  <script src="js/modules/meal-renderer.js"></script>
+  <script src="js/modules/meal-modal.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

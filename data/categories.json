@@ -1,0 +1,32 @@
+{
+  "categories": {
+    "breakfast": {
+      "name": "Завтрак",
+      "caloriePercent": 30,
+      "icon": "🌅",
+      "description": "Энергия на весь день",
+      "color": "#FFA500"
+    },
+    "lunch": {
+      "name": "Обед",
+      "caloriePercent": 35,
+      "icon": "🌞",
+      "description": "Основной прием пищи",
+      "color": "#4CAF50"
+    },
+    "dinner": {
+      "name": "Ужин",
+      "caloriePercent": 25,
+      "icon": "🌙",
+      "description": "Легкий ужин для восстановления",
+      "color": "#2196F3"
+    },
+    "snack": {
+      "name": "Перекус",
+      "caloriePercent": 10,
+      "icon": "🍎",
+      "description": "Поддержание энергии",
+      "color": "#FF9800"
+    }
+  }
+}
