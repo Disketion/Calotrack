@@ -11,36 +11,44 @@ class MealRenderer {
      * Отрисовка всего меню
      */
     renderMenu(menuData, healthProfile) {
-        this.currentMenu = menuData;
-        this.currentHealthProfile = healthProfile;
-        
-        const container = document.getElementById('meal-content');
-        if (!container) return;
-        
-        // Создаем табы
-        const tabsHtml = this.renderTabs();
-        
-        // Создаем сетку блюд для активной категории
-        const mealsHtml = this.renderMealGrid(this.currentCategory);
-        
+    this.currentMenu = menuData;
+    this.currentHealthProfile = healthProfile;
+    
+    const container = document.getElementById('meal-content');
+    if (!container) return;
+    
+    // Проверяем, что menuData существует
+    if (!menuData || !menuData.meals) {
         container.innerHTML = `
-            ${tabsHtml}
-            <div class="meal-grid-container">
-                ${mealsHtml}
-            </div>
-            <div class="meal-actions">
-                <button class="refresh-meal-btn" id="refresh-meal">
-                    🔄 Другой вариант
-                </button>
-                <button class="save-menu-btn" id="save-menu">
-                    💾 Сохранить меню
-                </button>
+            <div class="meal-empty">
+                <p>😔 Ошибка: не удалось загрузить меню</p>
+                <p>Попробуйте сгенерировать снова</p>
             </div>
         `;
-        
-        this.setupTabListeners();
-        this.setupActionListeners();
+        return;
     }
+    
+    const tabsHtml = this.renderTabs();
+    const mealsHtml = this.renderMealGrid(this.currentCategory);
+    
+    container.innerHTML = `
+        ${tabsHtml}
+        <div class="meal-grid-container">
+            ${mealsHtml}
+        </div>
+        <div class="meal-actions">
+            <button class="refresh-meal-btn" id="refresh-meal">
+                🔄 Другой вариант
+            </button>
+            <button class="save-menu-btn" id="save-menu">
+                💾 Сохранить меню
+            </button>
+        </div>
+    `;
+    
+    this.setupTabListeners();
+    this.setupActionListeners();
+}
     
     /**
      * Отрисовка табов
