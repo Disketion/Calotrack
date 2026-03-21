@@ -428,55 +428,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Обработчик кнопки генерации меню
-    if (menuBtn) {
-        menuBtn.addEventListener('click', async () => {
-            if (!lastCalculation) {
-                showNotification('Сначала выполните расчет калорий!', 'warning');
-                return;
+if (menuBtn) {
+    menuBtn.addEventListener('click', async () => {
+        if (!lastCalculation) {
+            showNotification('Сначала выполните расчет калорий!', 'warning');
+            return;
+        }
+        
+        if (!mealDatabase || !mealDatabase.isReady || !mealDatabase.isReady()) {
+            showNotification('База данных меню загружается, попробуйте через секунду', 'warning');
+            return;
+        }
+        
+        try {
+            if (mealModal) {
+                mealModal.showLoading();
             }
             
-            if (!mealDatabase || !mealDatabase.isReady()) {
-                showNotification('База данных меню загружается, попробуйте через секунду', 'warning');
-                return;
+            console.log('Генерация меню для:', {
+                calories: lastCalculation.calories,
+                bmi: lastCalculation.bmi,
+                goal: lastCalculation.goal
+            });
+            
+            const menu = mealPlanner.generateDailyMenu(
+                lastCalculation.calories,
+                lastCalculation.bmi,
+                lastCalculation.goal
+            );
+            
+            console.log('Сгенерированное меню:', menu);
+            
+            if (!menu) {
+                throw new Error('Не удалось сгенерировать меню');
             }
             
-            try {
-                // Показываем загрузку
-                if (mealModal) {
-                    mealModal.showLoading();
-                }
-                
-                // Генерируем меню
-                const menu = mealPlanner.generateDailyMenu(
-                    lastCalculation.calories,
-                    lastCalculation.bmi,
-                    lastCalculation.goal
-                );
-                
-                if (!menu) {
-                    throw new Error('Не удалось сгенерировать меню');
-                }
-                
-                // Показываем модальное окно с меню
-                if (mealModal) {
-                    mealModal.show(menu, lastCalculation);
-                }
-                
-                // Анимация кнопки
-                menuBtn.classList.add('pulse-once');
-                setTimeout(() => menuBtn.classList.remove('pulse-once'), 600);
-                
-            } catch (error) {
-                console.error('Ошибка генерации меню:', error);
-                showNotification('Ошибка при генерации меню. Попробуйте позже.', 'error');
-                
-                // Скрываем загрузку если была
-                if (mealModal && mealModal.modal) {
-                    mealModal.hide();
-                }
+            if (mealModal) {
+                mealModal.show(menu, lastCalculation);
             }
-        });
-    }
+            
+            menuBtn.classList.add('pulse-once');
+            setTimeout(() => menuBtn.classList.remove('pulse-once'), 600);
+            
+        } catch (error) {
+            console.error('Ошибка генерации меню:', error);
+            showNotification('Ошибка при генерации меню. Попробуйте позже.', 'error');
+            
+            if (mealModal && mealModal.modal) {
+                mealModal.hide();
+            }
+        }
+    });
+}
+
 
     // Слушаем событие обновления блюда
     document.addEventListener('requestMealRefresh', async (e) => {
