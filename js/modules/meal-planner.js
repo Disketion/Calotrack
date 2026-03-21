@@ -42,36 +42,40 @@ class MealPlanner {
             return currentDiff < bestDiff ? current : best;
         });
     }
+    
+   // public/js/modules/meal-planner.js - добавьте проверки в generateDailyMenu
 
-    /**
-     * Генерация дневного меню
-     */
-    generateDailyMenu(calories, bmi, goal) {
-        if (!this.database.isReady()) {
-            console.error('База данных не готова');
-            return null;
-        }
+generateDailyMenu(calories, bmi, goal) {
+    if (!this.database.isReady()) {
+        console.error('База данных не готова');
+        return null;
+    }
+    
+    const healthProfile = this.getHealthProfile(bmi);
+    const categories = this.database.getAllCategories();
+    const menu = {
+        healthProfile,
+        bmi,
+        goal,
+        totalCalories: calories,
+        generatedAt: new Date().toISOString(),
+        meals: {}
+    };
+    
+    let totalGeneratedCalories = 0;
+    
+    for (const category of categories) {
+        const categoryInfo = this.database.getCategoryInfo(category);
+        const targetCategoryCalories = calories * (categoryInfo.caloriePercent / 100);
         
-        const healthProfile = this.getHealthProfile(bmi);
-        const categories = this.database.getAllCategories();
-        const menu = {
-            healthProfile,
-            bmi,
-            goal,
-            totalCalories: calories,
-            generatedAt: new Date().toISOString(),
-            meals: {}
-        };
+        // Получаем блюда для категории - ЭТО ВОЗВРАЩАЕТ МАССИВ
+        const meals = this.database.getMealsByCategory(category, healthProfile);
         
-        let totalGeneratedCalories = 0;
-        
-        for (const category of categories) {
-            const categoryInfo = this.database.getCategoryInfo(category);
-            const targetCategoryCalories = calories * (categoryInfo.caloriePercent / 100);
-            const meals = this.database.getMealsByCategory(category, healthProfile);
+        // Проверяем, что meals - это массив
+        if (meals && Array.isArray(meals) && meals.length > 0) {
+            const selectedMeal = this.selectBestMeal(meals, targetCategoryCalories, healthProfile);
             
-            if (meals.length > 0) {
-                const selectedMeal = this.selectBestMeal(meals, targetCategoryCalories, healthProfile);
+            if (selectedMeal) {
                 const multiplier = selectedMeal.healthProfiles?.[healthProfile]?.portionMultiplier || 1;
                 const adjustedCalories = Math.round(selectedMeal.calories * multiplier);
                 
@@ -87,39 +91,17 @@ class MealPlanner {
             } else {
                 menu.meals[category] = null;
             }
+        } else {
+            console.warn(`Нет блюд для категории ${category}`);
+            menu.meals[category] = null;
         }
-        
-        menu.generatedCalories = Math.round(totalGeneratedCalories);
-        menu.calorieDifference = Math.round(menu.generatedCalories - calories);
-        
-        return menu;
     }
-
-    /**
-     * Генерация альтернативного блюда для категории
-     */
-    generateAlternative(category, currentMealId, calories, bmi, goal) {
-        const healthProfile = this.getHealthProfile(bmi);
-        const meals = this.database.getMealsByCategory(category, healthProfile);
-        const categoryInfo = this.database.getCategoryInfo(category);
-        const targetCalories = calories * (categoryInfo.caloriePercent / 100);
-        
-        // Исключаем текущее блюдо
-        const alternativeMeals = meals.filter(meal => meal.id !== currentMealId);
-        
-        if (alternativeMeals.length === 0) return null;
-        
-        const selectedMeal = this.selectBestMeal(alternativeMeals, targetCalories, healthProfile);
-        const multiplier = selectedMeal.healthProfiles?.[healthProfile]?.portionMultiplier || 1;
-        
-        return {
-            ...selectedMeal,
-            originalCalories: selectedMeal.calories,
-            adjustedCalories: Math.round(selectedMeal.calories * multiplier),
-            multiplier,
-            note: selectedMeal.healthProfiles?.[healthProfile]?.note || null
-        };
-    }
+    
+    menu.generatedCalories = Math.round(totalGeneratedCalories);
+    menu.calorieDifference = Math.round(menu.generatedCalories - calories);
+    
+    return menu;
+}
 
     /**
      * Получение рекомендации по питанию
