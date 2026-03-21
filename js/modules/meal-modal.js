@@ -1,4 +1,4 @@
-// public/js/modules/meal-modal.js - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// public/js/modules/meal-modal.js - ПОЛНОСТЬЮ ПЕРЕПИСАНА
 
 class MealModal {
     constructor(renderer) {
@@ -47,9 +47,11 @@ class MealModal {
             closeBtn.addEventListener('click', () => this.hide());
         }
         
-        this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal) this.hide();
-        });
+        if (this.modal) {
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) this.hide();
+            });
+        }
         
         document.addEventListener('refreshMeal', (e) => {
             this.handleRefreshMeal(e.detail);
@@ -68,39 +70,47 @@ class MealModal {
     
     fillModalContent(menuData, userData) {
         const healthBadge = document.getElementById('health-badge');
-        if (healthBadge) {
-            // Получаем healthProfile из menuData
-            const healthProfile = menuData?.healthProfile || 'normal';
-            
-            const profileNames = {
-                obesity: 'Ожирение',
-                overweight: 'Избыточный вес',
-                normal: 'Нормальный вес',
-                underweight: 'Дефицит веса'
-            };
-            
-            const goalNames = {
-                lose: 'Похудение',
-                maintain: 'Поддержание веса',
-                gain: 'Набор массы'
-            };
-            
-            healthBadge.innerHTML = `
-                <h3>🏥 Ваш профиль: ${profileNames[healthProfile] || healthProfile}</h3>
-                <p>📊 ИМТ: ${userData?.bmi?.toFixed(1) || '?'} | 🎯 Цель: ${goalNames[userData?.goal] || userData?.goal || '?'}</p>
-                <p>🔥 Суточная норма: ${menuData?.totalCalories || 0} ккал | 🍽️ Сгенерировано: ${menuData?.generatedCalories || 0} ккал</p>
-                ${menuData?.calorieDifference !== 0 && menuData?.calorieDifference ? `
-                    <div class="special-diet">
-                        ${menuData.calorieDifference > 0 ? '➕' : '➖'} 
-                        Разница: ${Math.abs(menuData.calorieDifference)} ккал
-                    </div>
-                ` : ''}
-            `;
-        }
+        if (!healthBadge) return;
         
-        if (this.renderer) {
-            // Передаем healthProfile из menuData
-            this.renderer.renderMenu(menuData, menuData?.healthProfile || 'normal');
+        // Получаем данные с защитой от undefined
+        const healthProfileValue = menuData ? menuData.healthProfile : 'normal';
+        const totalCaloriesValue = menuData ? menuData.totalCalories : 0;
+        const generatedCaloriesValue = menuData ? menuData.generatedCalories : 0;
+        const calorieDifferenceValue = menuData ? menuData.calorieDifference : 0;
+        
+        const profileNames = {
+            obesity: 'Ожирение',
+            overweight: 'Избыточный вес',
+            normal: 'Нормальный вес',
+            underweight: 'Дефицит веса'
+        };
+        
+        const goalNames = {
+            lose: 'Похудение',
+            maintain: 'Поддержание веса',
+            gain: 'Набор массы'
+        };
+        
+        const bmiValue = userData && userData.bmi ? userData.bmi.toFixed(1) : '?';
+        const goalValue = userData && userData.goal ? goalNames[userData.goal] || userData.goal : '?';
+        
+        healthBadge.innerHTML = `
+            <h3>🏥 Ваш профиль: ${profileNames[healthProfileValue] || healthProfileValue}</h3>
+            <p>📊 ИМТ: ${bmiValue} | 🎯 Цель: ${goalValue}</p>
+            <p>🔥 Суточная норма: ${totalCaloriesValue} ккал | 🍽️ Сгенерировано: ${generatedCaloriesValue} ккал</p>
+            ${calorieDifferenceValue !== 0 ? `
+                <div class="special-diet">
+                    ${calorieDifferenceValue > 0 ? '➕' : '➖'} 
+                    Разница: ${Math.abs(calorieDifferenceValue)} ккал
+                </div>
+            ` : ''}
+        `;
+        
+        if (this.renderer && menuData) {
+            this.renderer.renderMenu(menuData, healthProfileValue);
+        } else if (this.renderer) {
+            // Если нет menuData, создаем пустое меню
+            this.renderer.renderMenu({ meals: {} }, 'normal');
         }
     }
     
@@ -137,13 +147,15 @@ class MealModal {
             `;
         }
         
-        this.modal.classList.add('active');
-        this.isOpen = true;
-        document.body.style.overflow = 'hidden';
+        if (this.modal) {
+            this.modal.classList.add('active');
+            this.isOpen = true;
+            document.body.style.overflow = 'hidden';
+        }
     }
     
     animateIn() {
-        const container = this.modal?.querySelector('.modal-container');
+        const container = this.modal ? this.modal.querySelector('.modal-container') : null;
         if (container) {
             container.style.transform = 'scale(0.95)';
             setTimeout(() => {
@@ -153,12 +165,13 @@ class MealModal {
     }
     
     handleRefreshMeal(detail) {
-        const { category, currentMealId } = detail;
+        const category = detail ? detail.category : null;
+        const currentMealId = detail ? detail.currentMealId : null;
         
         const refreshEvent = new CustomEvent('requestMealRefresh', {
             detail: {
-                category,
-                currentMealId,
+                category: category,
+                currentMealId: currentMealId,
                 menuData: this.currentMenu
             }
         });
@@ -166,7 +179,8 @@ class MealModal {
     }
     
     handleSaveMenu(detail) {
-        const { menu } = detail;
+        const menu = detail ? detail.menu : null;
+        if (!menu) return;
         
         const savedMenus = JSON.parse(localStorage.getItem('savedMenus') || '[]');
         savedMenus.unshift({
