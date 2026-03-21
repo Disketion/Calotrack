@@ -1,4 +1,4 @@
-// public/js/modules/meal-modal.js - ПОЛНОСТЬЮ ПЕРЕПИСАНА
+// js/modules/meal-modal.js - ИСПРАВЛЕННАЯ ВЕРСИЯ
 
 class MealModal {
     constructor(renderer) {
@@ -72,44 +72,55 @@ class MealModal {
         const healthBadge = document.getElementById('health-badge');
         if (!healthBadge) return;
         
-        // Получаем данные с защитой от undefined
-        const healthProfileValue = menuData ? menuData.healthProfile : 'normal';
-        const totalCaloriesValue = menuData ? menuData.totalCalories : 0;
-        const generatedCaloriesValue = menuData ? menuData.generatedCalories : 0;
-        const calorieDifferenceValue = menuData ? menuData.calorieDifference : 0;
+        // Безопасно получаем значения - НЕТ ПЕРЕМЕННОЙ healthProfile
+        let profileName = 'Нормальный вес';
+        let profileIcon = '✅';
         
-        const profileNames = {
-            obesity: 'Ожирение',
-            overweight: 'Избыточный вес',
-            normal: 'Нормальный вес',
-            underweight: 'Дефицит веса'
-        };
+        if (menuData && menuData.healthProfile) {
+            const profile = menuData.healthProfile;
+            if (profile === 'obesity') {
+                profileName = 'Ожирение';
+                profileIcon = '⚠️';
+            } else if (profile === 'overweight') {
+                profileName = 'Избыточный вес';
+                profileIcon = '📊';
+            } else if (profile === 'normal') {
+                profileName = 'Нормальный вес';
+                profileIcon = '✅';
+            } else if (profile === 'underweight') {
+                profileName = 'Дефицит веса';
+                profileIcon = '⚡';
+            }
+        }
         
-        const goalNames = {
-            lose: 'Похудение',
-            maintain: 'Поддержание веса',
-            gain: 'Набор массы'
-        };
+        let goalName = 'Поддержание веса';
+        if (userData && userData.goal) {
+            if (userData.goal === 'lose') goalName = 'Похудение';
+            else if (userData.goal === 'gain') goalName = 'Набор массы';
+            else goalName = 'Поддержание веса';
+        }
         
-        const bmiValue = userData && userData.bmi ? userData.bmi.toFixed(1) : '?';
-        const goalValue = userData && userData.goal ? goalNames[userData.goal] || userData.goal : '?';
+        const bmiValue = (userData && userData.bmi) ? userData.bmi.toFixed(1) : '?';
+        const totalCalories = (menuData && menuData.totalCalories) ? menuData.totalCalories : 0;
+        const generatedCalories = (menuData && menuData.generatedCalories) ? menuData.generatedCalories : 0;
+        const calorieDiff = (menuData && menuData.calorieDifference) ? menuData.calorieDifference : 0;
         
         healthBadge.innerHTML = `
-            <h3>🏥 Ваш профиль: ${profileNames[healthProfileValue] || healthProfileValue}</h3>
-            <p>📊 ИМТ: ${bmiValue} | 🎯 Цель: ${goalValue}</p>
-            <p>🔥 Суточная норма: ${totalCaloriesValue} ккал | 🍽️ Сгенерировано: ${generatedCaloriesValue} ккал</p>
-            ${calorieDifferenceValue !== 0 ? `
+            <h3>${profileIcon} Ваш профиль: ${profileName}</h3>
+            <p>📊 ИМТ: ${bmiValue} | 🎯 Цель: ${goalName}</p>
+            <p>🔥 Суточная норма: ${totalCalories} ккал | 🍽️ Сгенерировано: ${generatedCalories} ккал</p>
+            ${calorieDiff !== 0 ? `
                 <div class="special-diet">
-                    ${calorieDifferenceValue > 0 ? '➕' : '➖'} 
-                    Разница: ${Math.abs(calorieDifferenceValue)} ккал
+                    ${calorieDiff > 0 ? '➕' : '➖'} 
+                    Разница: ${Math.abs(calorieDiff)} ккал
                 </div>
             ` : ''}
         `;
         
         if (this.renderer && menuData) {
+            const healthProfileValue = menuData.healthProfile || 'normal';
             this.renderer.renderMenu(menuData, healthProfileValue);
         } else if (this.renderer) {
-            // Если нет menuData, создаем пустое меню
             this.renderer.renderMenu({ meals: {} }, 'normal');
         }
     }
