@@ -10,7 +10,7 @@
   --bg-color: #f7f9fc;
   --text-color: #222;
   --card-bg: #fff;
-  --border-color: #ddd;
+  --border-color: #e2e8f0;
   --primary-color: #4caf50;
   --secondary-color: #43a047;
   --accent-color: #2e7d32;
@@ -25,7 +25,7 @@
   --bg-color: #1a1a1a;
   --text-color: #e0e0e0;
   --card-bg: #2d2d2d;
-  --border-color: #444;
+  --border-color: #404040;
   --primary-color: #66bb6a;
   --secondary-color: #4caf50;
   --accent-color: #81c784;
@@ -404,35 +404,47 @@ button:active {
   animation: fadeIn 0.8s ease-out 0.4s both;
 }
 
+.activity-slider-wrapper {
+  margin-top: 15px;
+  position: relative;
+}
+
+.activity-slider-value {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 6px;
-  border-radius: 10px;
+  height: 4px;
+  border-radius: 2px;
   background: var(--border-color);
   outline: none;
   cursor: pointer;
-  margin-top: 10px;
-  margin-bottom: 12px;
-  transition: all 0.3s ease;
+  margin: 15px 0 5px 0;
+  transition: all 0.2s ease;
 }
 
-input[type="range"]:hover {
-  opacity: 0.9;
+input[type="range"]:focus {
+  outline: none;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background: var(--primary-color);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--card-bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
@@ -441,14 +453,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background: var(--primary-color);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--card-bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 input[type="range"]::-moz-range-thumb:hover {
@@ -456,19 +468,32 @@ input[type="range"]::-moz-range-thumb:hover {
   background: var(--secondary-color);
 }
 
-input[type="range"]:focus {
-  outline: none;
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
 }
 
 .activity-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  margin-top: 12px;
+  padding: 0 4px;
+}
+
+.activity-labels span {
+  font-size: 10px;
   color: var(--text-color);
-  user-select: none;
+  opacity: 0.6;
   font-weight: 500;
-  margin-top: 8px;
-  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .product-grid {
@@ -1032,6 +1057,10 @@ h2 {
     width: 70px;
     height: 70px;
   }
+  
+  .activity-labels span {
+    font-size: 8px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1063,6 +1092,10 @@ h2 {
   .product-button img {
     width: 60px;
     height: 60px;
+  }
+  
+  .activity-labels span {
+    font-size: 7px;
   }
 }
 
