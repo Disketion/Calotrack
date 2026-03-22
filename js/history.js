@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (statsCount) statsCount.textContent = `${percent}%`;
     if (statsFill) statsFill.style.width = `${percent}%`;
     
-    // Статистика достижения целей (простая логика)
     const goalAchieved = history.filter(entry => {
       const calories = entry.calories;
       return (calories >= 1800 && calories <= 2500);
@@ -93,34 +92,96 @@ document.addEventListener('DOMContentLoaded', () => {
     if (statsGoalFill) statsGoalFill.style.width = `${goalPercent}%`;
   }
 
+  function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast-notification ${type}`;
+    toast.innerHTML = `
+      <div class="toast-icon">${type === 'success' ? '✅' : '🗑️'}</div>
+      <div class="toast-message">${message}</div>
+    `;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 10);
+    
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       if (confirm('Вы уверены, что хотите очистить всю историю расчётов?')) {
         localStorage.removeItem('caloHistory');
         loadHistory();
         updateStats();
-        
-        const notification = document.createElement('div');
-        notification.className = 'theme-notification success';
-        notification.innerHTML = `
-          <strong>✅ История очищена!</strong>
-          <p>Все записи удалены</p>
-        `;
-
-        document.body.appendChild(notification);
-
-        const clearBtnRect = clearBtn.getBoundingClientRect();
-        notification.style.top = `${clearBtnRect.bottom + 10}px`;
-        notification.style.left = `${clearBtnRect.left}px`;
-
-        setTimeout(() => {
-          notification.style.opacity = '0';
-          notification.style.transform = 'translateY(-10px)';
-          setTimeout(() => notification.remove(), 300);
-        }, 3000);
+        showToast('История расчётов очищена', 'success');
       }
     });
   }
+
+  const toastStyle = document.createElement('style');
+  toastStyle.textContent = `
+    .toast-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        padding: 12px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 4px solid var(--primary-color);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+    
+    .toast-notification.success {
+        border-left-color: #4caf50;
+    }
+    
+    .toast-notification.error {
+        border-left-color: #e53935;
+    }
+    
+    .toast-notification.warning {
+        border-left-color: #ff9800;
+    }
+    
+    .toast-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+    
+    .toast-message {
+        flex: 1;
+    }
+    
+    @media (max-width: 768px) {
+        .toast-notification {
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+            padding: 10px 16px;
+        }
+    }
+  `;
+  document.head.appendChild(toastStyle);
 
   const style = document.createElement('style');
   style.textContent = `
