@@ -1,5 +1,3 @@
-// js/modules/meal-modal.js
-
 class MealModal {
     constructor(renderer) {
         this.renderer = renderer;
@@ -206,77 +204,26 @@ class MealModal {
     }
     
     showNotification(message) {
-        const notification = document.createElement('div');
-        notification.className = 'toast-notification success';
-        notification.innerHTML = `
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification success';
+        toast.innerHTML = `
             <div class="toast-icon">✅</div>
             <div class="toast-message">${message}</div>
         `;
         
-        document.body.appendChild(notification);
+        document.body.appendChild(toast);
         
         setTimeout(() => {
-            notification.classList.add('show');
+            toast.classList.add('show');
         }, 10);
         
         setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => notification.remove(), 300);
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
         }, 3000);
     }
 }
 
-const toastStyle = document.createElement('style');
-toastStyle.textContent = `
-    .toast-notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--card-bg);
-        color: var(--text-color);
-        padding: 12px 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 14px;
-        font-weight: 500;
-        border-left: 4px solid var(--primary-color);
-        transform: translateX(400px);
-        transition: transform 0.3s ease;
-        max-width: 300px;
-        backdrop-filter: blur(10px);
-    }
-    
-    .toast-notification.show {
-        transform: translateX(0);
-    }
-    
-    .toast-notification.success {
-        border-left-color: #4caf50;
-    }
-    
-    .toast-icon {
-        font-size: 18px;
-        flex-shrink: 0;
-    }
-    
-    .toast-message {
-        flex: 1;
-    }
-    
-    @media (max-width: 768px) {
-        .toast-notification {
-            bottom: 10px;
-            right: 10px;
-            left: 10px;
-            max-width: none;
-            padding: 10px 16px;
-        }
-    }
-`;
-document.head.appendChild(toastStyle);
-
-window.MealModal = MealModal;
+if (typeof window !== 'undefined') {
+    window.MealModal = MealModal;
+}
