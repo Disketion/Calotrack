@@ -292,3 +292,276 @@
     font-size: 0.8rem;
   }
 }
+/* ========== CSS ЗАГЛУШКИ ДЛЯ ИЗОБРАЖЕНИЙ ========== */
+
+/* Обёртка для картинки */
+.meal-card-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--bg-color) 0%, var(--card-bg) 100%);
+}
+
+.meal-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.meal-card:hover .meal-card-image {
+    transform: scale(1.05);
+}
+
+/* CSS-заглушка для карточки */
+.meal-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .meal-placeholder {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+}
+
+.meal-placeholder-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.placeholder-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.meal-card:hover .placeholder-icon {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.placeholder-emoji {
+    font-size: 40px;
+}
+
+.placeholder-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.placeholder-text {
+    font-size: 12px;
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+/* Анимация пульсации для плейсхолдера */
+@keyframes placeholderPulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+.meal-placeholder:hover .placeholder-icon {
+    animation: placeholderPulse 1s ease-in-out;
+}
+
+/* ========== CSS ЗАГЛУШКИ ДЛЯ ДЕТАЛЬНОГО МОДАЛЬНОГО ОКНА ========== */
+
+.meal-detail-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--bg-color) 0%, var(--card-bg) 100%);
+    border-radius: 20px 20px 0 0;
+}
+
+.meal-detail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.meal-detail-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+[data-theme="dark"] .meal-detail-placeholder {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+}
+
+.meal-detail-placeholder-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.detail-placeholder-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.detail-placeholder-emoji {
+    font-size: 50px;
+}
+
+.detail-placeholder-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.detail-placeholder-text {
+    font-size: 14px;
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+/* Анимация для детальной заглушки */
+@keyframes gentlePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.meal-detail-placeholder:hover .detail-placeholder-icon {
+    animation: gentlePulse 1s ease-in-out;
+}
+
+/* Бейдж модификации порции */
+.meal-modified-badge {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.meal-original {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-left: 4px;
+    text-decoration: line-through;
+}
+
+.meal-note {
+    background: var(--bg-color);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin: 10px 0;
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Пустое состояние */
+.meal-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.meal-empty p {
+    margin: 10px 0;
+}
+
+/* Адаптивность для заглушек */
+@media (max-width: 768px) {
+    .meal-card-image-wrapper {
+        height: 180px;
+    }
+    
+    .placeholder-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .placeholder-emoji {
+        font-size: 30px;
+    }
+    
+    .placeholder-title {
+        font-size: 14px;
+    }
+    
+    .placeholder-text {
+        font-size: 10px;
+    }
+    
+    .meal-detail-image-wrapper {
+        height: 200px;
+    }
+    
+    .detail-placeholder-icon {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .detail-placeholder-emoji {
+        font-size: 35px;
+    }
+    
+    .detail-placeholder-title {
+        font-size: 16px;
+    }
+    
+    .detail-placeholder-text {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .meal-card-image-wrapper {
+        height: 150px;
+    }
+    
+    .placeholder-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .placeholder-emoji {
+        font-size: 25px;
+    }
+}
