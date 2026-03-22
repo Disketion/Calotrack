@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     let mealModal = null;
     let lastCalculation = null;
 
-    // Инициализация модулей меню
     try {
         mealDatabase = new MealDatabase();
         await mealDatabase.init();
@@ -27,7 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Ошибка инициализации модулей меню:', error);
     }
 
-    // Плагин для анимированных диаграмм
     const animatedDataLabelPlugin = {
         id: 'animatedDataLabel',
         afterDatasetsDraw(chart) {
@@ -54,7 +52,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
     };
 
-    // Анимация появления формы
     animateFormElements();
 
     function animateFormElements() {
@@ -103,7 +100,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Расчет BMR
         let bmr = gender === 'male'
             ? 10 * weight + 6.25 * height - 5 * age + 5
             : 10 * weight + 6.25 * height - 5 * age - 161;
@@ -117,7 +113,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const calories = Math.round(tdee);
 
-        // Расчет БЖУ
         let proteinPerKg, fatPerKg, carbPerKg;
         switch (goal) {
             case 'lose':
@@ -134,7 +129,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const fatGrams = Math.round(weight * fatPerKg);
         const carbGrams = Math.round(weight * carbPerKg);
 
-        // Расчет ИМТ
         const heightM = height / 100;
         const bmi = +(weight / (heightM * heightM)).toFixed(1);
         let bmiStatus = '';
@@ -163,7 +157,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             bmiColor = '#b71c1c';
         }
 
-        // Сохраняем данные для генерации меню
         lastCalculation = {
             calories,
             proteinGrams,
@@ -180,16 +173,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             bmiColor
         };
 
-        // Показываем результаты
         showResults(calories, proteinGrams, fatGrams, carbGrams, bmi, bmiStatus, bmiColor);
         
-        // Создание графиков
         createAnimatedCharts(proteinGrams, fatGrams, carbGrams, weight, bmr, activity, calories);
         
-        // Сохранение в историю
         saveToHistory(calories, proteinGrams, fatGrams, carbGrams);
         
-        // Показываем кнопку меню
         if (menuBtn && mealDatabase && mealDatabase.isReady()) {
             menuBtn.style.display = 'block';
             menuBtn.classList.add('pulse-once');
@@ -422,7 +411,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, 3000);
     }
 
-    // Обработчик кнопки генерации меню
     if (menuBtn) {
         menuBtn.addEventListener('click', async () => {
             if (!lastCalculation) {
@@ -476,7 +464,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Слушаем событие обновления блюда
     document.addEventListener('requestMealRefresh', async (e) => {
         const { category, currentMealId, menuData } = e.detail;
         
@@ -503,7 +490,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Улучшение для мобильного ввода
     const numberInputs = document.querySelectorAll('input[type="number"]');
     numberInputs.forEach(input => {
         input.addEventListener('focus', function() {
@@ -514,7 +500,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // Анимация для кнопок продуктов
     const productButtons = document.querySelectorAll('.product-button');
     productButtons.forEach(button => {
         button.addEventListener('click', function(e) {
@@ -526,7 +511,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // Анимация ползунка
     const activitySlider = document.getElementById('activity');
     if (activitySlider) {
         activitySlider.addEventListener('input', function() {
@@ -564,63 +548,6 @@ style.textContent = `
     .menu-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
-    }
-    
-    .toast-notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--card-bg);
-        color: var(--text-color);
-        padding: 12px 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 14px;
-        font-weight: 500;
-        border-left: 4px solid var(--primary-color);
-        transform: translateX(400px);
-        transition: transform 0.3s ease;
-        max-width: 300px;
-        backdrop-filter: blur(10px);
-    }
-    
-    .toast-notification.show {
-        transform: translateX(0);
-    }
-    
-    .toast-notification.success {
-        border-left-color: #4caf50;
-    }
-    
-    .toast-notification.error {
-        border-left-color: #e53935;
-    }
-    
-    .toast-notification.warning {
-        border-left-color: #ff9800;
-    }
-    
-    .toast-icon {
-        font-size: 18px;
-        flex-shrink: 0;
-    }
-    
-    .toast-message {
-        flex: 1;
-    }
-    
-    @media (max-width: 768px) {
-        .toast-notification {
-            bottom: 10px;
-            right: 10px;
-            left: 10px;
-            max-width: none;
-            padding: 10px 16px;
-        }
     }
 `;
 document.head.appendChild(style);
