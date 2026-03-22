@@ -94,22 +94,5 @@
   </footer>
 
   <script src="js/theme-manager.js"></script>
-  <script>
-    // Добавляем тултипы для продуктов
-    document.querySelectorAll('.product-button').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const tooltip = this.querySelector('.product-tooltip');
-        if (tooltip) {
-          tooltip.style.opacity = '1';
-          tooltip.style.visibility = 'visible';
-          setTimeout(() => {
-            tooltip.style.opacity = '0';
-            tooltip.style.visibility = 'hidden';
-          }, 2000);
-        }
-      });
-    });
-  </script>
 </body>
 </html>
