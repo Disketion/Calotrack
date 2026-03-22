@@ -1,4 +1,4 @@
-// js/modules/meal-modal.js - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// js/modules/meal-modal.js
 
 class MealModal {
     constructor(renderer) {
@@ -72,7 +72,6 @@ class MealModal {
         const healthBadge = document.getElementById('health-badge');
         if (!healthBadge) return;
         
-        // Безопасно получаем значения - НЕТ ПЕРЕМЕННОЙ healthProfile
         let profileName = 'Нормальный вес';
         let profileIcon = '✅';
         
@@ -203,35 +202,81 @@ class MealModal {
         if (savedMenus.length > 10) savedMenus.pop();
         localStorage.setItem('savedMenus', JSON.stringify(savedMenus));
         
-        this.showNotification('✅ Меню сохранено в историю!');
+        this.showNotification('Меню сохранено в историю!');
     }
     
     showNotification(message) {
         const notification = document.createElement('div');
-        notification.className = 'theme-notification success';
-        notification.innerHTML = `<strong>${message}</strong>`;
-        notification.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--card-bg);
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: var(--shadow-hover);
-            z-index: 2100;
-            animation: slideIn 0.5s ease-out;
-            border-left: 4px solid var(--primary-color);
-            top: auto;
+        notification.className = 'toast-notification success';
+        notification.innerHTML = `
+            <div class="toast-icon">✅</div>
+            <div class="toast-message">${message}</div>
         `;
         
         document.body.appendChild(notification);
         
         setTimeout(() => {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateY(-10px)';
+            notification.classList.add('show');
+        }, 10);
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);
         }, 3000);
     }
 }
+
+const toastStyle = document.createElement('style');
+toastStyle.textContent = `
+    .toast-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        padding: 12px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 4px solid var(--primary-color);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+    
+    .toast-notification.success {
+        border-left-color: #4caf50;
+    }
+    
+    .toast-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+    
+    .toast-message {
+        flex: 1;
+    }
+    
+    @media (max-width: 768px) {
+        .toast-notification {
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+            padding: 10px 16px;
+        }
+    }
+`;
+document.head.appendChild(toastStyle);
 
 window.MealModal = MealModal;
