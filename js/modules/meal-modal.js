@@ -224,6 +224,71 @@ class MealModal {
     }
 }
 
+const toastStyle = document.createElement('style');
+toastStyle.textContent = `
+    .toast-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        padding: 12px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 4px solid var(--primary-color);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+    
+    .toast-notification.success {
+        border-left-color: #4caf50;
+    }
+    
+    .toast-notification.error {
+        border-left-color: #e53935;
+    }
+    
+    .toast-notification.warning {
+        border-left-color: #ff9800;
+    }
+    
+    .toast-notification.info {
+        border-left-color: #2196f3;
+    }
+    
+    .toast-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+    
+    .toast-message {
+        flex: 1;
+    }
+    
+    @media (max-width: 768px) {
+        .toast-notification {
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+            padding: 10px 16px;
+        }
+    }
+`;
+document.head.appendChild(toastStyle);
+
 if (typeof window !== 'undefined') {
     window.MealModal = MealModal;
 }
