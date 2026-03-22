@@ -512,32 +512,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
-const style = document.createElement('style');
-style.textContent = `
-    .calc-group {
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInUp 0.6s ease-out forwards;
-    }
-    
-    @keyframes fadeInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .fadeIn {
-        animation: fadeIn 0.6s ease-out forwards;
-    }
-    
-    .menu-btn {
-        transition: all 0.3s ease;
-    }
-    
-    .menu-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
-    }
-`;
-document.head.appendChild(style);
