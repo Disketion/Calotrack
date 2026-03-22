@@ -1,3 +1,5 @@
+// js/modules/meal-renderer.js
+
 class MealRenderer {
     constructor() {
         this.currentCategory = 'breakfast';
@@ -9,44 +11,44 @@ class MealRenderer {
      * Отрисовка всего меню
      */
     renderMenu(menuData, healthProfile) {
-        this.currentMenu = menuData;
-        this.currentHealthProfile = healthProfile;
-        
-        const container = document.getElementById('meal-content');
-        if (!container) return;
-        
-        // Проверяем, что menuData существует
-        if (!menuData || !menuData.meals) {
-            container.innerHTML = `
-                <div class="meal-empty">
-                    <p>😔 Ошибка: не удалось загрузить меню</p>
-                    <p>Попробуйте сгенерировать снова</p>
-                </div>
-            `;
-            return;
-        }
-        
-        const tabsHtml = this.renderTabs();
-        const mealsHtml = this.renderMealGrid(this.currentCategory);
-        
+    this.currentMenu = menuData;
+    this.currentHealthProfile = healthProfile;
+    
+    const container = document.getElementById('meal-content');
+    if (!container) return;
+    
+    // Проверяем, что menuData существует
+    if (!menuData || !menuData.meals) {
         container.innerHTML = `
-            ${tabsHtml}
-            <div class="meal-grid-container">
-                ${mealsHtml}
-            </div>
-            <div class="meal-actions">
-                <button class="refresh-meal-btn" id="refresh-meal">
-                    🔄 Другой вариант
-                </button>
-                <button class="save-menu-btn" id="save-menu">
-                    💾 Сохранить меню
-                </button>
+            <div class="meal-empty">
+                <p>😔 Ошибка: не удалось загрузить меню</p>
+                <p>Попробуйте сгенерировать снова</p>
             </div>
         `;
-        
-        this.setupTabListeners();
-        this.setupActionListeners();
+        return;
     }
+    
+    const tabsHtml = this.renderTabs();
+    const mealsHtml = this.renderMealGrid(this.currentCategory);
+    
+    container.innerHTML = `
+        ${tabsHtml}
+        <div class="meal-grid-container">
+            ${mealsHtml}
+        </div>
+        <div class="meal-actions">
+            <button class="refresh-meal-btn" id="refresh-meal">
+                🔄 Другой вариант
+            </button>
+            <button class="save-menu-btn" id="save-menu">
+                💾 Сохранить меню
+            </button>
+        </div>
+    `;
+    
+    this.setupTabListeners();
+    this.setupActionListeners();
+}
     
     /**
      * Отрисовка табов
@@ -93,53 +95,25 @@ class MealRenderer {
     }
     
     /**
-     * Отрисовка карточки блюда с CSS-заглушкой
+     * Отрисовка карточки блюда
      */
     renderMealCard(meal, category) {
         const multiplier = meal.multiplier || 1;
         const isModified = multiplier !== 1;
         const note = meal.note;
         
-        // Генерируем цвет для иконки на основе названия блюда
-        const iconColor = this.getColorFromName(meal.name);
-        const iconEmoji = this.getEmojiForMeal(category);
-        const hasImage = meal.image && meal.image !== '';
-        
         return `
             <div class="meal-card" data-meal-id="${meal.id}" data-category="${category}">
-                <div class="meal-card-image-wrapper">
-                    ${hasImage ? `
-                        <img src="${meal.image}" 
-                             alt="${meal.name}" 
-                             class="meal-card-image"
-                             onerror="this.style.display='none'; this.parentElement.querySelector('.meal-placeholder').style.display='flex';">
-                        <div class="meal-placeholder" style="display: none;">
-                            <div class="meal-placeholder-content">
-                                <div class="placeholder-icon" style="background: ${iconColor}20;">
-                                    <span class="placeholder-emoji">${iconEmoji}</span>
-                                </div>
-                                <div class="placeholder-title">${meal.name}</div>
-                                <div class="placeholder-text">Фото скоро появится</div>
-                            </div>
-                        </div>
-                    ` : `
-                        <div class="meal-placeholder" style="display: flex;">
-                            <div class="meal-placeholder-content">
-                                <div class="placeholder-icon" style="background: ${iconColor}20;">
-                                    <span class="placeholder-emoji">${iconEmoji}</span>
-                                </div>
-                                <div class="placeholder-title">${meal.name}</div>
-                                <div class="placeholder-text">Фото скоро появится</div>
-                            </div>
-                        </div>
-                    `}
-                </div>
+                <img src="${meal.image || 'img/placeholder-meal.jpg'}" 
+                     alt="${meal.name}" 
+                     class="meal-card-image"
+                     onerror="this.src='img/placeholder-meal.jpg'">
                 <div class="meal-card-content">
                     <h4>${meal.name}</h4>
                     
                     ${isModified ? `
                         <div class="meal-modified-badge">
-                            ⚡ Порция скорректирована (${Math.round(multiplier * 100)}%)
+                            ⚡ Порция скорректирована (${multiplier * 100}%)
                         </div>
                     ` : ''}
                     
@@ -175,48 +149,6 @@ class MealRenderer {
                 </div>
             </div>
         `;
-    }
-    
-    /**
-     * Получить цвет для иконки на основе названия блюда
-     */
-    getColorFromName(name) {
-        const colors = {
-            'овсянк': '#4caf50',
-            'омлет': '#ff9800',
-            'творог': '#2196f3',
-            'гречн': '#795548',
-            'курин': '#8bc34a',
-            'рыб': '#00bcd4',
-            'индейк': '#ff5722',
-            'салат': '#cddc39',
-            'семг': '#e91e63',
-            'тофу': '#9c27b0',
-            'йогурт': '#ffc107',
-            'яблок': '#f44336',
-            'протеин': '#3f51b5'
-        };
-        
-        const lowerName = name.toLowerCase();
-        for (const [key, color] of Object.entries(colors)) {
-            if (lowerName.includes(key)) {
-                return color;
-            }
-        }
-        return '#4caf50';
-    }
-    
-    /**
-     * Получить эмодзи для категории блюда
-     */
-    getEmojiForMeal(category) {
-        const emojis = {
-            breakfast: '🍳',
-            lunch: '🍲',
-            dinner: '🌙',
-            snack: '🍎'
-        };
-        return emojis[category] || '🍽️';
     }
     
     /**
@@ -283,46 +215,19 @@ class MealRenderer {
     }
     
     /**
-     * Показ деталей блюда с CSS-заглушкой
+     * Показ деталей блюда
      */
     showMealDetails(meal) {
         const multiplier = meal.multiplier || 1;
-        const iconColor = this.getColorFromName(meal.name);
-        const iconEmoji = this.getEmojiForMeal(meal.category);
-        const hasImage = meal.image && meal.image !== '';
         
         const modalHtml = `
             <div class="meal-detail-modal" id="meal-detail-modal">
                 <div class="meal-detail-content">
                     <button class="close-detail" id="close-detail">✖</button>
-                    
-                    <div class="meal-detail-image-wrapper">
-                        ${hasImage ? `
-                            <img src="${meal.image}" 
-                                 alt="${meal.name}" 
-                                 class="meal-detail-image"
-                                 onerror="this.style.display='none'; this.parentElement.querySelector('.meal-detail-placeholder').style.display='flex';">
-                            <div class="meal-detail-placeholder" style="display: none;">
-                                <div class="meal-detail-placeholder-content">
-                                    <div class="detail-placeholder-icon" style="background: ${iconColor}20;">
-                                        <span class="detail-placeholder-emoji">${iconEmoji}</span>
-                                    </div>
-                                    <div class="detail-placeholder-title">${meal.name}</div>
-                                    <div class="detail-placeholder-text">Изображение временно отсутствует</div>
-                                </div>
-                            </div>
-                        ` : `
-                            <div class="meal-detail-placeholder" style="display: flex;">
-                                <div class="meal-detail-placeholder-content">
-                                    <div class="detail-placeholder-icon" style="background: ${iconColor}20;">
-                                        <span class="detail-placeholder-emoji">${iconEmoji}</span>
-                                    </div>
-                                    <div class="detail-placeholder-title">${meal.name}</div>
-                                    <div class="detail-placeholder-text">Изображение временно отсутствует</div>
-                                </div>
-                            </div>
-                        `}
-                    </div>
+                    <img src="${meal.image || 'img/placeholder-meal.jpg'}" 
+                         alt="${meal.name}" 
+                         class="meal-detail-image"
+                         onerror="this.src='img/placeholder-meal.jpg'">
                     
                     <h2>${meal.name}</h2>
                     
