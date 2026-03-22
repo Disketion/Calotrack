@@ -404,83 +404,77 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `<strong>${type === 'success' ? '✅' : 'ℹ️'} ${message}</strong>`;
-        notification.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--card-bg);
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: var(--shadow-hover);
-            z-index: 2000;
-            animation: slideIn 0.5s ease-out;
-            border-left: 4px solid var(--primary-color);
+        notification.className = `toast-notification ${type}`;
+        notification.innerHTML = `
+            <div class="toast-icon">${type === 'success' ? '✅' : 'ℹ️'}</div>
+            <div class="toast-message">${message}</div>
         `;
 
         document.body.appendChild(notification);
 
         setTimeout(() => {
-            notification.style.animation = 'slideIn 0.5s ease-out reverse';
-            setTimeout(() => notification.remove(), 500);
+            notification.classList.add('show');
+        }, 10);
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
         }, 3000);
     }
 
     // Обработчик кнопки генерации меню
-if (menuBtn) {
-    menuBtn.addEventListener('click', async () => {
-        if (!lastCalculation) {
-            showNotification('Сначала выполните расчет калорий!', 'warning');
-            return;
-        }
-        
-        if (!mealDatabase || !mealDatabase.isReady || !mealDatabase.isReady()) {
-            showNotification('База данных меню загружается, попробуйте через секунду', 'warning');
-            return;
-        }
-        
-        try {
-            if (mealModal) {
-                mealModal.showLoading();
+    if (menuBtn) {
+        menuBtn.addEventListener('click', async () => {
+            if (!lastCalculation) {
+                showNotification('Сначала выполните расчет калорий!', 'warning');
+                return;
             }
             
-            console.log('Генерация меню для:', {
-                calories: lastCalculation.calories,
-                bmi: lastCalculation.bmi,
-                goal: lastCalculation.goal
-            });
-            
-            const menu = mealPlanner.generateDailyMenu(
-                lastCalculation.calories,
-                lastCalculation.bmi,
-                lastCalculation.goal
-            );
-            
-            console.log('Сгенерированное меню:', menu);
-            
-            if (!menu) {
-                throw new Error('Не удалось сгенерировать меню');
+            if (!mealDatabase || !mealDatabase.isReady || !mealDatabase.isReady()) {
+                showNotification('База данных меню загружается, попробуйте через секунду', 'warning');
+                return;
             }
             
-            if (mealModal) {
-                mealModal.show(menu, lastCalculation);
+            try {
+                if (mealModal) {
+                    mealModal.showLoading();
+                }
+                
+                console.log('Генерация меню для:', {
+                    calories: lastCalculation.calories,
+                    bmi: lastCalculation.bmi,
+                    goal: lastCalculation.goal
+                });
+                
+                const menu = mealPlanner.generateDailyMenu(
+                    lastCalculation.calories,
+                    lastCalculation.bmi,
+                    lastCalculation.goal
+                );
+                
+                console.log('Сгенерированное меню:', menu);
+                
+                if (!menu) {
+                    throw new Error('Не удалось сгенерировать меню');
+                }
+                
+                if (mealModal) {
+                    mealModal.show(menu, lastCalculation);
+                }
+                
+                menuBtn.classList.add('pulse-once');
+                setTimeout(() => menuBtn.classList.remove('pulse-once'), 600);
+                
+            } catch (error) {
+                console.error('Ошибка генерации меню:', error);
+                showNotification('Ошибка при генерации меню. Попробуйте позже.', 'error');
+                
+                if (mealModal && mealModal.modal) {
+                    mealModal.hide();
+                }
             }
-            
-            menuBtn.classList.add('pulse-once');
-            setTimeout(() => menuBtn.classList.remove('pulse-once'), 600);
-            
-        } catch (error) {
-            console.error('Ошибка генерации меню:', error);
-            showNotification('Ошибка при генерации меню. Попробуйте позже.', 'error');
-            
-            if (mealModal && mealModal.modal) {
-                mealModal.hide();
-            }
-        }
-    });
-}
-
+        });
+    }
 
     // Слушаем событие обновления блюда
     document.addEventListener('requestMealRefresh', async (e) => {
@@ -539,13 +533,11 @@ if (menuBtn) {
             const percent = ((this.value - 1.2) / (1.9 - 1.2)) * 100;
             this.style.background = `linear-gradient(90deg, #4caf50 0%, #81c784 ${percent}%, #aed581 ${percent}%, #dce775 75%, #ffeb3b 100%)`;
         });
-        // Инициализация
         const initialPercent = ((activitySlider.value - 1.2) / (1.9 - 1.2)) * 100;
         activitySlider.style.background = `linear-gradient(90deg, #4caf50 0%, #81c784 ${initialPercent}%, #aed581 ${initialPercent}%, #dce775 75%, #ffeb3b 100%)`;
     }
 });
 
-// CSS анимации для формы
 const style = document.createElement('style');
 style.textContent = `
     .calc-group {
@@ -572,6 +564,63 @@ style.textContent = `
     .menu-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
+    }
+    
+    .toast-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        padding: 12px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 4px solid var(--primary-color);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+    
+    .toast-notification.success {
+        border-left-color: #4caf50;
+    }
+    
+    .toast-notification.error {
+        border-left-color: #e53935;
+    }
+    
+    .toast-notification.warning {
+        border-left-color: #ff9800;
+    }
+    
+    .toast-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+    
+    .toast-message {
+        flex: 1;
+    }
+    
+    @media (max-width: 768px) {
+        .toast-notification {
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+            padding: 10px 16px;
+        }
     }
 `;
 document.head.appendChild(style);
