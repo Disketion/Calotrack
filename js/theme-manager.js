@@ -16,7 +16,6 @@ class ThemeManager {
         localStorage.setItem('theme', theme);
         this.currentTheme = theme;
         
-        // Обновляем цвет meta theme-color для мобильных браузеров
         const metaThemeColor = document.querySelector('meta[name="theme-color"]');
         if (metaThemeColor) {
             metaThemeColor.setAttribute('content', theme === 'dark' ? '#1a1a1a' : '#4caf50');
@@ -27,7 +26,6 @@ class ThemeManager {
         const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
         this.applyTheme(newTheme);
         
-        // Анимация переключения
         document.documentElement.style.transition = 'all 0.5s ease';
         setTimeout(() => {
             document.documentElement.style.transition = '';
@@ -37,7 +35,6 @@ class ThemeManager {
     }
 
     createThemeToggle() {
-        // Удаляем старую кнопку если есть
         const oldToggle = document.querySelector('.theme-toggle');
         if (oldToggle) oldToggle.remove();
 
@@ -60,7 +57,6 @@ class ThemeManager {
                 }
             });
 
-            // Применяем системную тему если нет сохраненной
             if (!localStorage.getItem('theme')) {
                 this.applyTheme(mediaQuery.matches ? 'dark' : 'light');
             }
@@ -68,35 +64,86 @@ class ThemeManager {
     }
 
     showThemeNotification(theme) {
-        // Удаляем старые уведомления
         const oldNotifications = document.querySelectorAll('.theme-notification');
         oldNotifications.forEach(notification => notification.remove());
 
         const notification = document.createElement('div');
-        notification.className = `theme-notification ${theme === 'dark' ? 'success' : 'info'}`;
+        notification.className = `toast-notification ${theme === 'dark' ? 'success' : 'info'}`;
         notification.innerHTML = `
-            <strong>${theme === 'dark' ? '🌙' : '☀️'} Тема изменена</strong>
-            <p>${theme === 'dark' ? 'Тёмная тема включена' : 'Светлая тема включена'}</p>
+            <div class="toast-icon">${theme === 'dark' ? '🌙' : '☀️'}</div>
+            <div class="toast-message">${theme === 'dark' ? 'Тёмная тема включена' : 'Светлая тема включена'}</div>
         `;
 
         document.body.appendChild(notification);
 
-        const toggleBtn = document.querySelector('.theme-toggle');
-        if (toggleBtn) {
-            const toggleRect = toggleBtn.getBoundingClientRect();
-            notification.style.top = `${toggleRect.bottom + 10}px`;
-            notification.style.right = `${window.innerWidth - toggleRect.right}px`;
-        }
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
 
         setTimeout(() => {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateY(-10px)';
+            notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);
         }, 2000);
     }
 }
 
-// Инициализация при загрузке страницы
+const toastStyle = document.createElement('style');
+toastStyle.textContent = `
+    .toast-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        padding: 12px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 4px solid var(--primary-color);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+    
+    .toast-notification.success {
+        border-left-color: #4caf50;
+    }
+    
+    .toast-notification.info {
+        border-left-color: #2196f3;
+    }
+    
+    .toast-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+    
+    .toast-message {
+        flex: 1;
+    }
+    
+    @media (max-width: 768px) {
+        .toast-notification {
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+            padding: 10px 16px;
+        }
+    }
+`;
+document.head.appendChild(toastStyle);
+
 document.addEventListener('DOMContentLoaded', () => {
     new ThemeManager();
 });
