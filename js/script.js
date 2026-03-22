@@ -510,16 +510,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }, 600);
         });
     });
-
-    const activitySlider = document.getElementById('activity');
-    if (activitySlider) {
-        activitySlider.addEventListener('input', function() {
-            const percent = ((this.value - 1.2) / (1.9 - 1.2)) * 100;
-            this.style.background = `linear-gradient(90deg, #4caf50 0%, #81c784 ${percent}%, #aed581 ${percent}%, #dce775 75%, #ffeb3b 100%)`;
-        });
-        const initialPercent = ((activitySlider.value - 1.2) / (1.9 - 1.2)) * 100;
-        activitySlider.style.background = `linear-gradient(90deg, #4caf50 0%, #81c784 ${initialPercent}%, #aed581 ${initialPercent}%, #dce775 75%, #ffeb3b 100%)`;
-    }
 });
 
 const style = document.createElement('style');
