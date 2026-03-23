@@ -16,85 +16,41 @@ class MealPlanner {
     }
 
     /**
-     * Подбор оптимального блюда с учетом цели
-     */
-    selectBestMeal(meals, targetCalories, healthProfile, goal) {
-        if (!meals || meals.length === 0) return null;
-        
-        let suitable = meals;
-        
-        // Для набора массы - НЕ фильтруем по recommended, ищем высококалорийные
-        if (goal === 'gain') {
-            // Берем все блюда, но сортируем по калорийности
-            suitable = [...meals].sort((a, b) => b.calories - a.calories);
-            
-            // Ищем блюда с калорийностью выше целевой
-            const highCalorieMeals = suitable.filter(meal => meal.calories >= targetCalories * 0.8);
-            if (highCalorieMeals.length > 0) {
-                suitable = highCalorieMeals;
-            }
-        } 
-        // Для похудения - фильтруем по recommended
-        else if (goal === 'lose') {
-            suitable = meals.filter(meal => {
-                const profile = meal.healthProfiles?.[healthProfile];
-                return profile && profile.recommended !== false;
-            });
-            
-            if (suitable.length === 0) suitable = meals;
-            
-            // Для похудения выбираем менее калорийные
-            suitable.sort((a, b) => a.calories - b.calories);
-        }
-        // Для поддержания - стандартная логика
-        else {
-            suitable = meals.filter(meal => {
-                const profile = meal.healthProfiles?.[healthProfile];
-                return profile && profile.recommended !== false;
-            });
-            
-            if (suitable.length === 0) suitable = meals;
-        }
-        
-        // Выбираем ближайшее по калориям с учетом множителя порции
-        return suitable.reduce((best, current) => {
-            const currentMultiplier = this.getMealMultiplier(current, healthProfile, goal);
-            const currentCalories = current.calories * currentMultiplier;
-            const bestMultiplier = this.getMealMultiplier(best, healthProfile, goal);
-            const bestCalories = best.calories * bestMultiplier;
-            
-            const currentDiff = Math.abs(currentCalories - targetCalories);
-            const bestDiff = Math.abs(bestCalories - targetCalories);
-            
-            return currentDiff < bestDiff ? current : best;
-        });
-    }
-    
-    /**
      * Получение множителя порции с учетом цели
      */
     getMealMultiplier(meal, healthProfile, goal) {
         const profile = meal.healthProfiles?.[healthProfile];
         
-        // Для набора массы - увеличиваем множитель если нужно
+        // Для набора массы
         if (goal === 'gain') {
-            // Если блюдо не recommended для normal, но высококалорийное - используем множитель 1.0
-            if (profile && profile.recommended === false) {
-                return 1.0;
-            }
-            // Для recommended блюд используем максимальный множитель
+            // Если блюдо высококалорийное (более 700 ккал) - множитель 1.0
+            if (meal.calories >= 700) return 1.0;
+            // Для остальных - максимальный множитель
             return profile?.portionMultiplier || 1.2;
         }
         
-        // Для похудения - уменьшаем порции
+        // Для похудения
         if (goal === 'lose') {
             return profile?.portionMultiplier || 0.8;
         }
         
-        // Для поддержания - стандартный множитель
+        // Для поддержания
         return profile?.portionMultiplier || 1.0;
     }
-    
+
+    /**
+     * Стандартный подбор ближайшего блюда по калориям
+     */
+    selectBestMeal(meals, targetCalories) {
+        if (!meals || meals.length === 0) return null;
+        
+        return meals.reduce((best, current) => {
+            const currentDiff = Math.abs(current.calories - targetCalories);
+            const bestDiff = Math.abs(best.calories - targetCalories);
+            return currentDiff < bestDiff ? current : best;
+        });
+    }
+
     /**
      * Генерация дневного меню
      */
@@ -121,10 +77,29 @@ class MealPlanner {
             const categoryInfo = this.database.getCategoryInfo(category);
             const targetCategoryCalories = calories * (categoryInfo.caloriePercent / 100);
             
-            const meals = this.database.getMealsByCategory(category, healthProfile);
+            // Используем новый метод с учетом цели
+            const meals = this.database.getMealsByCategoryWithGoal(category, healthProfile, goal);
             
-            if (meals && Array.isArray(meals) && meals.length > 0) {
-                const selectedMeal = this.selectBestMeal(meals, targetCategoryCalories, healthProfile, goal);
+            if (meals && meals.length > 0) {
+                let selectedMeal = null;
+                
+                // Для набора массы - выбираем самое калорийное блюдо в категории
+                if (goal === 'gain') {
+                    // Берем самое калорийное блюдо
+                    selectedMeal = meals[0];
+                    
+                    // Если его калорийность сильно ниже цели, ищем подходящее
+                    for (let i = 0; i < meals.length; i++) {
+                        const meal = meals[i];
+                        if (meal.calories >= targetCategoryCalories * 0.7) {
+                            selectedMeal = meal;
+                            break;
+                        }
+                    }
+                } else {
+                    // Для похудения и поддержания - стандартный подбор
+                    selectedMeal = this.selectBestMeal(meals, targetCategoryCalories);
+                }
                 
                 if (selectedMeal) {
                     const multiplier = this.getMealMultiplier(selectedMeal, healthProfile, goal);
@@ -159,21 +134,29 @@ class MealPlanner {
      */
     generateAlternative(category, currentMealId, calories, bmi, goal) {
         const healthProfile = this.getHealthProfile(bmi);
-        const meals = this.database.getMealsByCategory(category, healthProfile);
+        const meals = this.database.getMealsByCategoryWithGoal(category, healthProfile, goal);
         const categoryInfo = this.database.getCategoryInfo(category);
         const targetCalories = calories * (categoryInfo.caloriePercent / 100);
         
         // Исключаем текущее блюдо
-        let alternativeMeals = meals.filter(meal => meal.id !== currentMealId);
-        
+        const alternativeMeals = meals.filter(meal => meal.id !== currentMealId);
         if (alternativeMeals.length === 0) return null;
         
-        // Для набора массы - предпочитаем более калорийные альтернативы
+        let selectedMeal = null;
+        
         if (goal === 'gain') {
-            alternativeMeals.sort((a, b) => b.calories - a.calories);
+            // Для набора массы - берем самое калорийное из альтернатив
+            selectedMeal = alternativeMeals[0];
+            for (let i = 0; i < alternativeMeals.length; i++) {
+                if (alternativeMeals[i].calories >= targetCalories * 0.7) {
+                    selectedMeal = alternativeMeals[i];
+                    break;
+                }
+            }
+        } else {
+            selectedMeal = this.selectBestMeal(alternativeMeals, targetCalories);
         }
         
-        const selectedMeal = this.selectBestMeal(alternativeMeals, targetCalories, healthProfile, goal);
         if (!selectedMeal) return null;
         
         const multiplier = this.getMealMultiplier(selectedMeal, healthProfile, goal);
@@ -220,7 +203,10 @@ class MealPlanner {
                     '✅ Контролируйте калорийность рациона'
                 ],
                 gain: [
-                    '⚠️ Набор массы требует увеличения физической активности'
+                    '⚠️ Набор массы требует интенсивных тренировок',
+                    '✅ Увеличьте потребление белка до 2г/кг веса',
+                    '✅ Добавьте калорийные перекусы (орехи, сухофрукты)',
+                    '✅ Используйте протеиновые коктейли'
                 ]
             },
             normal: {
