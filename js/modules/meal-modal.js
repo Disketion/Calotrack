@@ -18,7 +18,6 @@ class MealModal {
         this.modal.classList.add('active');
         this.isOpen = true;
         document.body.style.overflow = 'hidden';
-        this.animateIn();
     }
     
     createModal() {
@@ -159,16 +158,6 @@ class MealModal {
             this.modal.classList.add('active');
             this.isOpen = true;
             document.body.style.overflow = 'hidden';
-        }
-    }
-    
-    animateIn() {
-        const container = this.modal ? this.modal.querySelector('.modal-container') : null;
-        if (container) {
-            container.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                container.style.transform = 'scale(1)';
-            }, 10);
         }
     }
     
