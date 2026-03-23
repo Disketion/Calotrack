@@ -7,52 +7,45 @@ class MealRenderer {
         this.currentHealthProfile = null;
     }
 
-    /**
-     * Отрисовка всего меню
-     */
     renderMenu(menuData, healthProfile) {
-    this.currentMenu = menuData;
-    this.currentHealthProfile = healthProfile;
-    
-    const container = document.getElementById('meal-content');
-    if (!container) return;
-    
-    // Проверяем, что menuData существует
-    if (!menuData || !menuData.meals) {
+        this.currentMenu = menuData;
+        this.currentHealthProfile = healthProfile;
+        
+        const container = document.getElementById('meal-content');
+        if (!container) return;
+        
+        if (!menuData || !menuData.meals) {
+            container.innerHTML = `
+                <div class="meal-empty">
+                    <p>😔 Ошибка: не удалось загрузить меню</p>
+                    <p>Попробуйте сгенерировать снова</p>
+                </div>
+            `;
+            return;
+        }
+        
+        const tabsHtml = this.renderTabs();
+        const mealsHtml = this.renderMealGrid(this.currentCategory);
+        
         container.innerHTML = `
-            <div class="meal-empty">
-                <p>😔 Ошибка: не удалось загрузить меню</p>
-                <p>Попробуйте сгенерировать снова</p>
+            ${tabsHtml}
+            <div class="meal-grid-container">
+                ${mealsHtml}
+            </div>
+            <div class="meal-actions">
+                <button class="refresh-meal-btn" id="refresh-meal">
+                    🔄 Другой вариант
+                </button>
+                <button class="save-menu-btn" id="save-menu">
+                    💾 Сохранить меню
+                </button>
             </div>
         `;
-        return;
+        
+        this.setupTabListeners();
+        this.setupActionListeners();
     }
     
-    const tabsHtml = this.renderTabs();
-    const mealsHtml = this.renderMealGrid(this.currentCategory);
-    
-    container.innerHTML = `
-        ${tabsHtml}
-        <div class="meal-grid-container">
-            ${mealsHtml}
-        </div>
-        <div class="meal-actions">
-            <button class="refresh-meal-btn" id="refresh-meal">
-                🔄 Другой вариант
-            </button>
-            <button class="save-menu-btn" id="save-menu">
-                💾 Сохранить меню
-            </button>
-        </div>
-    `;
-    
-    this.setupTabListeners();
-    this.setupActionListeners();
-}
-    
-    /**
-     * Отрисовка табов
-     */
     renderTabs() {
         const categories = [
             { id: 'breakfast', name: '🌅 Завтрак', percent: 30 },
@@ -74,9 +67,6 @@ class MealRenderer {
         `;
     }
     
-    /**
-     * Отрисовка сетки блюд
-     */
     renderMealGrid(category) {
         const meal = this.currentMenu?.meals?.[category];
         if (!meal) {
@@ -94,9 +84,6 @@ class MealRenderer {
         `;
     }
     
-    /**
-     * Отрисовка карточки блюда
-     */
     renderMealCard(meal, category) {
         const multiplier = meal.multiplier || 1;
         const isModified = multiplier !== 1;
@@ -151,9 +138,6 @@ class MealRenderer {
         `;
     }
     
-    /**
-     * Настройка обработчиков табов
-     */
     setupTabListeners() {
         const tabs = document.querySelectorAll('.tab-btn');
         tabs.forEach(tab => {
@@ -167,11 +151,7 @@ class MealRenderer {
         });
     }
     
-    /**
-     * Настройка обработчиков действий
-     */
     setupActionListeners() {
-        // Кнопка "Подробнее"
         const detailBtns = document.querySelectorAll('.meal-details-btn');
         detailBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -184,7 +164,6 @@ class MealRenderer {
             });
         });
         
-        // Кнопка "Другой вариант"
         const refreshBtn = document.getElementById('refresh-meal');
         if (refreshBtn) {
             refreshBtn.addEventListener('click', () => {
@@ -192,7 +171,6 @@ class MealRenderer {
             });
         }
         
-        // Кнопка "Сохранить меню"
         const saveBtn = document.getElementById('save-menu');
         if (saveBtn) {
             saveBtn.addEventListener('click', () => {
@@ -201,9 +179,6 @@ class MealRenderer {
         }
     }
     
-    /**
-     * Поиск блюда по ID
-     */
     findMealById(mealId) {
         for (const category of Object.keys(this.currentMenu?.meals || {})) {
             const meal = this.currentMenu.meals[category];
@@ -214,9 +189,6 @@ class MealRenderer {
         return null;
     }
     
-    /**
-     * Показ деталей блюда
-     */
     showMealDetails(meal) {
         const multiplier = meal.multiplier || 1;
         
@@ -259,7 +231,6 @@ class MealRenderer {
             </div>
         `;
         
-        // Удаляем старый модал если есть
         const oldModal = document.getElementById('meal-detail-modal');
         if (oldModal) oldModal.remove();
         
@@ -268,11 +239,11 @@ class MealRenderer {
         const modal = document.getElementById('meal-detail-modal');
         const closeBtn = document.getElementById('close-detail');
         
-        setTimeout(() => modal.classList.add('active'), 10);
+        modal.classList.add('active');
         
         const closeModal = () => {
             modal.classList.remove('active');
-            setTimeout(() => modal.remove(), 300);
+            setTimeout(() => modal.remove(), 200);
         };
         
         closeBtn.addEventListener('click', closeModal);
@@ -281,22 +252,17 @@ class MealRenderer {
         });
     }
     
-    /**
-     * Обработка обновления блюда
-     */
     handleRefreshMeal() {
-        const event = new CustomEvent('refreshMeal', {
+        const event = new CustomEvent('requestMealRefresh', {
             detail: {
                 category: this.currentCategory,
-                currentMealId: this.currentMenu?.meals[this.currentCategory]?.id
+                currentMealId: this.currentMenu?.meals[this.currentCategory]?.id,
+                menuData: this.currentMenu
             }
         });
         document.dispatchEvent(event);
     }
     
-    /**
-     * Обработка сохранения меню
-     */
     handleSaveMenu() {
         const event = new CustomEvent('saveMenu', {
             detail: {
@@ -306,9 +272,6 @@ class MealRenderer {
         document.dispatchEvent(event);
     }
     
-    /**
-     * Обновление конкретной категории
-     */
     updateCategory(category, newMeal) {
         if (this.currentMenu && this.currentMenu.meals) {
             this.currentMenu.meals[category] = newMeal;
