@@ -293,7 +293,7 @@
   <script src="js/modules/meal-renderer.js"></script>
   <script src="js/modules/meal-modal.js"></script>
   <script src="js/script.js"></script>
-  <script>
+    <script>
     document.addEventListener('DOMContentLoaded', function() {
       var privacyLink = document.getElementById('privacy-link');
       var termsLink = document.getElementById('terms-link');
@@ -306,23 +306,60 @@
       function openModal(modal) {
         modal.style.display = 'flex';
         setTimeout(function() { modal.classList.add('active'); }, 10);
+        document.body.style.overflow = 'hidden';
       }
       
       function closeModal(modal) {
         modal.classList.remove('active');
-        setTimeout(function() { modal.style.display = 'none'; }, 300);
+        setTimeout(function() { 
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }, 300);
       }
       
-      if (privacyLink) privacyLink.onclick = function(e) { e.preventDefault(); openModal(privacyModal); };
-      if (termsLink) termsLink.onclick = function(e) { e.preventDefault(); openModal(termsModal); };
-      if (aboutLink) aboutLink.onclick = function(e) { e.preventDefault(); openModal(aboutModal); };
+      if (privacyLink) {
+        privacyLink.onclick = function(e) {
+          e.preventDefault();
+          openModal(privacyModal);
+        };
+      }
       
-      document.querySelectorAll('.close-privacy, .close-terms, .close-about').forEach(function(btn) {
-        btn.onclick = function() { closeModal(this.closest('.modal-overlay')); };
-      });
+      if (termsLink) {
+        termsLink.onclick = function(e) {
+          e.preventDefault();
+          openModal(termsModal);
+        };
+      }
+      
+      if (aboutLink) {
+        aboutLink.onclick = function(e) {
+          e.preventDefault();
+          openModal(aboutModal);
+        };
+      }
+      
+      var closePrivacy = document.querySelector('.close-privacy');
+      var closeTerms = document.querySelector('.close-terms');
+      var closeAbout = document.querySelector('.close-about');
+      
+      if (closePrivacy) closePrivacy.onclick = function() { closeModal(privacyModal); };
+      if (closeTerms) closeTerms.onclick = function() { closeModal(termsModal); };
+      if (closeAbout) closeAbout.onclick = function() { closeModal(aboutModal); };
       
       [privacyModal, termsModal, aboutModal].forEach(function(modal) {
-        if (modal) modal.onclick = function(e) { if (e.target === modal) closeModal(modal); };
+        if (modal) {
+          modal.onclick = function(e) {
+            if (e.target === modal) closeModal(modal);
+          };
+        }
+      });
+      
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          if (privacyModal && privacyModal.classList.contains('active')) closeModal(privacyModal);
+          if (termsModal && termsModal.classList.contains('active')) closeModal(termsModal);
+          if (aboutModal && aboutModal.classList.contains('active')) closeModal(aboutModal);
+        }
       });
     });
   </script>
