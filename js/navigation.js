@@ -1,80 +1,18 @@
-// js/navigation.js - Улучшенная навигация
+// js/navigation.js - Улучшенная навигация (без breadcrumbs)
 
 class Navigation {
     constructor() {
-        this.initBreadcrumbs();
         this.initMobileMenu();
         this.initSearch();
         this.initQuickActions();
     }
 
-    /**
-     * Хлебные крошки
-     */
-    initBreadcrumbs() {
-        const breadcrumbContainer = document.querySelector('.breadcrumbs');
-        if (!breadcrumbContainer) return;
-
-        const currentPath = window.location.pathname;
-        const pageName = this.getPageName(currentPath);
-        const pages = [
-            { name: 'Главная', url: 'index.html', icon: '🏠' },
-            { name: 'Калькулятор', url: 'calculator.html', icon: '🧮' },
-            { name: 'Белки', url: 'proteins.html', icon: '🥩' },
-            { name: 'Жиры', url: 'fats.html', icon: '🥑' },
-            { name: 'Углеводы', url: 'carbs.html', icon: '🍚' },
-            { name: 'История', url: 'history.html', icon: '📊' }
-        ];
-
-        let breadcrumbHtml = '<div class="breadcrumb-nav">';
-        
-        // Находим текущую страницу и строим путь
-        const currentIndex = pages.findIndex(p => p.url === pageName);
-        
-        if (currentIndex !== -1) {
-            // Добавляем "Главная"
-            breadcrumbHtml += `
-                <a href="index.html" class="breadcrumb-link">
-                    <span>🏠</span> Главная
-                </a>
-            `;
-            
-            // Добавляем текущую страницу
-            breadcrumbHtml += `
-                <span class="breadcrumb-separator">›</span>
-                <span class="breadcrumb-current">
-                    ${pages[currentIndex].icon} ${pages[currentIndex].name}
-                </span>
-            `;
-        } else {
-            // Если страница не в списке (например, модальное окно)
-            breadcrumbHtml += `
-                <span class="breadcrumb-current">
-                    📄 ${document.title || 'CaloTrack'}
-                </span>
-            `;
-        }
-        
-        breadcrumbHtml += '</div>';
-        breadcrumbContainer.innerHTML = breadcrumbHtml;
-    }
-
-    getPageName(path) {
-        const fileName = path.split('/').pop();
-        return fileName || 'index.html';
-    }
-
-    /**
-     * Мобильное меню (гамбургер)
-     */
     initMobileMenu() {
-        // Добавляем кнопку гамбургера только на мобильных
         if (window.innerWidth > 768) return;
 
         const sidebar = document.querySelector('.sidebar');
         if (!sidebar) return;
 
-        // Создаем кнопку гамбургера
         const hamburger = document.createElement('button');
         hamburger.className = 'hamburger-menu';
         hamburger.setAttribute('aria-label', 'Меню');
@@ -86,12 +24,10 @@ class Navigation {
         
         document.body.insertBefore(hamburger, document.body.firstChild);
 
-        // Добавляем оверлей
         const overlay = document.createElement('div');
         overlay.className = 'menu-overlay';
         document.body.appendChild(overlay);
 
-        // Обработчики
         hamburger.addEventListener('click', () => {
             sidebar.classList.toggle('mobile-open');
             overlay.classList.toggle('active');
@@ -106,7 +42,6 @@ class Navigation {
             document.body.style.overflow = '';
         });
 
-        // Закрываем при клике на ссылку
         const links = sidebar.querySelectorAll('a');
         links.forEach(link => {
             link.addEventListener('click', () => {
@@ -118,9 +53,6 @@ class Navigation {
         });
     }
 
-    /**
-     * Поиск по сайту
-     */
     initSearch() {
         const searchContainer = document.querySelector('.search-container');
         if (!searchContainer) return;
@@ -156,7 +88,6 @@ class Navigation {
             }, 300);
         });
         
-        // Закрываем результаты при клике вне
         document.addEventListener('click', (e) => {
             if (!searchContainer.contains(e.target)) {
                 searchResults.classList.remove('active');
@@ -165,13 +96,12 @@ class Navigation {
     }
 
     async performSearch(query, resultsContainer) {
-        // Собираем данные для поиска
         const searchData = await this.getSearchData();
         
         const results = searchData.filter(item => {
             const searchString = `${item.name} ${item.category} ${item.tags?.join(' ')}`.toLowerCase();
             return searchString.includes(query.toLowerCase());
-        }).slice(0, 10); // Максимум 10 результатов
+        }).slice(0, 10);
         
         if (results.length === 0) {
             resultsContainer.innerHTML = `
@@ -195,12 +125,10 @@ class Navigation {
     }
 
     async getSearchData() {
-        // Кэшируем данные для поиска
         if (window.searchCache) return window.searchCache;
         
         const data = [];
         
-        // Страницы
         const pages = [
             { name: 'Калькулятор калорий', category: 'Страница', icon: '🧮', url: 'calculator.html' },
             { name: 'Белки', category: 'Нутриенты', icon: '🥩', url: 'proteins.html' },
@@ -211,7 +139,6 @@ class Navigation {
         
         data.push(...pages);
         
-        // Продукты (из текущей страницы)
         const products = document.querySelectorAll('.product-button');
         products.forEach(product => {
             const name = product.querySelector('span')?.innerText;
@@ -231,14 +158,10 @@ class Navigation {
         return data;
     }
 
-    /**
-     * Быстрые действия
-     */
     initQuickActions() {
         const quickActionsContainer = document.querySelector('.quick-actions');
         if (!quickActionsContainer) return;
         
-        // Проверяем, на какой странице находимся
         const isCalculator = window.location.pathname.includes('calculator.html');
         
         const actions = [
@@ -291,7 +214,6 @@ class Navigation {
             </div>
         `;
         
-        // Добавляем обработчики
         const buttons = quickActionsContainer.querySelectorAll('.quick-action-btn');
         buttons.forEach((btn, index) => {
             btn.addEventListener('click', actions[index].action);
@@ -344,15 +266,12 @@ class Navigation {
             if (e.target === modal) closeModal();
         });
         
-        // Загрузка меню
         modal.querySelectorAll('.load-menu-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const menu = JSON.parse(btn.dataset.menu);
-                // Триггерим событие для отображения меню
                 const event = new CustomEvent('loadSavedMenu', { detail: menu });
                 document.dispatchEvent(event);
                 closeModal();
-                // Перенаправляем на калькулятор
                 if (!window.location.pathname.includes('calculator.html')) {
                     window.location.href = 'calculator.html';
                 }
@@ -408,7 +327,6 @@ class Navigation {
     }
 }
 
-// Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', () => {
     new Navigation();
 });
