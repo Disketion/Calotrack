@@ -76,13 +76,14 @@ class Navigation {
       }
     };
     
+    var self = this;
     document.getElementById('quick-saved').onclick = function() {
-      this.showSavedMenus();
-    }.bind(this);
+      self.showSavedMenus();
+    };
     
     document.getElementById('quick-share').onclick = function() {
-      this.shareResults();
-    }.bind(this);
+      self.shareResults();
+    };
   }
   
   showSavedMenus() {
@@ -98,28 +99,46 @@ class Navigation {
     document.body.appendChild(modal);
     
     var body = modal.querySelector('.modal-body');
+    
     for (var i = 0; i < saved.length; i++) {
       var item = saved[i];
       var div = document.createElement('div');
       div.className = 'saved-menu-item';
-      div.innerHTML = '<div class="saved-menu-date">📅 ' + new Date(item.date).toLocaleDateString() + '</div><div class="saved-menu-calories">🔥 ' + item.menu.totalCalories + ' ккал</div><button class="load-menu-btn">Загрузить</button>';
-      div.querySelector('.load-menu-btn').onclick = (function(menu) {
-        return function() {
-          var event = new CustomEvent('loadSavedMenu', { detail: menu });
-          document.dispatchEvent(event);
-          modal.remove();
-          if (!window.location.pathname.includes('calculator.html')) {
-            window.location.href = 'calculator.html';
-          }
-        };
-      })(item.menu);
+      
+      var dateStr = new Date(item.date).toLocaleDateString('ru-RU');
+      div.innerHTML = '<div class="saved-menu-date">📅 ' + dateStr + '</div><div class="saved-menu-calories">🔥 ' + item.menu.totalCalories + ' ккал</div><button class="load-menu-btn" data-idx="' + i + '">Загрузить</button>';
+      
       body.appendChild(div);
+    }
+    
+    var self = this;
+    var loadButtons = modal.querySelectorAll('.load-menu-btn');
+    for (var j = 0; j < loadButtons.length; j++) {
+      loadButtons[j].onclick = function(e) {
+        var idx = parseInt(this.getAttribute('data-idx'));
+        var menu = saved[idx].menu;
+        
+        var event = new CustomEvent('loadSavedMenu', { detail: menu });
+        document.dispatchEvent(event);
+        
+        modal.remove();
+        
+        if (!window.location.pathname.includes('calculator.html')) {
+          window.location.href = 'calculator.html';
+        }
+      };
     }
     
     var closeBtn = modal.querySelector('.close-modal-btn');
     closeBtn.onclick = function() { modal.remove(); };
-    modal.onclick = function(e) { if (e.target === modal) modal.remove(); };
-    setTimeout(function() { modal.classList.add('active'); }, 10);
+    
+    modal.onclick = function(e) {
+      if (e.target === modal) modal.remove();
+    };
+    
+    setTimeout(function() {
+      modal.classList.add('active');
+    }, 10);
   }
   
   shareResults() {
@@ -130,11 +149,13 @@ class Navigation {
     }
     
     var text = result.innerText;
+    var self = this;
+    
     if (navigator.share) {
       navigator.share({ title: 'Мои результаты', text: text }).catch(function() {
         navigator.clipboard.writeText(text);
-        this.showNotif('Скопировано', 'success');
-      }.bind(this));
+        self.showNotif('Скопировано', 'success');
+      });
     } else {
       navigator.clipboard.writeText(text);
       this.showNotif('Скопировано', 'success');
