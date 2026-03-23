@@ -490,6 +490,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // ========== ДОБАВЛЕННЫЙ ОБРАБОТЧИК ДЛЯ ЗАГРУЗКИ СОХРАНЕННОГО МЕНЮ ==========
+    document.addEventListener('loadSavedMenu', (e) => {
+        const savedMenu = e.detail;
+        if (!savedMenu || !mealModal) {
+            showNotification('Не удалось загрузить меню', 'error');
+            return;
+        }
+        
+        const fakeUserData = {
+            calories: savedMenu.totalCalories,
+            bmi: savedMenu.bmi || 25,
+            goal: savedMenu.goal || 'maintain'
+        };
+        
+        if (mealModal) {
+            mealModal.show(savedMenu, fakeUserData);
+        }
+        
+        if (resultEl) {
+            resultEl.innerHTML = `
+                <div>
+                    <strong>🎯 Суточный калораж:</strong> <span style="color: var(--primary-color);">${savedMenu.totalCalories} ккал</span><br>
+                    <strong>📅 Загружено из сохраненных</strong>
+                </div>
+            `;
+        }
+        
+        showNotification('Меню загружено!', 'success');
+    });
+
     const numberInputs = document.querySelectorAll('input[type="number"]');
     numberInputs.forEach(input => {
         input.addEventListener('focus', function() {
@@ -511,4 +541,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 });
-
