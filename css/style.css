@@ -1296,75 +1296,215 @@ select:focus,
   margin-top: 50px;
   border-top: 1px solid var(--border-color);
   border-radius: 20px;
-  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
 .footer-content {
-  padding: 30px 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 30px 30px;
 }
 
+/* Верхняя часть подвала */
+.footer-main {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+/* Логотип и описание */
+.footer-brand {
+  flex: 2;
+  min-width: 200px;
+}
+
+.footer-brand h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.5rem;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-brand p {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  line-height: 1.5;
+  max-width: 280px;
+}
+
+/* Секции ссылок */
 .footer-links {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border-color);
+  flex: 3;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.footer-section {
+  min-width: 140px;
 }
 
 .footer-section h4 {
-  margin: 0 0 12px 0;
-  font-size: 1rem;
-  color: var(--primary-color);
+  margin: 0 0 15px 0;
+  font-size: 0.9rem;
   font-weight: 600;
+  color: var(--primary-color);
+  letter-spacing: 0.5px;
 }
 
-.footer-section p {
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.footer-section ul li a:hover {
+  opacity: 1;
+  color: var(--primary-color);
+  transform: translateX(3px);
+  display: inline-block;
+}
+
+/* Контакты с иконками */
+.footer-contacts {
+  min-width: 180px;
+}
+
+.footer-contacts h4 {
+  margin: 0 0 15px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.footer-contacts p {
   margin: 8px 0;
   font-size: 0.85rem;
-  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.footer-section a {
-  color: var(--primary-color);
+.footer-contacts a {
+  color: var(--text-color);
   text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.footer-section a:hover {
-  color: var(--secondary-color);
-  text-decoration: underline;
-}
-
-.footer-copyright {
-  text-align: center;
-}
-
-.footer-copyright p {
-  margin: 5px 0;
-  font-size: 0.8rem;
   opacity: 0.7;
+  transition: opacity 0.2s ease;
 }
 
-.footer-disclaimer {
-  font-size: 0.7rem;
-  max-width: 600px;
-  margin: 10px auto 0;
+.footer-contacts a:hover {
+  opacity: 1;
+  color: var(--primary-color);
+}
+
+/* Разделитель */
+.footer-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 20px 0;
   opacity: 0.5;
 }
 
-@media (max-width: 768px) {
-  .footer-links {
-    grid-template-columns: 1fr;
-    gap: 20px;
+/* Нижняя часть с копирайтом */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding-top: 10px;
+}
+
+.copyright {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin: 0;
+}
+
+.disclaimer {
+  font-size: 0.7rem;
+  opacity: 0.5;
+  margin: 0;
+  max-width: 500px;
+  text-align: right;
+}
+
+/* Адаптивность */
+@media (max-width: 900px) {
+  .footer-main {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .footer-brand {
     text-align: center;
+  }
+  
+  .footer-brand p {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  .footer-links {
+    justify-content: center;
+    gap: 30px;
   }
   
   .footer-section {
     text-align: center;
   }
   
-  .footer-copyright p {
-    font-size: 0.7rem;
+  .footer-contacts {
+    text-align: center;
+  }
+  
+  .footer-contacts p {
+    justify-content: center;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .disclaimer {
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-content {
+    padding: 30px 20px;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .footer-section {
+    text-align: center;
+  }
+  
+  .footer-section ul li a:hover {
+    transform: none;
   }
 }
