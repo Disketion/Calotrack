@@ -18,679 +18,204 @@ class MealDatabase {
     initDefaultData() {
         // Дефолтные блюда - гарантированно работают
         this.meals = {
-            "breakfast": [
+            breakfast: [
                 {
-                  "id": "breakfast_001",
-                  "name": "Овсянка с ягодами и миндалем",
-                  "image": "img/meals/breakfast/oatmeal-berries.jpg",
-                  "calories": 380,
-                  "protein": 14,
-                  "fat": 12,
-                  "carbs": 52,
-                  "fiber": 8,
-                  "ingredients": ["овсяные хлопья 50г", "ягоды 100г", "миндаль 15г", "мед 10г"],
-                  "preparationTime": 10,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "Уменьшить овсянку до 40г, исключить мед" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9, "note": "Мед заменить на корицу" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Добавить 10г сливочного масла" }
-                  }
+                    id: "breakfast_001",
+                    name: "Овсянка с ягодами",
+                    image: "img/meals/breakfast/oatmeal-berries.jpg",
+                    calories: 350,
+                    protein: 12,
+                    fat: 8,
+                    carbs: 58,
+                    fiber: 6,
+                    ingredients: ["овсяные хлопья 50г", "ягоды 100г", "мед 10г"],
+                    preparationTime: 10,
+                    difficulty: "Легко",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 0.8 },
+                        overweight: { recommended: true, portionMultiplier: 0.9 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.2 }
+                    }
                 },
                 {
-                  "id": "breakfast_002",
-                  "name": "Омлет с овощами и сыром",
-                  "image": "img/meals/breakfast/omelette-veggies.jpg",
-                  "calories": 420,
-                  "protein": 28,
-                  "fat": 24,
-                  "carbs": 12,
-                  "fiber": 3,
-                  "ingredients": ["яйца 3 шт", "помидор 1 шт", "перец болгарский 1/2 шт", "сыр твердый 30г", "масло оливковое 5г"],
-                  "preparationTime": 15,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "Использовать 2 яйца, убрать сыр" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9, "note": "Уменьшить сыр до 20г" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Добавить 2 яйца" }
-                  }
+                    id: "breakfast_002",
+                    name: "Омлет с овощами",
+                    image: "img/meals/breakfast/omelette-veggies.jpg",
+                    calories: 420,
+                    protein: 28,
+                    fat: 24,
+                    carbs: 12,
+                    fiber: 3,
+                    ingredients: ["яйца 3 шт", "помидор 1 шт", "перец 1/2 шт", "сыр 30г"],
+                    preparationTime: 15,
+                    difficulty: "Легко",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 0.7 },
+                        overweight: { recommended: true, portionMultiplier: 0.85 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.15 }
+                    }
                 },
                 {
-                  "id": "breakfast_003",
-                  "name": "Творог с ягодами и орехами",
-                  "image": "img/meals/breakfast/cottage-cheese-berries.jpg",
-                  "calories": 350,
-                  "protein": 32,
-                  "fat": 12,
-                  "carbs": 28,
-                  "fiber": 5,
-                  "ingredients": ["творог 5% 200г", "ягоды 100г", "грецкие орехи 15г", "корица по вкусу"],
-                  "preparationTime": 5,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "Использовать творог 2% 150г" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9, "note": "Творог 150г" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Добавить 20г меда" }
-                  }
-                },
-                {
-                  "id": "breakfast_004",
-                  "name": "Гречневая каша с молоком",
-                  "image": "img/meals/breakfast/buckwheat-milk.jpg",
-                  "calories": 380,
-                  "protein": 16,
-                  "fat": 8,
-                  "carbs": 64,
-                  "fiber": 6,
-                  "ingredients": ["гречка 50г", "молоко 2.5% 150мл", "сливочное масло 10г", "сахар 5г"],
-                  "preparationTime": 20,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Высокое содержание углеводов" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.7, "note": "Уменьшить порцию до 40г, исключить сахар" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Увеличить порцию гречки до 70г" }
-                  }
-                },
-                {
-                  "id": "breakfast_005",
-                  "name": "Протеиновые панкейки с медом",
-                  "image": "img/meals/breakfast/protein-pancakes.jpg",
-                  "calories": 650,
-                  "protein": 45,
-                  "fat": 18,
-                  "carbs": 75,
-                  "fiber": 6,
-                  "ingredients": ["овсяная мука 80г", "протеин 30г", "яйца 2 шт", "банан 1 шт", "мед 20г", "масло 10г"],
-                  "preparationTime": 20,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Высококалорийное блюдо" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется при избыточном весе" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "breakfast_006",
-                  "name": "Сырники со сметаной",
-                  "image": "img/meals/breakfast/syrniki.jpg",
-                  "calories": 580,
-                  "protein": 28,
-                  "fat": 32,
-                  "carbs": 45,
-                  "fiber": 2,
-                  "ingredients": ["творог 9% 300г", "яйцо 1 шт", "мука 40г", "сахар 20г", "сметана 20% 50г"],
-                  "preparationTime": 25,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Высококалорийное блюдо" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.7, "note": "Уменьшить порцию" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "breakfast_007",
-                  "name": "Бургер с яйцом и беконом",
-                  "image": "img/meals/breakfast/burger-egg-bacon.jpg",
-                  "calories": 980,
-                  "protein": 52,
-                  "fat": 58,
-                  "carbs": 68,
-                  "fiber": 4,
-                  "ingredients": ["булка 100г", "яйца 3 шт", "бекон 80г", "сыр чеддер 50г", "сливочное масло 20г", "авокадо 1/2 шт"],
-                  "preparationTime": 20,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Экстремально калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется" },
-                    "normal": { "recommended": false, "portionMultiplier": 0, "note": "Только для экстремального набора" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Идеально для быстрого набора массы" }
-                  }
-                },
-                {
-                  "id": "breakfast_008",
-                  "name": "Гранола с йогуртом и орехами (двойная порция)",
-                  "image": "img/meals/breakfast/granola-yogurt.jpg",
-                  "calories": 850,
-                  "protein": 28,
-                  "fat": 42,
-                  "carbs": 92,
-                  "fiber": 14,
-                  "ingredients": ["гранола 150г", "греческий йогурт 200г", "грецкие орехи 40г", "мед 30г", "семена чиа 15г"],
-                  "preparationTime": 5,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Слишком калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется" },
-                    "normal": { "recommended": false, "portionMultiplier": 0, "note": "Только для набора массы" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Отличный энергетический завтрак" }
-                  }
-                },
-                {
-                  "id": "breakfast_009",
-                  "name": "Макароны с сыром и беконом (на завтрак)",
-                  "image": "img/meals/breakfast/mac-cheese-bacon.jpg",
-                  "calories": 1100,
-                  "protein": 48,
-                  "fat": 62,
-                  "carbs": 88,
-                  "fiber": 5,
-                  "ingredients": ["макароны 150г", "сливки 20% 150мл", "сыр чеддер 100г", "бекон 100г", "яйцо 2 шт"],
-                  "preparationTime": 25,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Максимально калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Категорически не рекомендуется" },
-                    "normal": { "recommended": false, "portionMultiplier": 0, "note": "Только для экстремального набора" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Для быстрого набора веса" }
-                  }
+                    id: "breakfast_003",
+                    name: "Творог с ягодами",
+                    image: "img/meals/breakfast/cottage-cheese-berries.jpg",
+                    calories: 350,
+                    protein: 32,
+                    fat: 12,
+                    carbs: 28,
+                    fiber: 5,
+                    ingredients: ["творог 5% 200г", "ягоды 100г", "грецкие орехи 15г"],
+                    preparationTime: 5,
+                    difficulty: "Легко",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 0.8 },
+                        overweight: { recommended: true, portionMultiplier: 0.9 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.2 }
+                    }
                 }
-              ],
-              "lunch": [
+            ],
+            lunch: [
                 {
-                  "id": "lunch_001",
-                  "name": "Куриная грудка с брокколи и киноа",
-                  "image": "img/meals/lunch/chicken-broccoli-quinoa.jpg",
-                  "calories": 520,
-                  "protein": 45,
-                  "fat": 18,
-                  "carbs": 48,
-                  "fiber": 8,
-                  "ingredients": ["куриная грудка 150г", "брокколи 150г", "киноа 80г", "оливковое масло 10г", "лимонный сок, специи"],
-                  "preparationTime": 35,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "Уменьшить киноа до 60г" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9, "note": "Уменьшить порцию курицы до 130г" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Увеличить киноа до 100г" }
-                  }
+                    id: "lunch_001",
+                    name: "Куриная грудка с киноа",
+                    image: "img/meals/lunch/chicken-quinoa.jpg",
+                    calories: 520,
+                    protein: 45,
+                    fat: 18,
+                    carbs: 48,
+                    fiber: 8,
+                    ingredients: ["куриная грудка 150г", "киноа 80г", "брокколи 150г", "масло 10г"],
+                    preparationTime: 35,
+                    difficulty: "Средне",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 0.8 },
+                        overweight: { recommended: true, portionMultiplier: 0.9 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.2 }
+                    }
                 },
                 {
-                  "id": "lunch_002",
-                  "name": "Запеченная рыба с рисом и овощами",
-                  "image": "img/meals/lunch/fish-rice-veggies.jpg",
-                  "calories": 540,
-                  "protein": 38,
-                  "fat": 16,
-                  "carbs": 58,
-                  "fiber": 6,
-                  "ingredients": ["филе рыбы (лосось/треска) 150г", "рис бурый 70г", "овощи гриль 200г", "оливковое масло 10г", "лимон"],
-                  "preparationTime": 40,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "Уменьшить рис до 50г" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9, "note": "Использовать рыбу с низким содержанием жира" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Увеличить рис до 90г" }
-                  }
+                    id: "lunch_002",
+                    name: "Рыба с рисом",
+                    image: "img/meals/lunch/fish-rice.jpg",
+                    calories: 540,
+                    protein: 38,
+                    fat: 16,
+                    carbs: 58,
+                    fiber: 6,
+                    ingredients: ["филе рыбы 150г", "рис бурый 70g", "овощи 200г"],
+                    preparationTime: 40,
+                    difficulty: "Средне",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 0.8 },
+                        overweight: { recommended: true, portionMultiplier: 0.9 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.2 }
+                    }
                 },
                 {
-                  "id": "lunch_003",
-                  "name": "Индейка с киноа и тушеными овощами",
-                  "image": "img/meals/lunch/turkey-quinoa.jpg",
-                  "calories": 490,
-                  "protein": 48,
-                  "fat": 14,
-                  "carbs": 44,
-                  "fiber": 7,
-                  "ingredients": ["филе индейки 150г", "киноа 70г", "кабачок 100г", "морковь 100г", "оливковое масло 10г"],
-                  "preparationTime": 35,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "Уменьшить порцию до 120г" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9, "note": "Уменьшить киноа до 60г" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Увеличить порцию индейки до 180г" }
-                  }
-                },
-                {
-                  "id": "lunch_004",
-                  "name": "Салат с тунцом и авокадо",
-                  "image": "img/meals/lunch/tuna-avocado-salad.jpg",
-                  "calories": 450,
-                  "protein": 32,
-                  "fat": 28,
-                  "carbs": 18,
-                  "fiber": 9,
-                  "ingredients": ["тунец в собственном соку 100г", "авокадо 1/2 шт", "листья салата 100г", "помидоры черри 100г", "оливковое масло 15г"],
-                  "preparationTime": 15,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "Уменьшить авокадо, убрать масло" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9, "note": "Уменьшить масло до 10г" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Добавить 50г риса" }
-                  }
-                },
-                {
-                  "id": "lunch_005",
-                  "name": "Говядина с гречкой и грибами",
-                  "image": "img/meals/lunch/beef-buckwheat.jpg",
-                  "calories": 720,
-                  "protein": 52,
-                  "fat": 28,
-                  "carbs": 62,
-                  "fiber": 7,
-                  "ingredients": ["говядина 200г", "гречка 100г", "шампиньоны 150г", "лук 1 шт", "масло 15г"],
-                  "preparationTime": 50,
-                  "difficulty": "Сложно",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Высококалорийное блюдо" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.7, "note": "Уменьшить порцию" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "lunch_006",
-                  "name": "Паста с курицей и сливочным соусом",
-                  "image": "img/meals/lunch/pasta-chicken.jpg",
-                  "calories": 780,
-                  "protein": 48,
-                  "fat": 32,
-                  "carbs": 68,
-                  "fiber": 4,
-                  "ingredients": ["паста 100г", "куриное филе 150г", "сливки 20% 100мл", "сыр 50г", "чеснок"],
-                  "preparationTime": 35,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Высококалорийное блюдо" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется при избыточном весе" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "lunch_007",
-                  "name": "Свиная рулька с картофелем и квашеной капустой",
-                  "image": "img/meals/lunch/pork-knuckle.jpg",
-                  "calories": 1150,
-                  "protein": 68,
-                  "fat": 72,
-                  "carbs": 68,
-                  "fiber": 8,
-                  "ingredients": ["свиная рулька 300г", "картофель 300г", "квашеная капуста 200г", "хрен 30г", "горчица 20г"],
-                  "preparationTime": 90,
-                  "difficulty": "Сложно",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Максимально калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Категорически не рекомендуется" },
-                    "normal": { "recommended": false, "portionMultiplier": 0, "note": "Только для экстремального набора" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Идеально для быстрого набора массы" }
-                  }
-                },
-                {
-                  "id": "lunch_008",
-                  "name": "Лазанья с мясом и сыром",
-                  "image": "img/meals/lunch/lasagna.jpg",
-                  "calories": 980,
-                  "protein": 58,
-                  "fat": 52,
-                  "carbs": 72,
-                  "fiber": 6,
-                  "ingredients": ["листы лазаньи 120г", "фарш говяжий 200г", "соус бешамель 200мл", "сыр моцарелла 100г", "пармезан 50г"],
-                  "preparationTime": 60,
-                  "difficulty": "Сложно",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Очень калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется" },
-                    "normal": { "recommended": true, "portionMultiplier": 0.7, "note": "Только при активных тренировках" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "lunch_009",
-                  "name": "Бургер двойной с картофелем фри",
-                  "image": "img/meals/lunch/double-burger.jpg",
-                  "calories": 1250,
-                  "protein": 62,
-                  "fat": 78,
-                  "carbs": 92,
-                  "fiber": 7,
-                  "ingredients": ["булка 150г", "говяжья котлета 2х150г", "сыр чеддер 80г", "бекон 60г", "картофель фри 200г", "соус 50мл"],
-                  "preparationTime": 35,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Экстремально калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Категорически не рекомендуется" },
-                    "normal": { "recommended": false, "portionMultiplier": 0, "note": "Только для экстремального набора" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Максимальный набор веса" }
-                  }
+                    id: "lunch_003",
+                    name: "Салат с тунцом",
+                    image: "img/meals/lunch/tuna-salad.jpg",
+                    calories: 450,
+                    protein: 32,
+                    fat: 28,
+                    carbs: 18,
+                    fiber: 9,
+                    ingredients: ["тунец 100г", "авокадо 1/2 шт", "листья салата 100g", "помидоры 100g"],
+                    preparationTime: 15,
+                    difficulty: "Легко",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 0.7 },
+                        overweight: { recommended: true, portionMultiplier: 0.85 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.15 }
+                    }
                 }
-              ],
-              "dinner": [
+            ],
+            dinner: [
                 {
-                  "id": "dinner_001",
-                  "name": "Семга с овощами на пару",
-                  "image": "img/meals/dinner/salmon-veggies.jpg",
-                  "calories": 460,
-                  "protein": 42,
-                  "fat": 28,
-                  "carbs": 14,
-                  "fiber": 5,
-                  "ingredients": ["семга 150г", "спаржа 100г", "брокколи 100г", "лимон, специи"],
-                  "preparationTime": 25,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.7, "note": "Уменьшить порцию семги до 100г" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.8, "note": "Уменьшить порцию до 120г" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Добавить 50г киноа" }
-                  }
+                    id: "dinner_001",
+                    name: "Семга с овощами",
+                    image: "img/meals/dinner/salmon-veggies.jpg",
+                    calories: 460,
+                    protein: 42,
+                    fat: 28,
+                    carbs: 14,
+                    fiber: 5,
+                    ingredients: ["семга 150г", "спаржа 100г", "брокколи 100г"],
+                    preparationTime: 25,
+                    difficulty: "Средне",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 0.7 },
+                        overweight: { recommended: true, portionMultiplier: 0.85 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.15 }
+                    }
                 },
                 {
-                  "id": "dinner_002",
-                  "name": "Куриный салат с греческим йогуртом",
-                  "image": "img/meals/dinner/chicken-yogurt-salad.jpg",
-                  "calories": 380,
-                  "protein": 38,
-                  "fat": 16,
-                  "carbs": 18,
-                  "fiber": 6,
-                  "ingredients": ["куриная грудка 120г", "греческий йогурт 100г", "огурцы 100г", "помидоры 100г", "зелень"],
-                  "preparationTime": 20,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "Использовать йогурт 2%" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9, "note": "Уменьшить йогурт до 80г" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Добавить 30г орехов" }
-                  }
-                },
-                {
-                  "id": "dinner_003",
-                  "name": "Овощное рагу с тофу",
-                  "image": "img/meals/dinner/tofu-veggie-stew.jpg",
-                  "calories": 320,
-                  "protein": 22,
-                  "fat": 14,
-                  "carbs": 28,
-                  "fiber": 10,
-                  "ingredients": ["тофу 150г", "кабачок 150г", "перец болгарский 100г", "томаты 100г", "лук, чеснок, специи"],
-                  "preparationTime": 30,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 1.0, "note": "Идеально для снижения веса" },
-                    "overweight": { "recommended": true, "portionMultiplier": 1.0 },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": false, "portionMultiplier": 0, "note": "Низкокалорийно для набора массы" }
-                  }
-                },
-                {
-                  "id": "dinner_004",
-                  "name": "Свинина с картофелем и грибами",
-                  "image": "img/meals/dinner/pork-potato.jpg",
-                  "calories": 680,
-                  "protein": 42,
-                  "fat": 38,
-                  "carbs": 45,
-                  "fiber": 5,
-                  "ingredients": ["свинина 150г", "картофель 200г", "шампиньоны 150г", "лук 1 шт", "масло 15г"],
-                  "preparationTime": 45,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Высококалорийное блюдо" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется при избыточном весе" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "dinner_005",
-                  "name": "Рис с креветками и авокадо",
-                  "image": "img/meals/dinner/shrimp-rice.jpg",
-                  "calories": 580,
-                  "protein": 38,
-                  "fat": 24,
-                  "carbs": 52,
-                  "fiber": 6,
-                  "ingredients": ["креветки 200г", "рис 80г", "авокадо 1/2 шт", "овощи 150г", "оливковое масло 10г"],
-                  "preparationTime": 30,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.7, "note": "Уменьшить порцию" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.8, "note": "Уменьшить порцию" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Хорошо для набора массы" }
-                  }
-                },
-                {
-                  "id": "dinner_006",
-                  "name": "Утка с яблоками и картофелем",
-                  "image": "img/meals/dinner/duck-apple.jpg",
-                  "calories": 950,
-                  "protein": 58,
-                  "fat": 62,
-                  "carbs": 48,
-                  "fiber": 6,
-                  "ingredients": ["утка 250г", "яблоки 2 шт", "картофель 200г", "мед 30г", "розмарин"],
-                  "preparationTime": 80,
-                  "difficulty": "Сложно",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Очень калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется" },
-                    "normal": { "recommended": true, "portionMultiplier": 0.8, "note": "Только при активных тренировках" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "dinner_007",
-                  "name": "Карбонара с беконом и сливками",
-                  "image": "img/meals/dinner/carbonara.jpg",
-                  "calories": 880,
-                  "protein": 42,
-                  "fat": 52,
-                  "carbs": 64,
-                  "fiber": 3,
-                  "ingredients": ["спагетти 120г", "бекон 120г", "яйца 3 шт", "пармезан 80г", "сливки 20% 100мл"],
-                  "preparationTime": 25,
-                  "difficulty": "Средне",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Высококалорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется" },
-                    "normal": { "recommended": true, "portionMultiplier": 0.8 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "dinner_008",
-                  "name": "Стейк рибай с картофелем гратен",
-                  "image": "img/meals/dinner/ribeye-steak.jpg",
-                  "calories": 1200,
-                  "protein": 72,
-                  "fat": 88,
-                  "carbs": 42,
-                  "fiber": 4,
-                  "ingredients": ["рибай 300г", "картофель 250г", "сливки 150мл", "сыр 100г", "чеснок, розмарин"],
-                  "preparationTime": 45,
-                  "difficulty": "Сложно",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Максимально калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Категорически не рекомендуется" },
-                    "normal": { "recommended": false, "portionMultiplier": 0, "note": "Только для экстремального набора" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Идеально для быстрого набора массы" }
-                  }
+                    id: "dinner_002",
+                    name: "Куриный салат",
+                    image: "img/meals/dinner/chicken-salad.jpg",
+                    calories: 380,
+                    protein: 38,
+                    fat: 16,
+                    carbs: 18,
+                    fiber: 6,
+                    ingredients: ["куриная грудка 120г", "греческий йогурт 100г", "огурцы 100г", "помидоры 100г"],
+                    preparationTime: 20,
+                    difficulty: "Легко",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 0.8 },
+                        overweight: { recommended: true, portionMultiplier: 0.9 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.2 }
+                    }
                 }
-              ],
-              "snack": [
+            ],
+            snack: [
                 {
-                  "id": "snack_001",
-                  "name": "Греческий йогурт с ягодами",
-                  "image": "img/meals/snacks/greek-yogurt-berries.jpg",
-                  "calories": 150,
-                  "protein": 12,
-                  "fat": 5,
-                  "carbs": 14,
-                  "fiber": 2,
-                  "ingredients": ["греческий йогурт 120г", "ягоды 80г", "семена чиа 5г"],
-                  "preparationTime": 3,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 1.0 },
-                    "overweight": { "recommended": true, "portionMultiplier": 1.0 },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Добавить 10г орехов" }
-                  }
+                    id: "snack_001",
+                    name: "Греческий йогурт",
+                    image: "img/meals/snacks/greek-yogurt.jpg",
+                    calories: 150,
+                    protein: 12,
+                    fat: 5,
+                    carbs: 14,
+                    fiber: 2,
+                    ingredients: ["греческий йогурт 120г", "ягоды 80г"],
+                    preparationTime: 3,
+                    difficulty: "Легко",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 1.0 },
+                        overweight: { recommended: true, portionMultiplier: 1.0 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.2 }
+                    }
                 },
                 {
-                  "id": "snack_002",
-                  "name": "Яблоко с миндалем",
-                  "image": "img/meals/snacks/apple-almonds.jpg",
-                  "calories": 180,
-                  "protein": 4,
-                  "fat": 12,
-                  "carbs": 18,
-                  "fiber": 4,
-                  "ingredients": ["яблоко 1 шт", "миндаль 20г"],
-                  "preparationTime": 2,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "Уменьшить миндаль до 15г" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9, "note": "Уменьшить миндаль до 15г" },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Увеличить миндаль до 30г" }
-                  }
-                },
-                {
-                  "id": "snack_003",
-                  "name": "Протеиновый коктейль",
-                  "image": "img/meals/snacks/protein-shake.jpg",
-                  "calories": 200,
-                  "protein": 25,
-                  "fat": 3,
-                  "carbs": 12,
-                  "fiber": 2,
-                  "ingredients": ["протеин 1 мерная ложка", "молоко/вода 200мл", "банан 1/2 шт"],
-                  "preparationTime": 5,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": true, "portionMultiplier": 0.8, "note": "На воде, без банана" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.9 },
-                    "normal": { "recommended": true, "portionMultiplier": 1.0 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Добавить 20г овсянки" }
-                  }
-                },
-                {
-                  "id": "snack_004",
-                  "name": "Протеиновый коктейль усиленный",
-                  "image": "img/meals/snacks/protein-shake.jpg",
-                  "calories": 450,
-                  "protein": 45,
-                  "fat": 12,
-                  "carbs": 45,
-                  "fiber": 4,
-                  "ingredients": ["протеин 2 мерные ложки", "молоко 300мл", "банан 1 шт", "арахисовая паста 20г", "овсянка 30г"],
-                  "preparationTime": 5,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Слишком калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется" },
-                    "normal": { "recommended": true, "portionMultiplier": 0.8 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "snack_005",
-                  "name": "Ореховая смесь с сухофруктами",
-                  "image": "img/meals/snacks/nuts-driedfruits.jpg",
-                  "calories": 450,
-                  "protein": 12,
-                  "fat": 28,
-                  "carbs": 42,
-                  "fiber": 6,
-                  "ingredients": ["грецкие орехи 30г", "миндаль 30г", "курага 40г", "финики 40г"],
-                  "preparationTime": 2,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Высококалорийно" },
-                    "overweight": { "recommended": true, "portionMultiplier": 0.6, "note": "Ограничить порцию" },
-                    "normal": { "recommended": true, "portionMultiplier": 0.8 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.2, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "snack_006",
-                  "name": "Сэндвич с арахисовой пастой и бананом",
-                  "image": "img/meals/snacks/peanut-butter-sandwich.jpg",
-                  "calories": 650,
-                  "protein": 22,
-                  "fat": 38,
-                  "carbs": 62,
-                  "fiber": 8,
-                  "ingredients": ["хлеб цельнозерновой 2 куска", "арахисовая паста 60г", "банан 2 шт", "мед 20г"],
-                  "preparationTime": 5,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Очень калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Не рекомендуется" },
-                    "normal": { "recommended": true, "portionMultiplier": 0.7 },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Отлично для набора массы" }
-                  }
-                },
-                {
-                  "id": "snack_007",
-                  "name": "Творожная масса с орехами и сгущенкой",
-                  "image": "img/meals/snacks/cottage-cheese-condensed.jpg",
-                  "calories": 720,
-                  "protein": 38,
-                  "fat": 32,
-                  "carbs": 68,
-                  "fiber": 3,
-                  "ingredients": ["творог 9% 250г", "сгущенка 80г", "грецкие орехи 50г", "сметана 20% 50г"],
-                  "preparationTime": 5,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Экстремально калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Категорически не рекомендуется" },
-                    "normal": { "recommended": false, "portionMultiplier": 0, "note": "Только для набора массы" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Идеально для быстрого набора" }
-                  }
-                },
-                {
-                  "id": "snack_008",
-                  "name": "Молочный коктейль с мороженым",
-                  "image": "img/meals/snacks/milkshake.jpg",
-                  "calories": 850,
-                  "protein": 18,
-                  "fat": 42,
-                  "carbs": 98,
-                  "fiber": 2,
-                  "ingredients": ["мороженое 200г", "молоко 300мл", "банан 2 шт", "арахисовая паста 30г", "сироп 30мл"],
-                  "preparationTime": 5,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Максимально калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Категорически не рекомендуется" },
-                    "normal": { "recommended": false, "portionMultiplier": 0, "note": "Только для экстремального набора" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Максимальный набор веса" }
-                  }
-                },
-                {
-                  "id": "snack_009",
-                  "name": "Пирожное с шоколадом и орехами",
-                  "image": "img/meals/snacks/chocolate-cake.jpg",
-                  "calories": 950,
-                  "protein": 14,
-                  "fat": 58,
-                  "carbs": 98,
-                  "fiber": 6,
-                  "ingredients": ["шоколадный торт 200г", "грецкие орехи 50г", "взбитые сливки 100г"],
-                  "preparationTime": 2,
-                  "difficulty": "Легко",
-                  "healthProfiles": {
-                    "obesity": { "recommended": false, "portionMultiplier": 0, "note": "Экстремально калорийно" },
-                    "overweight": { "recommended": false, "portionMultiplier": 0, "note": "Категорически не рекомендуется" },
-                    "normal": { "recommended": false, "portionMultiplier": 0, "note": "Только для экстремального набора" },
-                    "underweight": { "recommended": true, "portionMultiplier": 1.0, "note": "Максимальный набор веса" }
-                  }
+                    id: "snack_002",
+                    name: "Яблоко с миндалем",
+                    image: "img/meals/snacks/apple-almonds.jpg",
+                    calories: 180,
+                    protein: 4,
+                    fat: 12,
+                    carbs: 18,
+                    fiber: 4,
+                    ingredients: ["яблоко 1 шт", "миндаль 20г"],
+                    preparationTime: 2,
+                    difficulty: "Легко",
+                    healthProfiles: {
+                        obesity: { recommended: true, portionMultiplier: 0.8 },
+                        overweight: { recommended: true, portionMultiplier: 0.9 },
+                        normal: { recommended: true, portionMultiplier: 1.0 },
+                        underweight: { recommended: true, portionMultiplier: 1.2 }
+                    }
                 }
-              ]
+            ]
         };
         
         this.categories = {
@@ -756,13 +281,12 @@ class MealDatabase {
             
         } catch (error) {
             console.error('Ошибка загрузки, используем встроенную базу:', error);
-            this.isLoaded = true; // Помечаем как загруженную, так как у нас есть дефолтные данные
+            this.isLoaded = true;
             return true;
         }
     }
 
     getMealsByCategory(category, healthProfile = null) {
-        // Гарантированно возвращаем массив
         if (!this.meals) {
             console.warn('meals не инициализирован');
             return [];
@@ -787,6 +311,32 @@ class MealDatabase {
         });
     }
 
+    /**
+     * НОВЫЙ МЕТОД: Получение блюд по категории с учетом цели
+     */
+    getMealsByCategoryWithGoal(category, healthProfile, goal) {
+        const mealsArray = this.meals[category];
+        if (!mealsArray || !Array.isArray(mealsArray)) return [];
+        
+        // Для набора массы - игнорируем recommended, берем все блюда
+        if (goal === 'gain') {
+            // Возвращаем все блюда, отсортированные по калорийности (высокие в начале)
+            return [...mealsArray].sort((a, b) => b.calories - a.calories);
+        }
+        
+        // Для похудения или поддержания - фильтруем по recommended
+        return mealsArray.filter(meal => {
+            if (!meal.healthProfiles) return true;
+            const profile = meal.healthProfiles[healthProfile];
+            // Для похудения берем только рекомендованные
+            if (goal === 'lose') {
+                return profile && profile.recommended !== false;
+            }
+            // Для поддержания берем рекомендованные или с нейтральным множителем
+            return profile ? profile.recommended !== false : true;
+        });
+    }
+
     getAllCategories() {
         return ['breakfast', 'lunch', 'dinner', 'snack'];
     }
@@ -796,7 +346,6 @@ class MealDatabase {
             return this.categories.categories[category];
         }
         
-        // Дефолтные значения
         const defaults = {
             breakfast: { name: '🌅 Завтрак', caloriePercent: 30, icon: '🌅' },
             lunch: { name: '🌞 Обед', caloriePercent: 35, icon: '🌞' },
@@ -821,7 +370,7 @@ class MealDatabase {
     }
 
     isReady() {
-        return true; // Всегда true, так как у нас есть дефолтные данные
+        return true;
     }
 }
 
