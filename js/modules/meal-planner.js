@@ -16,24 +16,51 @@ class MealPlanner {
     }
 
     /**
-     * Подбор оптимального блюда
+     * Подбор оптимального блюда с учетом цели
      */
-    selectBestMeal(meals, targetCalories, healthProfile) {
+    selectBestMeal(meals, targetCalories, healthProfile, goal) {
         if (!meals || meals.length === 0) return null;
         
-        // Фильтруем подходящие блюда
-        const suitable = meals.filter(meal => {
-            const profile = meal.healthProfiles?.[healthProfile];
-            return profile && profile.recommended !== false;
-        });
+        let suitable = meals;
         
-        if (suitable.length === 0) return meals[0];
+        // Для набора массы - НЕ фильтруем по recommended, ищем высококалорийные
+        if (goal === 'gain') {
+            // Берем все блюда, но сортируем по калорийности
+            suitable = [...meals].sort((a, b) => b.calories - a.calories);
+            
+            // Ищем блюда с калорийностью выше целевой
+            const highCalorieMeals = suitable.filter(meal => meal.calories >= targetCalories * 0.8);
+            if (highCalorieMeals.length > 0) {
+                suitable = highCalorieMeals;
+            }
+        } 
+        // Для похудения - фильтруем по recommended
+        else if (goal === 'lose') {
+            suitable = meals.filter(meal => {
+                const profile = meal.healthProfiles?.[healthProfile];
+                return profile && profile.recommended !== false;
+            });
+            
+            if (suitable.length === 0) suitable = meals;
+            
+            // Для похудения выбираем менее калорийные
+            suitable.sort((a, b) => a.calories - b.calories);
+        }
+        // Для поддержания - стандартная логика
+        else {
+            suitable = meals.filter(meal => {
+                const profile = meal.healthProfiles?.[healthProfile];
+                return profile && profile.recommended !== false;
+            });
+            
+            if (suitable.length === 0) suitable = meals;
+        }
         
         // Выбираем ближайшее по калориям с учетом множителя порции
         return suitable.reduce((best, current) => {
-            const currentMultiplier = current.healthProfiles?.[healthProfile]?.portionMultiplier || 1;
+            const currentMultiplier = this.getMealMultiplier(current, healthProfile, goal);
             const currentCalories = current.calories * currentMultiplier;
-            const bestMultiplier = best.healthProfiles?.[healthProfile]?.portionMultiplier || 1;
+            const bestMultiplier = this.getMealMultiplier(best, healthProfile, goal);
             const bestCalories = best.calories * bestMultiplier;
             
             const currentDiff = Math.abs(currentCalories - targetCalories);
@@ -41,6 +68,31 @@ class MealPlanner {
             
             return currentDiff < bestDiff ? current : best;
         });
+    }
+    
+    /**
+     * Получение множителя порции с учетом цели
+     */
+    getMealMultiplier(meal, healthProfile, goal) {
+        const profile = meal.healthProfiles?.[healthProfile];
+        
+        // Для набора массы - увеличиваем множитель если нужно
+        if (goal === 'gain') {
+            // Если блюдо не recommended для normal, но высококалорийное - используем множитель 1.0
+            if (profile && profile.recommended === false) {
+                return 1.0;
+            }
+            // Для recommended блюд используем максимальный множитель
+            return profile?.portionMultiplier || 1.2;
+        }
+        
+        // Для похудения - уменьшаем порции
+        if (goal === 'lose') {
+            return profile?.portionMultiplier || 0.8;
+        }
+        
+        // Для поддержания - стандартный множитель
+        return profile?.portionMultiplier || 1.0;
     }
     
     /**
@@ -72,10 +124,10 @@ class MealPlanner {
             const meals = this.database.getMealsByCategory(category, healthProfile);
             
             if (meals && Array.isArray(meals) && meals.length > 0) {
-                const selectedMeal = this.selectBestMeal(meals, targetCategoryCalories, healthProfile);
+                const selectedMeal = this.selectBestMeal(meals, targetCategoryCalories, healthProfile, goal);
                 
                 if (selectedMeal) {
-                    const multiplier = selectedMeal.healthProfiles?.[healthProfile]?.portionMultiplier || 1;
+                    const multiplier = this.getMealMultiplier(selectedMeal, healthProfile, goal);
                     const adjustedCalories = Math.round(selectedMeal.calories * multiplier);
                     
                     menu.meals[category] = {
@@ -112,14 +164,19 @@ class MealPlanner {
         const targetCalories = calories * (categoryInfo.caloriePercent / 100);
         
         // Исключаем текущее блюдо
-        const alternativeMeals = meals.filter(meal => meal.id !== currentMealId);
+        let alternativeMeals = meals.filter(meal => meal.id !== currentMealId);
         
         if (alternativeMeals.length === 0) return null;
         
-        const selectedMeal = this.selectBestMeal(alternativeMeals, targetCalories, healthProfile);
+        // Для набора массы - предпочитаем более калорийные альтернативы
+        if (goal === 'gain') {
+            alternativeMeals.sort((a, b) => b.calories - a.calories);
+        }
+        
+        const selectedMeal = this.selectBestMeal(alternativeMeals, targetCalories, healthProfile, goal);
         if (!selectedMeal) return null;
         
-        const multiplier = selectedMeal.healthProfiles?.[healthProfile]?.portionMultiplier || 1;
+        const multiplier = this.getMealMultiplier(selectedMeal, healthProfile, goal);
         
         return {
             ...selectedMeal,
@@ -177,7 +234,8 @@ class MealPlanner {
                 ],
                 gain: [
                     '✅ Профицит 300-400 ккал',
-                    '✅ Увеличьте порции сложных углеводов'
+                    '✅ Увеличьте порции сложных углеводов',
+                    '✅ Добавьте калорийные перекусы (орехи, сухофрукты)'
                 ]
             },
             underweight: {
@@ -190,7 +248,8 @@ class MealPlanner {
                 gain: [
                     '✅ Увеличьте калорийность на 500-700 ккал',
                     '✅ Ешьте чаще (5-6 раз в день)',
-                    '✅ Добавьте полезные жиры (орехи, авокадо)'
+                    '✅ Добавьте полезные жиры (орехи, авокадо)',
+                    '✅ Используйте калорийные коктейли и смузи'
                 ]
             }
         };
