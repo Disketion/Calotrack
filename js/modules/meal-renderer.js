@@ -1,4 +1,4 @@
-// js/modules/meal-renderer.js
+// js/modules/meal-renderer.js - исправленная версия
 
 class MealRenderer {
     constructor() {
@@ -100,7 +100,7 @@ class MealRenderer {
                     
                     ${isModified ? `
                         <div class="meal-modified-badge">
-                            ⚡ Порция скорректирована (${multiplier * 100}%)
+                            ⚡ Порция скорректирована (${Math.round(multiplier * 100)}%)
                         </div>
                     ` : ''}
                     
@@ -141,7 +141,7 @@ class MealRenderer {
     setupTabListeners() {
         const tabs = document.querySelectorAll('.tab-btn');
         tabs.forEach(tab => {
-            tab.addEventListener('click', (e) => {
+            tab.addEventListener('click', () => {
                 const category = tab.dataset.category;
                 if (category && category !== this.currentCategory) {
                     this.currentCategory = category;
@@ -239,6 +239,7 @@ class MealRenderer {
         const modal = document.getElementById('meal-detail-modal');
         const closeBtn = document.getElementById('close-detail');
         
+        // Просто показываем модальное окно
         modal.classList.add('active');
         
         const closeModal = () => {
