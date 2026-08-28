@@ -1,22 +1,22 @@
-/* Табы */
+/* Meal Tabs */
 .meal-tabs {
   display: flex;
-  gap: 10px;
-  margin-bottom: 30px;
+  gap: var(--spacing-12);
+  margin-bottom: var(--spacing-32);
   flex-wrap: wrap;
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 10px;
+  border-bottom: 2px solid var(--color-charcoal);
+  padding-bottom: var(--spacing-12);
 }
 
 .tab-btn {
   background: transparent;
-  border: none;
-  padding: 12px 24px;
+  border: 2px solid var(--color-faded-gray);
+  padding: var(--spacing-12) var(--spacing-24);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  color: var(--text-color);
-  border-radius: 12px;
+  color: var(--color-charcoal);
+  border-radius: var(--radius-xl);
   transition: all 0.3s ease;
   position: relative;
   width: auto;
@@ -24,38 +24,40 @@
 }
 
 .tab-btn:hover {
-  background: var(--bg-color);
+  background: var(--color-storybook-green);
+  border-color: var(--color-eager-green);
   transform: translateY(-2px);
 }
 
 .tab-btn.active {
-  background: var(--primary-color);
-  color: white;
-  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+  background: var(--color-eager-green);
+  color: var(--color-paper-white);
+  border-color: var(--color-eager-green);
+  box-shadow: 0 4px 15px rgba(88, 204, 2, 0.3);
 }
 
-/* Сетка блюд */
+/* Meal Grid */
 .meal-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
-  margin-bottom: 30px;
+  gap: var(--spacing-24);
+  margin-bottom: var(--spacing-32);
 }
 
-/* Карточка блюда */
+/* Meal Card */
 .meal-card {
-  background: var(--card-bg);
-  border-radius: 20px;
+  background: var(--color-paper-white);
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--color-charcoal);
   cursor: pointer;
 }
 
 .meal-card:hover {
   transform: translateY(-8px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .meal-card-image {
@@ -63,6 +65,7 @@
   height: 200px;
   object-fit: cover;
   transition: transform 0.3s ease;
+  background: var(--color-storybook-green);
 }
 
 .meal-card:hover .meal-card-image {
@@ -70,75 +73,82 @@
 }
 
 .meal-card-content {
-  padding: 20px;
+  padding: var(--spacing-20);
 }
 
 .meal-card h4 {
-  margin: 0 0 12px 0;
+  margin: 0 0 var(--spacing-12) 0;
   font-size: 1.2rem;
-  color: var(--text-color);
+  color: var(--color-eager-green);
+  font-weight: 700;
 }
 
 .meal-stats {
   display: flex;
-  gap: 12px;
+  gap: var(--spacing-12);
   flex-wrap: wrap;
-  margin-bottom: 15px;
-  padding: 10px 0;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--spacing-16);
+  padding: var(--spacing-12) 0;
+  border-top: 1px solid var(--color-charcoal);
+  border-bottom: 1px solid var(--color-charcoal);
 }
 
 .meal-stat {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--spacing-8);
   font-size: 0.9rem;
-  color: var(--text-color);
+  color: var(--color-charcoal);
 }
 
 .meal-stat strong {
-  color: var(--primary-color);
+  color: var(--color-eager-green);
+  font-weight: 700;
 }
 
 .meal-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 15px;
+  margin-top: var(--spacing-16);
 }
 
 .meal-time {
   font-size: 0.85rem;
-  color: var(--text-color);
-  opacity: 0.7;
+  color: var(--color-pencil-gray);
+  opacity: 0.8;
 }
 
 .meal-details-btn {
   background: transparent;
-  border: 2px solid var(--primary-color);
-  padding: 6px 12px;
+  border: 2px solid var(--color-eager-green);
+  padding: var(--spacing-8) var(--spacing-16);
   font-size: 0.85rem;
   width: auto;
   margin: 0;
-  color: var(--primary-color);
-  border-radius: 8px;
+  color: var(--color-eager-green);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .meal-details-btn:hover {
-  background: var(--primary-color);
-  color: white;
+  background: var(--color-eager-green);
+  color: var(--color-paper-white);
   transform: translateY(-2px);
 }
 
-/* ========== Детальное окно блюда (ИСПРАВЛЕНО) ========== */
+/* Meal Detail Modal */
 .meal-detail-modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
   z-index: 2100;
   display: flex;
@@ -146,7 +156,7 @@
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .meal-detail-modal.active {
@@ -155,125 +165,153 @@
 }
 
 .meal-detail-content {
-  background: var(--card-bg);
-  border-radius: 20px;
+  background: var(--color-paper-white);
+  border-radius: var(--radius-xl);
   max-width: 500px;
   width: 90%;
   max-height: 85vh;
   overflow-y: auto;
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--color-charcoal);
 }
 
 .meal-detail-image {
   width: 100%;
   height: 250px;
   object-fit: cover;
-  border-radius: 20px 20px 0 0;
+  border-radius: 12px 12px 0 0;
+  background: var(--color-storybook-green);
 }
 
 .meal-detail-content h2 {
-  padding: 0 20px;
-  margin: 15px 0 10px;
+  padding: 0 var(--spacing-20);
+  margin: var(--spacing-16) 0 var(--spacing-12);
   font-size: 1.5rem;
+  color: var(--color-eager-green);
+  font-weight: 700;
 }
 
 .meal-detail-content .meal-stats {
-  padding: 10px 20px;
+  padding: var(--spacing-12) var(--spacing-20);
   margin: 0;
 }
 
 .meal-detail-ingredients {
-  margin: 15px 20px;
-  padding: 15px;
-  background: var(--bg-color);
-  border-radius: 12px;
+  margin: var(--spacing-16) var(--spacing-20);
+  padding: var(--spacing-16);
+  background: var(--color-storybook-green);
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--color-charcoal);
+}
+
+.meal-detail-ingredients h3 {
+  color: var(--color-eager-green);
+  margin-top: 0;
+  margin-bottom: var(--spacing-12);
+  font-weight: 700;
 }
 
 .meal-detail-ingredients ul {
-  margin: 10px 0 0 20px;
+  margin: var(--spacing-12) 0 0 var(--spacing-20);
+  padding-left: var(--spacing-8);
 }
 
 .meal-detail-ingredients li {
-  margin: 5px 0;
-  color: var(--text-color);
+  margin: var(--spacing-8) 0;
+  color: var(--color-charcoal);
+  font-weight: 500;
 }
 
 .meal-detail-info {
-  padding: 0 20px 20px;
+  padding: 0 var(--spacing-20) var(--spacing-24);
   margin: 0;
 }
 
 .meal-detail-info p {
-  margin: 8px 0;
+  margin: var(--spacing-8) 0;
   font-size: 0.9rem;
-  color: var(--text-color);
-  opacity: 0.8;
+  color: var(--color-pencil-gray);
+  opacity: 0.9;
 }
 
 .close-detail {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  background: rgba(0, 0, 0, 0.6);
-  border: none;
+  top: var(--spacing-16);
+  right: var(--spacing-16);
+  background: var(--color-eager-green);
+  border: 2px solid var(--color-charcoal);
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  color: white;
+  color: var(--color-paper-white);
   font-size: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  font-weight: bold;
 }
 
 .close-detail:hover {
-  background: rgba(0, 0, 0, 0.8);
-  transform: scale(1.05);
+  background: var(--color-charcoal);
+  transform: scale(1.08);
 }
 
-/* Кнопки действий */
+/* Meal Actions */
 .meal-actions {
   display: flex;
-  gap: 15px;
+  gap: var(--spacing-16);
   justify-content: center;
-  margin-top: 25px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-color);
+  margin-top: var(--spacing-24);
+  padding-top: var(--spacing-20);
+  border-top: 2px solid var(--color-charcoal);
 }
 
-.refresh-meal-btn, .save-menu-btn {
-  padding: 12px 24px;
+.refresh-meal-btn, 
+.save-menu-btn {
+  padding: var(--spacing-12) var(--spacing-24);
   width: auto;
   margin: 0;
-  background: var(--primary-color);
+  background: var(--color-eager-green);
   font-size: 0.9rem;
+  border: 2px solid var(--color-charcoal);
+  border-radius: var(--radius-xl);
+  color: var(--color-paper-white);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .refresh-meal-btn {
-  background: var(--bg-color);
-  color: var(--text-color);
-  border: 2px solid var(--primary-color);
+  background: transparent;
+  color: var(--color-eager-green);
+  border: 2px solid var(--color-eager-green);
 }
 
 .refresh-meal-btn:hover {
-  background: var(--primary-color);
-  color: white;
+  background: var(--color-eager-green);
+  color: var(--color-paper-white);
+}
+
+.save-menu-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(88, 204, 2, 0.3);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .meal-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: var(--spacing-20);
   }
   
   .tab-btn {
-    padding: 8px 16px;
+    padding: var(--spacing-8) var(--spacing-16);
     font-size: 0.9rem;
   }
   
@@ -305,20 +343,20 @@
 
 @media (max-width: 480px) {
   .meal-tabs {
-    gap: 5px;
+    gap: var(--spacing-8);
   }
   
   .tab-btn {
-    padding: 6px 12px;
+    padding: var(--spacing-8) var(--spacing-12);
     font-size: 0.8rem;
   }
   
   .meal-card-content {
-    padding: 15px;
+    padding: var(--spacing-16);
   }
   
   .meal-stats {
-    gap: 8px;
+    gap: var(--spacing-8);
   }
   
   .meal-stat {
