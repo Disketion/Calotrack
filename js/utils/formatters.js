@@ -52,11 +52,11 @@ class Formatters {
      */
     static formatDifficulty(difficulty) {
         const icons = {
-            'Легко': '😊',
-            'Средне': '🤔',
-            'Сложно': '💪'
+            'Легко': '',
+            'Средне': '',
+            'Сложно': ''
         };
-        return `${icons[difficulty] || '📝'} ${difficulty}`;
+        return `${icons[difficulty] || ''} ${difficulty}`;
     }
 
     /**
@@ -75,12 +75,12 @@ class Formatters {
      */
     static getHealthIcon(profile) {
         const icons = {
-            obesity: '⚠️',
-            overweight: '📊',
-            normal: '✅',
-            underweight: '⚡'
+            obesity: '',
+            overweight: '',
+            normal: '',
+            underweight: ''
         };
-        return icons[profile] || '❓';
+        return icons[profile] || '';
     }
 
     /**

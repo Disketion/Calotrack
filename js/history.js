@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (history.length === 0) {
       historyList.innerHTML = `
         <div style="text-align: center; padding: 40px 20px; color: var(--text-color); opacity: 0.7;">
-          <p>📭 История расчётов пуста.</p>
+          <p>История расчётов пуста.</p>
           <p>Перейдите в <a href="calculator.html" style="color: var(--primary-color);">калькулятор</a>, чтобы сделать первый расчет!</p>
         </div>
       `;
@@ -22,13 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const div = document.createElement('div');
         div.className = 'history-entry';
         
-        let goalIcon = '⚖️';
+        let goalIcon = '';
         let goalText = 'Поддержание';
         if (entry.calories < 1800) {
-          goalIcon = '⬇️';
+          goalIcon = '↓';
           goalText = 'Похудение';
         } else if (entry.calories > 2500) {
-          goalIcon = '⬆️';
+          goalIcon = '↑';
           goalText = 'Набор массы';
         }
         
@@ -38,12 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
               <strong>${goalIcon} ${entry.date}</strong>
               <div style="font-size: 12px; color: var(--text-color); opacity: 0.7; margin-top: 2px;">${goalText}</div>
             </div>
-            <span style="background: var(--primary-color); color: white; padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 600;">
+            <span style="background: var(--primary-color); color: var(--primary-color-text); padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 600;">
               ${entry.calories} ккал
             </span>
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 15px;">
-            <div style="text-align: center; padding: 10px; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
+            <div style="text-align: center; padding: 10px; background: rgba(252, 80, 0, 0.12); border-radius: 8px;">
               <div style="color: var(--primary-color); font-weight: 700; font-size: 18px;">${entry.proteinGrams}г</div>
               <div style="font-size: 12px; color: var(--text-color);">Белки</div>
             </div>
@@ -95,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast = document.createElement('div');
     toast.className = `toast-notification ${type}`;
     toast.innerHTML = `
-      <div class="toast-icon">${type === 'success' ? '✅' : '🗑️'}</div>
       <div class="toast-message">${message}</div>
     `;
     document.body.appendChild(toast);

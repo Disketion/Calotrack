@@ -25,8 +25,8 @@ class MealModal {
             <div class="modal-overlay" id="meal-modal">
                 <div class="modal-container">
                     <div class="modal-header">
-                        <h2>🍽️ Персональное меню</h2>
-                        <button class="close-modal" id="close-modal-btn">✖</button>
+                        <h2>Персональное меню</h2>
+                        <button class="close-modal" id="close-modal-btn">×</button>
                     </div>
                     <div class="modal-body">
                         <div id="health-badge" class="health-badge"></div>
@@ -70,22 +70,22 @@ class MealModal {
         if (!healthBadge) return;
         
         let profileName = 'Нормальный вес';
-        let profileIcon = '✅';
+        let profileIcon = '';
         
         if (menuData && menuData.healthProfile) {
             const profile = menuData.healthProfile;
             if (profile === 'obesity') {
                 profileName = 'Ожирение';
-                profileIcon = '⚠️';
+                profileIcon = '';
             } else if (profile === 'overweight') {
                 profileName = 'Избыточный вес';
-                profileIcon = '📊';
+                profileIcon = '';
             } else if (profile === 'normal') {
                 profileName = 'Нормальный вес';
-                profileIcon = '✅';
+                profileIcon = '';
             } else if (profile === 'underweight') {
                 profileName = 'Дефицит веса';
-                profileIcon = '⚡';
+                profileIcon = '';
             }
         }
         
@@ -103,11 +103,11 @@ class MealModal {
         
         healthBadge.innerHTML = `
             <h3>${profileIcon} Ваш профиль: ${profileName}</h3>
-            <p>📊 ИМТ: ${bmiValue} | 🎯 Цель: ${goalName}</p>
-            <p>🔥 Суточная норма: ${totalCalories} ккал | 🍽️ Сгенерировано: ${generatedCalories} ккал</p>
+            <p>ИМТ: ${bmiValue} | Цель: ${goalName}</p>
+            <p>Суточная норма: ${totalCalories} ккал | Сгенерировано: ${generatedCalories} ккал</p>
             ${calorieDiff !== 0 ? `
                 <div class="special-diet">
-                    ${calorieDiff > 0 ? '➕' : '➖'} 
+                    ${calorieDiff > 0 ? '+' : '−'} 
                     Разница: ${Math.abs(calorieDiff)} ккал
                 </div>
             ` : ''}
@@ -149,7 +149,7 @@ class MealModal {
                     <div class="skeleton skeleton-text" style="width: 60%; height: 30px; margin: 20px auto;"></div>
                     <div class="skeleton skeleton-card" style="height: 200px; margin: 20px 0;"></div>
                     <div class="skeleton skeleton-card" style="height: 200px; margin: 20px 0;"></div>
-                    <p style="text-align: center; margin-top: 20px;">🍳 Составляем персональное меню...</p>
+                    <p style="text-align: center; margin-top: 20px;">Составляем персональное меню...</p>
                 </div>
             `;
         }
@@ -196,7 +196,6 @@ class MealModal {
         const toast = document.createElement('div');
         toast.className = 'toast-notification success';
         toast.innerHTML = `
-            <div class="toast-icon">✅</div>
             <div class="toast-message">${message}</div>
         `;
         
@@ -212,71 +211,6 @@ class MealModal {
         }, 3000);
     }
 }
-
-const toastStyle = document.createElement('style');
-toastStyle.textContent = `
-    .toast-notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--card-bg);
-        color: var(--text-color);
-        padding: 12px 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 14px;
-        font-weight: 500;
-        border-left: 4px solid var(--primary-color);
-        transform: translateX(400px);
-        transition: transform 0.3s ease;
-        max-width: 300px;
-        backdrop-filter: blur(10px);
-    }
-    
-    .toast-notification.show {
-        transform: translateX(0);
-    }
-    
-    .toast-notification.success {
-        border-left-color: #4caf50;
-    }
-    
-    .toast-notification.error {
-        border-left-color: #e53935;
-    }
-    
-    .toast-notification.warning {
-        border-left-color: #ff9800;
-    }
-    
-    .toast-notification.info {
-        border-left-color: #2196f3;
-    }
-    
-    .toast-icon {
-        font-size: 18px;
-        flex-shrink: 0;
-    }
-    
-    .toast-message {
-        flex: 1;
-    }
-    
-    @media (max-width: 768px) {
-        .toast-notification {
-            bottom: 10px;
-            right: 10px;
-            left: 10px;
-            max-width: none;
-            padding: 10px 16px;
-        }
-    }
-`;
-document.head.appendChild(toastStyle);
 
 if (typeof window !== 'undefined') {
     window.MealModal = MealModal;

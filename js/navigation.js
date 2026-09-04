@@ -50,12 +50,12 @@ class Navigation {
     
     var isCalc = window.location.pathname.includes('calculator.html');
     
-    var html = '<div class="quick-actions-title">⚡ Быстрые действия</div>';
+    var html = '<div class="quick-actions-title">Быстрые действия</div>';
     html += '<div class="quick-actions-buttons">';
-    html += '<button class="quick-action-btn" id="quick-calc">⚡ Быстрый расчет</button>';
-    html += '<button class="quick-action-btn" id="quick-menu">🍽️ Случайное меню</button>';
-    html += '<button class="quick-action-btn" id="quick-saved">💾 Сохраненные</button>';
-    html += '<button class="quick-action-btn" id="quick-share">📤 Поделиться</button>';
+    html += '<button class="quick-action-btn" id="quick-calc">Быстрый расчет</button>';
+    html += '<button class="quick-action-btn" id="quick-menu">Случайное меню</button>';
+    html += '<button class="quick-action-btn" id="quick-saved">Сохраненные</button>';
+    html += '<button class="quick-action-btn" id="quick-share">Поделиться</button>';
     html += '</div>';
     
     container.innerHTML = html;
@@ -95,7 +95,7 @@ class Navigation {
     
     var modal = document.createElement('div');
     modal.className = 'saved-menus-modal';
-    modal.innerHTML = '<div class="modal-content"><div class="modal-header"><h3>💾 Сохраненные меню</h3><button class="close-modal-btn">✖</button></div><div class="modal-body"></div></div>';
+    modal.innerHTML = '<div class="modal-content"><div class="modal-header"><h3>Сохраненные меню</h3><button class="close-modal-btn">×</button></div><div class="modal-body"></div></div>';
     document.body.appendChild(modal);
     
     var body = modal.querySelector('.modal-body');
@@ -106,7 +106,7 @@ class Navigation {
       div.className = 'saved-menu-item';
       
       var dateStr = new Date(item.date).toLocaleDateString('ru-RU');
-      div.innerHTML = '<div class="saved-menu-date">📅 ' + dateStr + '</div><div class="saved-menu-calories">🔥 ' + item.menu.totalCalories + ' ккал</div><button class="load-menu-btn" data-idx="' + i + '">Загрузить</button>';
+      div.innerHTML = '<div class="saved-menu-date">' + dateStr + '</div><div class="saved-menu-calories">' + item.menu.totalCalories + ' ккал</div><button class="load-menu-btn" data-idx="' + i + '">Загрузить</button>';
       
       body.appendChild(div);
     }
@@ -165,7 +165,7 @@ class Navigation {
   showNotif(msg, type) {
     var toast = document.createElement('div');
     toast.className = 'toast-notification ' + type;
-    toast.innerHTML = '<div class="toast-icon">' + (type === 'success' ? '✅' : 'ℹ️') + '</div><div class="toast-message">' + msg + '</div>';
+    toast.innerHTML = '<div class="toast-message">' + msg + '</div>';
     document.body.appendChild(toast);
     setTimeout(function() { toast.classList.add('show'); }, 10);
     setTimeout(function() { toast.classList.remove('show'); setTimeout(function() { toast.remove(); }, 300); }, 3000);

@@ -4,38 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="История расчетов калорий">
-  <meta name="theme-color" content="#4caf50">
+  <meta name="theme-color" content="#fc5000">
   <title>История | CaloTrack</title>
+  <link rel="stylesheet" href="css/tokens.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/modal.css" />
   <link rel="stylesheet" href="css/meal-planner.css" />
 </head>
 <body>
-  <div class="layout">
-    <nav class="sidebar">
-      <h2>🍽️ CaloTrack</h2>
-      <ul>
-        <li><a href="index.html">🏠 Главная</a></li>
-        <li><a href="calculator.html">🧮 Калькулятор</a></li>
-        <li><a href="proteins.html">🥩 Белки</a></li>
-        <li><a href="fats.html">🥑 Жиры</a></li>
-        <li><a href="carbs.html">🍚 Углеводы</a></li>
-        <li><a href="history.html" class="active">📊 История</a></li>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="index.html" class="brand">CaloTrack</a>
+      <nav class="sidebar">
+        <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="calculator.html">Калькулятор</a></li>
+        <li><a href="proteins.html">Белки</a></li>
+        <li><a href="fats.html">Жиры</a></li>
+        <li><a href="carbs.html">Углеводы</a></li>
+        <li><a href="history.html" class="active">История</a></li>
       </ul>
-    </nav>
+      </nav>
+    </div>
+  </header>
 
-    <main class="content">
+  <main class="page">
       <div class="quick-actions"></div>
       
       <h1>История расчётов</h1>
       <p>Здесь хранятся ваши последние расчеты калорий и БЖУ.</p>
 
       <div class="feature-card purple" style="margin-bottom: 25px;">
-        <h3 style="margin-top: 0;">📈 Анализ прогресса</h3>
+        <h3 style="margin-top: 0;">Анализ прогресса</h3>
         <p>Сравнивайте предыдущие расчеты, чтобы увидеть динамику изменений.</p>
       </div>
 
-      <button id="clear-history" class="clear-btn">🗑️ Очистить историю</button>
+      <button id="clear-history" class="clear-btn">Очистить историю</button>
        
       <div id="history-list" class="history-list">
         <div style="text-align: center; padding: 40px 20px; opacity: 0.7;">
@@ -46,7 +50,7 @@
       </div>
 
       <div class="info-box" style="margin-top: 30px;">
-        <h3 style="margin-top: 0;">💡 Советы</h3>
+        <h3 style="margin-top: 0;">Советы</h3>
         <ul>
           <li>Сравнивайте изменения в калораже при смене целей</li>
           <li>Отслеживайте динамику соотношения БЖУ</li>
@@ -54,13 +58,12 @@
         </ul>
       </div>
     </main>
-  </div>
-  
+
   <footer class="site-footer">
     <div class="footer-content">
       <div class="footer-main">
         <div class="footer-brand">
-          <h3>🍽️ CaloTrack</h3>
+          <h3>CaloTrack</h3>
           <p>Интеллектуальный помощник для расчета калорий и планирования питания</p>
         </div>
         
@@ -100,7 +103,7 @@
     <div class="modal-container" style="max-width: 700px;">
       <div class="modal-header">
         <h2>Политика конфиденциальности</h2>
-        <button class="close-modal-btn close-privacy">✖</button>
+        <button class="close-modal-btn close-privacy">×</button>
       </div>
       <div class="modal-body">
         <p class="legal-date">Дата последнего обновления: 23 марта 2026 г.</p>
@@ -127,7 +130,7 @@
         <h3>3. Хранение и обработка данных</h3>
         <p><strong>3.1. Локальное хранение:</strong> Все данные, вводимые пользователем, хранятся исключительно в локальном хранилище браузера (localStorage) на устройстве пользователя. Сервис не передает данные на внешние серверы.</p>
         <p><strong>3.2. Файлы cookie:</strong> Сервис использует только технически необходимые cookie для сохранения настроек темы оформления. Cookie не используются для отслеживания или сбора персональной информации.</p>
-        <p><strong>3.3. Срок хранения:</strong> Данные хранятся на устройстве пользователя до момента их手动 очистки пользователем или до очистки данных браузера.</p>
+        <p><strong>3.3. Срок хранения:</strong> Данные хранятся на устройстве пользователя до момента их ручной очистки пользователем или до очистки данных браузера.</p>
         
         <h3>4. Передача данных третьим лицам</h3>
         <p>Сервис НЕ передает, не продает и не раскрывает персональные данные пользователей третьим лицам. Вся информация остается на устройстве пользователя.</p>
@@ -158,7 +161,7 @@
     <div class="modal-container" style="max-width: 700px;">
       <div class="modal-header">
         <h2>Условия использования</h2>
-        <button class="close-modal-btn close-terms">✖</button>
+        <button class="close-modal-btn close-terms">×</button>
       </div>
       <div class="modal-body">
         <p class="legal-date">Дата последнего обновления: 23 марта 2026 г.</p>
@@ -207,11 +210,10 @@
     <div class="modal-container" style="max-width: 600px;">
       <div class="modal-header">
         <h2>О проекте CaloTrack</h2>
-        <button class="close-modal-btn close-about">✖</button>
+        <button class="close-modal-btn close-about">×</button>
       </div>
       <div class="modal-body">
         <div class="about-logo">
-          <span style="font-size: 48px;">🍽️</span>
           <h3 style="margin: 10px 0 5px;">CaloTrack</h3>
           <p style="color: var(--primary-color); font-weight: 600;">Версия 2.0.0</p>
         </div>
@@ -221,12 +223,12 @@
         
         <h3>Основные функции</h3>
         <ul>
-          <li>🧮 Расчет суточной нормы калорий по формуле Миффлина-Сан-Жеора</li>
-          <li>📊 Определение оптимального соотношения белков, жиров и углеводов</li>
-          <li>🍽️ Генерация персонального меню на основе ИМТ и целей</li>
-          <li>📈 Прогноз изменения веса на 12 месяцев</li>
-          <li>💾 Сохранение истории расчетов и избранных меню</li>
-          <li>🎨 Поддержка светлой и темной темы оформления</li>
+          <li>Расчет суточной нормы калорий по формуле Миффлина-Сан-Жеора</li>
+          <li>Определение оптимального соотношения белков, жиров и углеводов</li>
+          <li>Генерация персонального меню на основе ИМТ и целей</li>
+          <li>Прогноз изменения веса на 12 месяцев</li>
+          <li>Сохранение истории расчетов и избранных меню</li>
+          <li>Поддержка светлой и темной темы оформления</li>
         </ul>
         
         <h3>Технологии</h3>
@@ -239,7 +241,7 @@
         </ul>
         
         <h3>Разработчик</h3>
-        <p>Проект создан с ❤️ для всех, кто заботится о своем здоровье. Если у вас есть вопросы, предложения или вы нашли ошибку — свяжитесь с нами через форму обратной связи, доступную в интерфейсе.</p>
+        <p>Проект создан с для всех, кто заботится о своем здоровье. Если у вас есть вопросы, предложения или вы нашли ошибку — свяжитесь с нами через форму обратной связи, доступную в интерфейсе.</p>
         
         <h3>Лицензия</h3>
         <p>Все права защищены. Копирование материалов без указания источника запрещено.</p>

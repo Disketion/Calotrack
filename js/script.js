@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     
                     ctx.save();
                     ctx.fillStyle = '#fff';
-                    ctx.font = 'bold 14px Outfit, Arial, sans-serif';
+                    ctx.font = 'bold 14px DM Sans, Arial, sans-serif';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function calculateCalories() {
         resultEl.innerHTML = `
-            <div style="text-align: center; padding: 20px;">
+            <div class="result-placeholder">
                 <div class="skeleton skeleton-text" style="width: 80%; margin: 10px auto;"></div>
                 <div class="skeleton skeleton-text" style="width: 60%; margin: 10px auto;"></div>
                 <div class="skeleton skeleton-text" style="width: 70%; margin: 10px auto;"></div>
@@ -191,14 +191,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function showResults(calories, protein, fat, carbs, bmi, bmiStatus, bmiColor) {
         resultEl.classList.add('pulse-once');
-        
+
         resultEl.innerHTML = `
-            <div style="animation: fadeIn 0.6s ease-out;">
-                <strong>🎯 Суточный калораж:</strong> <span style="color: var(--primary-color); font-size: 1.3rem;">${calories} ккал</span><br>
-                <strong>🥩 Белки:</strong> ${protein} г<br>
-                <strong>🥑 Жиры:</strong> ${fat} г<br>
-                <strong>🍚 Углеводы:</strong> ${carbs} г<br><br>
-                <strong>📊 ИМТ:</strong> <span style="color: ${bmiColor}; font-weight: bold;">${bmi} — ${bmiStatus}</span>
+            <div class="fadeIn">
+                <div class="result-hero">
+                    <span class="result-label">Суточный калораж</span>
+                    <span class="result-value">${calories} ккал</span>
+                </div>
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <span class="result-stat-value">${protein} г</span>
+                        <span class="result-stat-label">Белки</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="result-stat-value">${fat} г</span>
+                        <span class="result-stat-label">Жиры</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="result-stat-value">${carbs} г</span>
+                        <span class="result-stat-label">Углеводы</span>
+                    </div>
+                </div>
+                <div class="result-bmi">
+                    <span class="result-bmi-label">ИМТ ${bmi}</span>
+                    <span class="result-bmi-value" style="color: ${bmiColor};">${bmiStatus}</span>
+                </div>
             </div>
         `;
 
@@ -221,12 +238,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 label: 'Граммы',
                 data: [0, 0, 0],
                 backgroundColor: [
-                    'rgba(76, 175, 80, 0.8)',
+                    'rgba(252, 80, 0, 0.85)',
                     'rgba(255, 152, 0, 0.8)',
                     'rgba(33, 150, 243, 0.8)'
                 ],
                 borderColor: [
-                    'rgb(76, 175, 80)',
+                    'rgb(252, 80, 0)',
                     'rgb(255, 152, 0)',
                     'rgb(33, 150, 243)'
                 ],
@@ -248,7 +265,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 legend: {
                     position: 'bottom',
                     labels: {
-                        font: { size: 14, weight: '600', family: 'Outfit' },
+                        font: { size: 14, weight: '500', family: 'DM Sans' },
                         color: 'var(--text-color)'
                     },
                 },
@@ -306,8 +323,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 datasets: [{
                     label: 'Вес (кг)',
                     data: new Array(12).fill(currentWeight),
-                    backgroundColor: 'rgba(76, 175, 80, 0.6)',
-                    borderColor: 'rgb(76, 175, 80)',
+                    backgroundColor: 'rgba(252, 80, 0, 0.65)',
+                    borderColor: 'rgb(252, 80, 0)',
                     borderWidth: 2,
                     borderRadius: 8,
                     barThickness: 28,
@@ -324,7 +341,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         beginAtZero: false,
                         ticks: {
                             callback: value => value + ' кг',
-                            font: { family: 'Outfit' },
+                            font: { family: 'DM Sans' },
                             color: 'var(--text-color)'
                         },
                         grid: {
@@ -336,7 +353,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             display: false
                         },
                         ticks: {
-                            font: { family: 'Outfit' },
+                            font: { family: 'DM Sans' },
                             color: 'var(--text-color)'
                         }
                     }
@@ -364,7 +381,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function showError(message) {
         resultEl.classList.add('shake');
-        resultEl.innerHTML = `<strong style="color: var(--error-color);">⚠️ ${message}</strong>`;
+        resultEl.innerHTML = `<div class="result-placeholder"><strong style="color: var(--error-color);">${message}</strong></div>`;
         
         setTimeout(() => {
             resultEl.classList.remove('shake');
@@ -395,7 +412,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const notification = document.createElement('div');
         notification.className = `toast-notification ${type}`;
         notification.innerHTML = `
-            <div class="toast-icon">${type === 'success' ? '✅' : 'ℹ️'}</div>
             <div class="toast-message">${message}</div>
         `;
 
@@ -511,8 +527,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (resultEl) {
             resultEl.innerHTML = `
                 <div>
-                    <strong>🎯 Суточный калораж:</strong> <span style="color: var(--primary-color);">${savedMenu.totalCalories} ккал</span><br>
-                    <strong>📅 Загружено из сохраненных</strong>
+                    <strong>Суточный калораж:</strong> <span style="color: var(--primary-color);">${savedMenu.totalCalories} ккал</span><br>
+                    <strong>Загружено из сохраненных</strong>
                 </div>
             `;
         }

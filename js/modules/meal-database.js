@@ -81,7 +81,7 @@ class MealDatabase {
                 {
                     id: "lunch_001",
                     name: "Куриная грудка с киноа",
-                    image: "img/meals/lunch/chicken-quinoa.jpg",
+                    image: "img/meals/lunch/chicken-broccoli-quinoa.jpg",
                     calories: 520,
                     protein: 45,
                     fat: 18,
@@ -100,7 +100,7 @@ class MealDatabase {
                 {
                     id: "lunch_002",
                     name: "Рыба с рисом",
-                    image: "img/meals/lunch/fish-rice.jpg",
+                    image: "img/meals/lunch/fish-rice-veggies.jpg",
                     calories: 540,
                     protein: 38,
                     fat: 16,
@@ -119,7 +119,7 @@ class MealDatabase {
                 {
                     id: "lunch_003",
                     name: "Салат с тунцом",
-                    image: "img/meals/lunch/tuna-salad.jpg",
+                    image: "img/meals/lunch/tuna-avocado-salad.jpg",
                     calories: 450,
                     protein: 32,
                     fat: 28,
@@ -159,7 +159,7 @@ class MealDatabase {
                 {
                     id: "dinner_002",
                     name: "Куриный салат",
-                    image: "img/meals/dinner/chicken-salad.jpg",
+                    image: "img/meals/dinner/chicken-yogurt-salad.jpg",
                     calories: 380,
                     protein: 38,
                     fat: 16,
@@ -180,7 +180,7 @@ class MealDatabase {
                 {
                     id: "snack_001",
                     name: "Греческий йогурт",
-                    image: "img/meals/snacks/greek-yogurt.jpg",
+                    image: "img/meals/snacks/greek-yogurt-berries.jpg",
                     calories: 150,
                     protein: 12,
                     fat: 5,
@@ -220,10 +220,10 @@ class MealDatabase {
         
         this.categories = {
             categories: {
-                breakfast: { name: '🌅 Завтрак', caloriePercent: 30, icon: '🌅' },
-                lunch: { name: '🌞 Обед', caloriePercent: 35, icon: '🌞' },
-                dinner: { name: '🌙 Ужин', caloriePercent: 25, icon: '🌙' },
-                snack: { name: '🍎 Перекус', caloriePercent: 10, icon: '🍎' }
+                breakfast: { name: 'Завтрак', caloriePercent: 30, icon: '' },
+                lunch: { name: 'Обед', caloriePercent: 35, icon: '' },
+                dinner: { name: 'Ужин', caloriePercent: 25, icon: '' },
+                snack: { name: 'Перекус', caloriePercent: 10, icon: '' }
             }
         };
     }
@@ -347,13 +347,13 @@ class MealDatabase {
         }
         
         const defaults = {
-            breakfast: { name: '🌅 Завтрак', caloriePercent: 30, icon: '🌅' },
-            lunch: { name: '🌞 Обед', caloriePercent: 35, icon: '🌞' },
-            dinner: { name: '🌙 Ужин', caloriePercent: 25, icon: '🌙' },
-            snack: { name: '🍎 Перекус', caloriePercent: 10, icon: '🍎' }
+            breakfast: { name: 'Завтрак', caloriePercent: 30, icon: '' },
+            lunch: { name: 'Обед', caloriePercent: 35, icon: '' },
+            dinner: { name: 'Ужин', caloriePercent: 25, icon: '' },
+            snack: { name: 'Перекус', caloriePercent: 10, icon: '' }
         };
         
-        return defaults[category] || { name: category, caloriePercent: 25, icon: '🍽️' };
+        return defaults[category] || { name: category, caloriePercent: 25, icon: '' };
     }
 
     getMealById(id) {

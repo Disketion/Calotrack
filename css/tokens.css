@@ -1,5 +1,5 @@
 :root {
-
+  /* Colors */
   --color-ember: #fc5000;
   --color-ember-dark: #d94600;
   --color-plasma-violet: #524ae9;
@@ -9,11 +9,11 @@
   --color-obsidian: #070607;
   --color-chalk: #ffffff;
 
-
+  /* Typography */
   --font-heading: 'Anton', 'PP Neue Corp Compact', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
 
-
+  /* Spacing */
   --spacing-4: 4px;
   --spacing-8: 8px;
   --spacing-9: 9px;
@@ -31,13 +31,13 @@
   --spacing-80: 80px;
   --spacing-92: 92px;
 
-
+  /* Border radius */
   --radius-small: 16px;
   --radius-medium: 20px;
   --radius-cards: 40px;
   --radius-pills: 800px;
   --radius-inputs: 100px;
 
-
+  /* Layout */
   --page-max-width: 1280px;
 }

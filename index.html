@@ -4,56 +4,71 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="CaloTrack - расчет калорий и БЖУ для ваших целей">
-  <meta name="theme-color" content="#4caf50">
+  <meta name="theme-color" content="#fc5000">
   <title>CaloTrack - Главная</title>
+  <link rel="stylesheet" href="css/tokens.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/modal.css" />
   <link rel="stylesheet" href="css/meal-planner.css" />
 </head>
 <body>
-  <div class="layout">
-    <nav class="sidebar">
-      <h2>🍽️ CaloTrack</h2>
-      <ul>
-        <li><a href="index.html" class="active">🏠 Главная</a></li>
-        <li><a href="calculator.html">🧮 Калькулятор</a></li>
-        <li><a href="proteins.html">🥩 Белки</a></li>
-        <li><a href="fats.html">🥑 Жиры</a></li>
-        <li><a href="carbs.html">🍚 Углеводы</a></li>
-        <li><a href="history.html">📊 История</a></li>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="index.html" class="brand">CaloTrack</a>
+      <nav class="sidebar">
+        <ul>
+        <li><a href="index.html" class="active">Главная</a></li>
+        <li><a href="calculator.html">Калькулятор</a></li>
+        <li><a href="proteins.html">Белки</a></li>
+        <li><a href="fats.html">Жиры</a></li>
+        <li><a href="carbs.html">Углеводы</a></li>
+        <li><a href="history.html">История</a></li>
       </ul>
-    </nav>
-    
-    <main class="content">
-      <div class="quick-actions"></div>
-      
-      <h1>Добро пожаловать в CaloTrack</h1>
-      <p>Интеллектуальный помощник для расчета калорий и отслеживания питания.</p>
-      
-      <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin: 35px 0;">
-        <div class="feature-card hover-lift">
-          <h3 style="margin-top: 0;">🧮 Умный калькулятор</h3>
-          <p>Рассчитайте вашу норму калорий и БЖУ с учетом целей и активности</p>
-        </div>
-        <div class="feature-card blue hover-lift">
-          <h3 style="margin-top: 0;">🎨 Темная тема</h3>
-          <p>Переключайтесь между темами для комфортной работы</p>
-        </div>
-        <div class="feature-card purple hover-lift">
-          <h3 style="margin-top: 0;">🍽️ Персональное меню</h3>
-          <p>Получите примерное меню на день с учетом вашего ИМТ и целей</p>
-        </div>
-      </div>
+      </nav>
+    </div>
+  </header>
 
-      <p>Выберите нужный раздел в меню, чтобы начать работу с приложением.</p>
+  <main class="page">
+      <div class="quick-actions"></div>
+
+      <section class="hero">
+        <div class="hero-text">
+          <span class="eyebrow">Калькулятор калорий и БЖУ</span>
+          <h1>Питание<br>под контролем</h1>
+          <p class="hero-lead">CaloTrack считает норму калорий, помогает держать баланс белков, жиров и углеводов и подбирает меню под вашу цель.</p>
+          <a href="calculator.html" class="btn-cta">Рассчитать норму</a>
+        </div>
+        <div class="hero-visual" aria-hidden="true"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <section class="features-grid">
+        <div class="feature-card hover-lift">
+          <span class="feature-icon"></span>
+          <h3>Умный калькулятор</h3>
+          <p>Рассчитайте вашу норму калорий и БЖУ с учётом целей и активности</p>
+        </div>
+        <div class="feature-card hover-lift">
+          <span class="feature-icon"></span>
+          <h3>Персональное меню</h3>
+          <p>Получите примерное меню на день с учётом вашего ИМТ и целей</p>
+        </div>
+        <div class="feature-card hover-lift">
+          <span class="feature-icon"></span>
+          <h3>История расчётов</h3>
+          <p>Сравнивайте прошлые расчёты и следите за динамикой</p>
+        </div>
+      </section>
+
+      <p class="page-note">Выберите нужный раздел в меню, чтобы начать работу с приложением.</p>
     </main>
-  </div>
-  
+
   <footer class="site-footer">
     <div class="footer-content">
       <div class="footer-main">
         <div class="footer-brand">
-          <h3>🍽️ CaloTrack</h3>
+          <h3>CaloTrack</h3>
           <p>Интеллектуальный помощник для расчета калорий и планирования питания</p>
         </div>
         
@@ -93,7 +108,7 @@
     <div class="modal-container" style="max-width: 700px;">
       <div class="modal-header">
         <h2>Политика конфиденциальности</h2>
-        <button class="close-modal-btn close-privacy">✖</button>
+        <button class="close-modal-btn close-privacy">×</button>
       </div>
       <div class="modal-body">
         <p class="legal-date">Дата последнего обновления: 23 марта 2026 г.</p>
@@ -151,7 +166,7 @@
     <div class="modal-container" style="max-width: 700px;">
       <div class="modal-header">
         <h2>Условия использования</h2>
-        <button class="close-modal-btn close-terms">✖</button>
+        <button class="close-modal-btn close-terms">×</button>
       </div>
       <div class="modal-body">
         <p class="legal-date">Дата последнего обновления: 23 марта 2026 г.</p>
@@ -200,11 +215,10 @@
     <div class="modal-container" style="max-width: 600px;">
       <div class="modal-header">
         <h2>О проекте CaloTrack</h2>
-        <button class="close-modal-btn close-about">✖</button>
+        <button class="close-modal-btn close-about">×</button>
       </div>
       <div class="modal-body">
         <div class="about-logo">
-          <span style="font-size: 48px;">🍽️</span>
           <h3 style="margin: 10px 0 5px;">CaloTrack</h3>
           <p style="color: var(--primary-color); font-weight: 600;">Версия 2.0.0</p>
         </div>
@@ -214,12 +228,12 @@
         
         <h3>Основные функции</h3>
         <ul>
-          <li>🧮 Расчет суточной нормы калорий по формуле Миффлина-Сан-Жеора</li>
-          <li>📊 Определение оптимального соотношения белков, жиров и углеводов</li>
-          <li>🍽️ Генерация персонального меню на основе ИМТ и целей</li>
-          <li>📈 Прогноз изменения веса на 12 месяцев</li>
-          <li>💾 Сохранение истории расчетов и избранных меню</li>
-          <li>🎨 Поддержка светлой и темной темы оформления</li>
+          <li>Расчет суточной нормы калорий по формуле Миффлина-Сан-Жеора</li>
+          <li>Определение оптимального соотношения белков, жиров и углеводов</li>
+          <li>Генерация персонального меню на основе ИМТ и целей</li>
+          <li>Прогноз изменения веса на 12 месяцев</li>
+          <li>Сохранение истории расчетов и избранных меню</li>
+          <li>Поддержка светлой и темной темы оформления</li>
         </ul>
         
         <h3>Технологии</h3>
@@ -232,7 +246,7 @@
         </ul>
         
         <h3>Разработчик</h3>
-        <p>Проект создан с ❤️ для всех, кто заботится о своем здоровье. Если у вас есть вопросы, предложения или вы нашли ошибку — свяжитесь с нами через форму обратной связи, доступную в интерфейсе.</p>
+        <p>Проект создан с для всех, кто заботится о своем здоровье. Если у вас есть вопросы, предложения или вы нашли ошибку — свяжитесь с нами через форму обратной связи, доступную в интерфейсе.</p>
         
         <h3>Лицензия</h3>
         <p>Все права защищены. Копирование материалов без указания источника запрещено.</p>

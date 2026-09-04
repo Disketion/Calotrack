@@ -17,7 +17,7 @@ class MealRenderer {
         if (!menuData || !menuData.meals) {
             container.innerHTML = `
                 <div class="meal-empty">
-                    <p>😔 Ошибка: не удалось загрузить меню</p>
+                    <p>Ошибка: не удалось загрузить меню</p>
                     <p>Попробуйте сгенерировать снова</p>
                 </div>
             `;
@@ -34,10 +34,10 @@ class MealRenderer {
             </div>
             <div class="meal-actions">
                 <button class="refresh-meal-btn" id="refresh-meal">
-                    🔄 Другой вариант
+                    Другой вариант
                 </button>
                 <button class="save-menu-btn" id="save-menu">
-                    💾 Сохранить меню
+                    Сохранить меню
                 </button>
             </div>
         `;
@@ -48,10 +48,10 @@ class MealRenderer {
     
     renderTabs() {
         const categories = [
-            { id: 'breakfast', name: '🌅 Завтрак', percent: 30 },
-            { id: 'snack', name: '🍎 Перекус', percent: 10 },
-            { id: 'lunch', name: '🌞 Обед', percent: 35 },
-            { id: 'dinner', name: '🌙 Ужин', percent: 25 }
+            { id: 'breakfast', name: 'Завтрак', percent: 30 },
+            { id: 'snack', name: 'Перекус', percent: 10 },
+            { id: 'lunch', name: 'Обед', percent: 35 },
+            { id: 'dinner', name: 'Ужин', percent: 25 }
         ];
         
         return `
@@ -72,7 +72,7 @@ class MealRenderer {
         if (!meal) {
             return `
                 <div class="meal-empty">
-                    <p>😔 Нет подходящих блюд для этой категории</p>
+                    <p>Нет подходящих блюд для этой категории</p>
                 </div>
             `;
         }
@@ -91,46 +91,43 @@ class MealRenderer {
         
         return `
             <div class="meal-card" data-meal-id="${meal.id}" data-category="${category}">
-                <img src="${meal.image || 'img/placeholder-meal.jpg'}" 
-                     alt="${meal.name}" 
-                     class="meal-card-image"
-                     onerror="this.src='img/placeholder-meal.jpg'">
+                ${this.renderMealImage(meal, 'meal-card-image')}
                 <div class="meal-card-content">
                     <h4>${meal.name}</h4>
                     
                     ${isModified ? `
                         <div class="meal-modified-badge">
-                            ⚡ Порция скорректирована (${Math.round(multiplier * 100)}%)
+                            Порция скорректирована (${Math.round(multiplier * 100)}%)
                         </div>
                     ` : ''}
                     
                     <div class="meal-stats">
                         <div class="meal-stat">
-                            🔥 <strong>${meal.adjustedCalories}</strong> ккал
+                            <strong>${meal.adjustedCalories}</strong> ккал
                             ${isModified ? `<span class="meal-original">(${meal.originalCalories})</span>` : ''}
                         </div>
                         <div class="meal-stat">
-                            🥩 <strong>${Math.round(meal.protein * multiplier)}</strong> г
+                            <strong>${Math.round(meal.protein * multiplier)}</strong> г
                         </div>
                         <div class="meal-stat">
-                            🥑 <strong>${Math.round(meal.fat * multiplier)}</strong> г
+                            <strong>${Math.round(meal.fat * multiplier)}</strong> г
                         </div>
                         <div class="meal-stat">
-                            🍚 <strong>${Math.round(meal.carbs * multiplier)}</strong> г
+                            <strong>${Math.round(meal.carbs * multiplier)}</strong> г
                         </div>
                     </div>
                     
                     ${note ? `
                         <div class="meal-note">
-                            💡 ${note}
+                            ${note}
                         </div>
                     ` : ''}
                     
                     <div class="meal-info">
-                        <span class="meal-time">⏱️ ${meal.preparationTime || 15} мин</span>
+                        <span class="meal-time">${meal.preparationTime || 15} мин</span>
                         <span class="meal-difficulty">${meal.difficulty || 'Легко'}</span>
                         <button class="meal-details-btn" data-meal-id="${meal.id}">
-                            📖 Подробнее
+                            Подробнее
                         </button>
                     </div>
                 </div>
@@ -138,6 +135,13 @@ class MealRenderer {
         `;
     }
     
+    renderMealImage(meal, className) {
+        if (meal.image) {
+            return `<img src="${meal.image}" alt="${meal.name}" class="${className}" onerror="this.classList.add('meal-image-broken')">`;
+        }
+        return `<div class="${className} meal-image-placeholder"></div>`;
+    }
+
     setupTabListeners() {
         const tabs = document.querySelectorAll('.tab-btn');
         tabs.forEach(tab => {
@@ -195,23 +199,20 @@ class MealRenderer {
         const modalHtml = `
             <div class="meal-detail-modal" id="meal-detail-modal">
                 <div class="meal-detail-content">
-                    <button class="close-detail" id="close-detail">✖</button>
-                    <img src="${meal.image || 'img/placeholder-meal.jpg'}" 
-                         alt="${meal.name}" 
-                         class="meal-detail-image"
-                         onerror="this.src='img/placeholder-meal.jpg'">
+                    <button class="close-detail" id="close-detail">×</button>
+                    ${this.renderMealImage(meal, 'meal-detail-image')}
                     
                     <h2>${meal.name}</h2>
                     
                     <div class="meal-stats">
-                        <div class="meal-stat">🔥 ${meal.adjustedCalories} ккал</div>
-                        <div class="meal-stat">🥩 ${Math.round(meal.protein * multiplier)} г</div>
-                        <div class="meal-stat">🥑 ${Math.round(meal.fat * multiplier)} г</div>
-                        <div class="meal-stat">🍚 ${Math.round(meal.carbs * multiplier)} г</div>
+                        <div class="meal-stat">${meal.adjustedCalories} ккал</div>
+                        <div class="meal-stat">${Math.round(meal.protein * multiplier)} г</div>
+                        <div class="meal-stat">${Math.round(meal.fat * multiplier)} г</div>
+                        <div class="meal-stat">${Math.round(meal.carbs * multiplier)} г</div>
                     </div>
                     
                     <div class="meal-detail-ingredients">
-                        <strong>📝 Ингредиенты:</strong>
+                        <strong>Ингредиенты:</strong>
                         <ul>
                             ${(meal.ingredients || []).map(ing => `<li>${ing}</li>`).join('')}
                         </ul>
@@ -219,13 +220,13 @@ class MealRenderer {
                     
                     ${meal.note ? `
                         <div class="meal-note">
-                            💡 <strong>Рекомендация:</strong> ${meal.note}
+                            <strong>Рекомендация:</strong> ${meal.note}
                         </div>
                     ` : ''}
                     
                     <div class="meal-detail-info">
-                        <p>⏱️ Время приготовления: ${meal.preparationTime || 15} минут</p>
-                        <p>📊 Сложность: ${meal.difficulty || 'Легко'}</p>
+                        <p>Время приготовления: ${meal.preparationTime || 15} минут</p>
+                        <p>Сложность: ${meal.difficulty || 'Легко'}</p>
                     </div>
                 </div>
             </div>
